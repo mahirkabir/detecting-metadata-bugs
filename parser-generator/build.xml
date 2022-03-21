@@ -1,0 +1,34 @@
+<project name="examples" default="eg1" basedir=".">
+
+  <property name="javacc.home" value="../target/"/>
+
+  <target name="eg12" description="Builds example 'eg12'">
+    <delete dir="eg12"/>
+    <mkdir dir="eg12"/>
+    <copy file="eg12.jjt" todir="eg12"/>
+	<!-- <copy file="ASTEg9MyID.java" todir="eg12"/> -->
+    <!-- <copy file="ASTMyStringLiteral.java" todir="eg12"/> -->
+    <!-- <copy file="ASTMyInteger.java" todir="eg12"/> -->
+    <!-- <copy file="ASTMyID.java" todir="eg12"/> -->
+    <!-- <copy file="ASTMyOtherID.java" todir="eg12"/> -->
+    <copy file="Eg12DumpVisitor.java" todir="eg12"/>
+    <jjtree target="eg12.jjt" outputdirectory="eg12" javacchome="${javacc.home}"/>
+    <javacc target="eg12/eg12.jj" outputdirectory="eg12" javacchome="${javacc.home}"/>
+    <javac deprecation="false" srcdir="eg12" destdir="eg12" includeantruntime='false'/>
+    <echo message="*******"/>
+    <echo message="******* Now cd into the eg12 directory and run 'java Eg12' ******"/>
+    <echo message="*******"/>
+  </target>
+
+  <target name="all" description="Builds all examples" depends="clean,eg12">
+    <echo message="*******"/>
+    <echo message="******* All Built ******"/>
+    <echo message="*******"/>
+  </target>
+
+  <target name="clean" description="Cleans up any example directories">
+    <delete dir="eg12"/>
+  </target>
+
+
+</project>
