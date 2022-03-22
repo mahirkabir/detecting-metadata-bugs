@@ -262,7 +262,7 @@ void Stmnt() #Stmnt: {}
 	| DeclStmnt() ";"
 }
 
-void StmntSuffix(): {}
+void StmntSuffix() #StmntSuffix: {}
 {
 	(Stmnt() StmntSuffix())?
 }
@@ -302,12 +302,12 @@ void MsgStmnt() #MsgStmnt: {}
 	<MSG> "(" <STRING_LITERAL> MsgSuffix() ")"
 }
 
-void MsgSuffix(): {}
+void MsgSuffix() #MsgSuffix: {}
 {
 	("," Expression() MsgSuffix())?
 }
 
-void Type(): {}
+void Type() #Type: {}
 {
 	<FILE>
 	| "<" <IDENTIFIER> ">"
@@ -338,7 +338,7 @@ void SimExp() #SimExp: {}
 	| <NOT> SimExp()
 }
 
-void ExpSuffix() : {}
+void ExpSuffix() #ExpSuffix: {}
 {
 	(<AND> Expression()
 		| <OR> Expression()
@@ -350,12 +350,12 @@ void Params() #Params: {}
 	(SimExp() ParamSuffix())?
 }
 
-void ParamSuffix(): {}
+void ParamSuffix() #ParamSuffix: {}
 {
 	("," SimExp() ParamSuffix())?
 }
 
-void Literal(): {}
+void Literal() #Literal: {}
 {
 	<STRING_LITERAL> | <CHARACTER_LITERAL> | <INTEGER_LITERAL> | <FLOATING_POINT_LITERAL>
 }
