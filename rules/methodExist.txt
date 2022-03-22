@@ -1,0 +1,15 @@
+Rule method-exist {
+	for (file xml in getXMLs()) {
+		for (<bean> bean in getElms(xml, "<bean>")) {
+			for (class c in getClasses()) {
+				if (getAttr(bean, "class") == getFQN(c)) {
+					for (String s in getAttr(bean, "*method")) {
+						assert(exists(method m in c)(getName(m) == s)) {
+							msg("The referenced method name %s in XML is not defined", s);
+						}
+					}
+				}
+			}
+	  }
+	}
+}

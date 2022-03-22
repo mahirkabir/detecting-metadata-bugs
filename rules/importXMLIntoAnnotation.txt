@@ -1,0 +1,9 @@
+Rule import-resource-path {
+	for (class c in getClasses()) {
+		for(String s in getAnnoAttr(c, "@ImportResource", "location")) {
+			assert(pathExists(s)) {
+				msg ("The @ImportResource path %s does not exist", s);
+			}
+		}
+	}
+}
