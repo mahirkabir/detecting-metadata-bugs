@@ -249,12 +249,12 @@ ASTStart Start() #Start: {}
 	{ return jjtThis; }
 }
 
-void Block(): {}
+void Block() #Block: {}
 {
 	"{" Stmnt() StmntSuffix() "}"
 }
 
-void Stmnt(): {}
+void Stmnt() #Stmnt: {}
 {
 	ForStmnt()
 	| IfStmnt()
@@ -267,37 +267,37 @@ void StmntSuffix(): {}
 	(Stmnt() StmntSuffix())?
 }
 
-void ForStmnt(): {}
+void ForStmnt() #ForStmnt: {}
 {
 	<FOR> "(" Expression() <IN> Expression() ")" Block()
 }
 
-void IfStmnt(): {}
+void IfStmnt() #IfStmnt: {}
 {
 	<IF> "(" Expression() ")" Block() IfSuffix()
 }
 
-void AssertStmnt(): {}
+void AssertStmnt() #AssertStmnt: {}
 {
 	<ASSERT> "(" Expression() ")" "{" MsgStmnt() ";" "}"
 }
 
-void DeclStmnt(): {}
+void DeclStmnt() #DeclStmnt: {}
 {
 	Type() <IDENTIFIER> "=" (FunctionOrId() | Literal())
 }
 
-void Expression(): {}
+void Expression() #Expression: {}
 {
 	SimExp() ExpSuffix()
 }
 
-void IfSuffix(): {}
+void IfSuffix() #Else: {}
 {
 	(<ELSE> Block())?
 }
 
-void MsgStmnt(): {}
+void MsgStmnt() #MsgStmnt: {}
 {
 	<MSG> "(" <STRING_LITERAL> MsgSuffix() ")"
 }
@@ -318,17 +318,17 @@ void Type(): {}
 	| <BOOL>
 }
 
-void FunctionOrId(): {}
+void FunctionOrId() #FunctionOrId: {}
 {
 	<IDENTIFIER> FunctionTail()
 }
 
-void FunctionTail(): {}
+void FunctionTail() #FunctionTail: {}
 {
 	("(" Params() ")")?
 }
 
-void SimExp(): {}
+void SimExp() #SimExp: {}
 {
 	FunctionOrId()
 	| Literal()
@@ -338,14 +338,14 @@ void SimExp(): {}
 	| <NOT> SimExp()
 }
 
-void ExpSuffix(): {}
+void ExpSuffix() : {}
 {
 	(<AND> Expression()
 		| <OR> Expression()
 		| <EQ> Expression())?
 }
 
-void Params(): {}
+void Params() #Params: {}
 {
 	(SimExp() ParamSuffix())?
 }
