@@ -7,10 +7,10 @@ public interface Eg12TreeConstants
   public int JJTSTMNTSUFFIX = 3;
   public int JJTFORSTMNT = 4;
   public int JJTIFSTMNT = 5;
-  public int JJTASSERTSTMNT = 6;
-  public int JJTDECLSTMNT = 7;
-  public int JJTEXPRESSION = 8;
-  public int JJTELSE = 9;
+  public int JJTELSE = 6;
+  public int JJTASSERTSTMNT = 7;
+  public int JJTDECLSTMNT = 8;
+  public int JJTEXPRESSION = 9;
   public int JJTMSGSTMNT = 10;
   public int JJTMSGSUFFIX = 11;
   public int JJTTYPE = 12;
@@ -30,10 +30,10 @@ public interface Eg12TreeConstants
     "StmntSuffix",
     "ForStmnt",
     "IfStmnt",
+    "Else",
     "AssertStmnt",
     "DeclStmnt",
     "Expression",
-    "Else",
     "MsgStmnt",
     "MsgSuffix",
     "Type",
@@ -46,4 +46,4 @@ public interface Eg12TreeConstants
     "Literal",
   };
 }
-/* JavaCC - OriginalChecksum=918619607e94b9da21c304b81ba169ba (do not edit this line) */
+/* JavaCC - OriginalChecksum=a6aad42fbef4945fde49421badda6f1d (do not edit this line) */

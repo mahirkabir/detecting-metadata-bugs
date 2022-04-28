@@ -8,10 +8,10 @@ public interface Eg12Visitor
   public Object visit(ASTStmntSuffix node, Object data);
   public Object visit(ASTForStmnt node, Object data);
   public Object visit(ASTIfStmnt node, Object data);
+  public Object visit(ASTElse node, Object data);
   public Object visit(ASTAssertStmnt node, Object data);
   public Object visit(ASTDeclStmnt node, Object data);
   public Object visit(ASTExpression node, Object data);
-  public Object visit(ASTElse node, Object data);
   public Object visit(ASTMsgStmnt node, Object data);
   public Object visit(ASTMsgSuffix node, Object data);
   public Object visit(ASTType node, Object data);
@@ -23,4 +23,4 @@ public interface Eg12Visitor
   public Object visit(ASTParamSuffix node, Object data);
   public Object visit(ASTLiteral node, Object data);
 }
-/* JavaCC - OriginalChecksum=39c5ff7f784f66bbad1252d0f8c3886f (do not edit this line) */
+/* JavaCC - OriginalChecksum=b6dbfaea9433b89aff6d7993f9a0e178 (do not edit this line) */

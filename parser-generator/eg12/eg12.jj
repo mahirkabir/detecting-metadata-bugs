@@ -292,7 +292,7 @@ void Block()       : {/*@bgen(jjtree) Block */
 {/*@bgen(jjtree) Block */
         try {
 /*@egen*/
-	"{" Stmnt() StmntSuffix() "}"/*@bgen(jjtree)*/
+	"{" Stmnt() (StmntSuffix())? "}"/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -357,7 +357,7 @@ void StmntSuffix()             : {/*@bgen(jjtree) StmntSuffix */
 {/*@bgen(jjtree) StmntSuffix */
         try {
 /*@egen*/
-	(Stmnt() StmntSuffix())?/*@bgen(jjtree)*/
+	Stmnt() (StmntSuffix())?/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -379,7 +379,6 @@ void StmntSuffix()             : {/*@bgen(jjtree) StmntSuffix */
         }
 /*@egen*/
 }
-
 void ForStmnt()          : {/*@bgen(jjtree) ForStmnt */
   ASTForStmnt jjtn000 = new ASTForStmnt(JJTFORSTMNT);
   boolean jjtc000 = true;
@@ -419,7 +418,7 @@ void IfStmnt()         : {/*@bgen(jjtree) IfStmnt */
 {/*@bgen(jjtree) IfStmnt */
         try {
 /*@egen*/
-	<IF> "(" Expression() ")" Block() IfSuffix()/*@bgen(jjtree)*/
+	<IF> "(" Expression() ")" Block() (ElseStmnt())?/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -439,6 +438,37 @@ void IfStmnt()         : {/*@bgen(jjtree) IfStmnt */
             jjtree.closeNodeScope(jjtn000, true);
           }
         }
+/*@egen*/
+}
+
+void ElseStmnt()      : {/*@bgen(jjtree) Else */
+  ASTElse jjtn000 = new ASTElse(JJTELSE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) Else */
+  try {
+/*@egen*/
+  <ELSE> Block()/*@bgen(jjtree)*/
+  } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      throw (RuntimeException)jjte000;
+    }
+    if (jjte000 instanceof ParseException) {
+      throw (ParseException)jjte000;
+    }
+    throw (Error)jjte000;
+  } finally {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
+  }
 /*@egen*/
 }
 
@@ -512,38 +542,7 @@ void Expression()            : {/*@bgen(jjtree) Expression */
 {/*@bgen(jjtree) Expression */
         try {
 /*@egen*/
-	SimExp() ExpSuffix()/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
-}
-
-void IfSuffix()      : {/*@bgen(jjtree) Else */
-  ASTElse jjtn000 = new ASTElse(JJTELSE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) Else */
-        try {
-/*@egen*/
-	(<ELSE> Block())?/*@bgen(jjtree)*/
+	SimExp() (ExpSuffix())?/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -574,7 +573,7 @@ void MsgStmnt()          : {/*@bgen(jjtree) MsgStmnt */
 {/*@bgen(jjtree) MsgStmnt */
         try {
 /*@egen*/
-	<MSG> "(" <STRING_LITERAL> MsgSuffix() ")"/*@bgen(jjtree)*/
+	<MSG> "(" <STRING_LITERAL> (MsgSuffix())? ")"/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -605,7 +604,7 @@ void MsgSuffix()           : {/*@bgen(jjtree) MsgSuffix */
 {/*@bgen(jjtree) MsgSuffix */
         try {
 /*@egen*/
-	("," Expression() MsgSuffix())?/*@bgen(jjtree)*/
+	"," Expression() (MsgSuffix())?/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -659,7 +658,7 @@ void FunctionOrId()              : {/*@bgen(jjtree) FunctionOrId */
 {/*@bgen(jjtree) FunctionOrId */
         try {
 /*@egen*/
-	<IDENTIFIER> FunctionTail()/*@bgen(jjtree)*/
+	<IDENTIFIER> (FunctionTail())?/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -690,7 +689,7 @@ void FunctionTail()              : {/*@bgen(jjtree) FunctionTail */
 {/*@bgen(jjtree) FunctionTail */
         try {
 /*@egen*/
-	("(" Params() ")")?/*@bgen(jjtree)*/
+	"(" (Params())? ")"/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -757,9 +756,9 @@ void ExpSuffix()           : {/*@bgen(jjtree) ExpSuffix */
 {/*@bgen(jjtree) ExpSuffix */
         try {
 /*@egen*/
-	(<AND> Expression()
+	<AND> Expression()
 		| <OR> Expression()
-		| <EQ> Expression())?/*@bgen(jjtree)*/
+		| <EQ> Expression()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -790,7 +789,7 @@ void Params()        : {/*@bgen(jjtree) Params */
 {/*@bgen(jjtree) Params */
         try {
 /*@egen*/
-	(SimExp() ParamSuffix())?/*@bgen(jjtree)*/
+	SimExp() (ParamSuffix())?/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -821,7 +820,7 @@ void ParamSuffix()             : {/*@bgen(jjtree) ParamSuffix */
 {/*@bgen(jjtree) ParamSuffix */
         try {
 /*@egen*/
-	("," SimExp() ParamSuffix())?/*@bgen(jjtree)*/
+	"," SimExp() (ParamSuffix())?/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
