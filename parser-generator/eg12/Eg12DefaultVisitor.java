@@ -25,7 +25,7 @@ public class Eg12DefaultVisitor implements Eg12Visitor{
   public Object visit(ASTIfStmnt node, Object data){
     return defaultVisit(node, data);
   }
-  public Object visit(ASTElse node, Object data){
+  public Object visit(ASTElseStmnt node, Object data){
     return defaultVisit(node, data);
   }
   public Object visit(ASTAssertStmnt node, Object data){
@@ -68,4 +68,4 @@ public class Eg12DefaultVisitor implements Eg12Visitor{
     return defaultVisit(node, data);
   }
 }
-/* JavaCC - OriginalChecksum=04506f5a7a74d0bafb474982bb2ca76a (do not edit this line) */
+/* JavaCC - OriginalChecksum=c031bdfcb258bf698cd48e981ab28839 (do not edit this line) */

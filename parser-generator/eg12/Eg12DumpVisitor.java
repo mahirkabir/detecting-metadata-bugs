@@ -138,7 +138,7 @@ public class Eg12DumpVisitor implements Eg12Visitor
     return data;
   }
   
-  public Object visit(ASTElse node, Object data) {
+  public Object visit(ASTElseStmnt node, Object data) {
     System.out.println(indentString() + node);
     ++indent;
     data = node.childrenAccept(this, data);

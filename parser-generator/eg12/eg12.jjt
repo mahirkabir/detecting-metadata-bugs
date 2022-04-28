@@ -276,7 +276,7 @@ void IfStmnt() #IfStmnt: {}
 	<IF> "(" Expression() ")" Block() (ElseStmnt())?
 }
 
-void ElseStmnt() #Else: {}
+void ElseStmnt() #ElseStmnt: {}
 {
   <ELSE> Block()
 }

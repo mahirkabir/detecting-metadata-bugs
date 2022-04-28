@@ -280,8 +280,8 @@ if (jjtc000) {
     }
 }
 
-  final public void ElseStmnt() throws ParseException {/*@bgen(jjtree) Else */
-  ASTElse jjtn000 = new ASTElse(JJTELSE);
+  final public void ElseStmnt() throws ParseException {/*@bgen(jjtree) ElseStmnt */
+  ASTElseStmnt jjtn000 = new ASTElseStmnt(JJTELSESTMNT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {

@@ -441,12 +441,12 @@ void IfStmnt()         : {/*@bgen(jjtree) IfStmnt */
 /*@egen*/
 }
 
-void ElseStmnt()      : {/*@bgen(jjtree) Else */
-  ASTElse jjtn000 = new ASTElse(JJTELSE);
+void ElseStmnt()           : {/*@bgen(jjtree) ElseStmnt */
+  ASTElseStmnt jjtn000 = new ASTElseStmnt(JJTELSESTMNT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
-{/*@bgen(jjtree) Else */
+{/*@bgen(jjtree) ElseStmnt */
   try {
 /*@egen*/
   <ELSE> Block()/*@bgen(jjtree)*/
