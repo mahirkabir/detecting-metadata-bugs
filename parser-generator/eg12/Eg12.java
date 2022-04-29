@@ -60,150 +60,81 @@ if (jjtc000) {
     throw new Error("Missing return statement in function");
 }
 
-  final public void Block() throws ParseException {/*@bgen(jjtree) Block */
-  ASTBlock jjtn000 = new ASTBlock(JJTBLOCK);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-    try {
-      jj_consume_token(LBRACE);
-      Stmnt();
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case FILE:
-      case CLASS:
-      case METHOD:
-      case FIELD:
-      case STRING:
-      case BOOL:
-      case FOR:
-      case IF:
-      case ASSERT:
-      case LT:{
-        StmntSuffix();
-        break;
-        }
-      default:
-        jj_la1[0] = jj_gen;
-        ;
+  final public void Block() throws ParseException {
+    jj_consume_token(LBRACE);
+    Stmnt();
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case FILE:
+    case CLASS:
+    case METHOD:
+    case FIELD:
+    case STRING:
+    case BOOL:
+    case FOR:
+    case IF:
+    case ASSERT:
+    case LT:{
+      StmntSuffix();
+      break;
       }
-      jj_consume_token(RBRACE);
-    } catch (Throwable jjte000) {
-if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            {if (true) throw (RuntimeException)jjte000;}
-          }
-          if (jjte000 instanceof ParseException) {
-            {if (true) throw (ParseException)jjte000;}
-          }
-          {if (true) throw (Error)jjte000;}
-    } finally {
-if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
+    default:
+      jj_la1[0] = jj_gen;
+      ;
+    }
+    jj_consume_token(RBRACE);
+}
+
+  final public void Stmnt() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case FOR:{
+      ForStmnt();
+      break;
+      }
+    case IF:{
+      IfStmnt();
+      break;
+      }
+    case ASSERT:{
+      AssertStmnt();
+      break;
+      }
+    case FILE:
+    case CLASS:
+    case METHOD:
+    case FIELD:
+    case STRING:
+    case BOOL:
+    case LT:{
+      DeclStmnt();
+      jj_consume_token(SEMICOLON);
+      break;
+      }
+    default:
+      jj_la1[1] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
     }
 }
 
-  final public void Stmnt() throws ParseException {/*@bgen(jjtree) Stmnt */
-  ASTStmnt jjtn000 = new ASTStmnt(JJTSTMNT);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-    try {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case FOR:{
-        ForStmnt();
-        break;
-        }
-      case IF:{
-        IfStmnt();
-        break;
-        }
-      case ASSERT:{
-        AssertStmnt();
-        break;
-        }
-      case FILE:
-      case CLASS:
-      case METHOD:
-      case FIELD:
-      case STRING:
-      case BOOL:
-      case LT:{
-        DeclStmnt();
-        jj_consume_token(SEMICOLON);
-        break;
-        }
-      default:
-        jj_la1[1] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
+  final public void StmntSuffix() throws ParseException {
+    Stmnt();
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case FILE:
+    case CLASS:
+    case METHOD:
+    case FIELD:
+    case STRING:
+    case BOOL:
+    case FOR:
+    case IF:
+    case ASSERT:
+    case LT:{
+      StmntSuffix();
+      break;
       }
-    } catch (Throwable jjte000) {
-if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            {if (true) throw (RuntimeException)jjte000;}
-          }
-          if (jjte000 instanceof ParseException) {
-            {if (true) throw (ParseException)jjte000;}
-          }
-          {if (true) throw (Error)jjte000;}
-    } finally {
-if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-    }
-}
-
-  final public void StmntSuffix() throws ParseException {/*@bgen(jjtree) StmntSuffix */
-  ASTStmntSuffix jjtn000 = new ASTStmntSuffix(JJTSTMNTSUFFIX);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-    try {
-      Stmnt();
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case FILE:
-      case CLASS:
-      case METHOD:
-      case FIELD:
-      case STRING:
-      case BOOL:
-      case FOR:
-      case IF:
-      case ASSERT:
-      case LT:{
-        StmntSuffix();
-        break;
-        }
-      default:
-        jj_la1[2] = jj_gen;
-        ;
-      }
-    } catch (Throwable jjte000) {
-if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            {if (true) throw (RuntimeException)jjte000;}
-          }
-          if (jjte000 instanceof ParseException) {
-            {if (true) throw (ParseException)jjte000;}
-          }
-          {if (true) throw (Error)jjte000;}
-    } finally {
-if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
+    default:
+      jj_la1[2] = jj_gen;
+      ;
     }
 }
 

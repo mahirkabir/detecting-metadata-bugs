@@ -10,15 +10,6 @@ public class Eg12DefaultVisitor implements Eg12Visitor{
   public Object visit(ASTStart node, Object data){
     return defaultVisit(node, data);
   }
-  public Object visit(ASTBlock node, Object data){
-    return defaultVisit(node, data);
-  }
-  public Object visit(ASTStmnt node, Object data){
-    return defaultVisit(node, data);
-  }
-  public Object visit(ASTStmntSuffix node, Object data){
-    return defaultVisit(node, data);
-  }
   public Object visit(ASTForStmnt node, Object data){
     return defaultVisit(node, data);
   }
@@ -68,4 +59,4 @@ public class Eg12DefaultVisitor implements Eg12Visitor{
     return defaultVisit(node, data);
   }
 }
-/* JavaCC - OriginalChecksum=c031bdfcb258bf698cd48e981ab28839 (do not edit this line) */
+/* JavaCC - OriginalChecksum=2471f7c74ec0342ce4aa043820c59839 (do not edit this line) */

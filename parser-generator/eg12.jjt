@@ -249,12 +249,12 @@ ASTStart Start() #Start: {}
 	{ return jjtThis; }
 }
 
-void Block() #Block: {}
+void Block(): {}
 {
 	"{" Stmnt() (StmntSuffix())? "}"
 }
 
-void Stmnt() #Stmnt: {}
+void Stmnt(): {}
 {
 	ForStmnt()
 	| IfStmnt()
@@ -262,7 +262,7 @@ void Stmnt() #Stmnt: {}
 	| DeclStmnt() ";"
 }
 
-void StmntSuffix() #StmntSuffix: {}
+void StmntSuffix(): {}
 {
 	Stmnt() (StmntSuffix())?
 }

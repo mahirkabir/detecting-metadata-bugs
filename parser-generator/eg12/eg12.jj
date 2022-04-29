@@ -284,100 +284,22 @@ ASTStart Start()       : {/*@bgen(jjtree) Start */
 /*@egen*/
 }
 
-void Block()       : {/*@bgen(jjtree) Block */
-  ASTBlock jjtn000 = new ASTBlock(JJTBLOCK);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) Block */
-        try {
-/*@egen*/
-	"{" Stmnt() (StmntSuffix())? "}"/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
+void Block(): {}
+{
+	"{" Stmnt() (StmntSuffix())? "}"
 }
 
-void Stmnt()       : {/*@bgen(jjtree) Stmnt */
-  ASTStmnt jjtn000 = new ASTStmnt(JJTSTMNT);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) Stmnt */
-        try {
-/*@egen*/
+void Stmnt(): {}
+{
 	ForStmnt()
 	| IfStmnt()
 	| AssertStmnt()
-	| DeclStmnt() ";"/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
+	| DeclStmnt() ";"
 }
 
-void StmntSuffix()             : {/*@bgen(jjtree) StmntSuffix */
-  ASTStmntSuffix jjtn000 = new ASTStmntSuffix(JJTSTMNTSUFFIX);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) StmntSuffix */
-        try {
-/*@egen*/
-	Stmnt() (StmntSuffix())?/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
+void StmntSuffix(): {}
+{
+	Stmnt() (StmntSuffix())?
 }
 void ForStmnt()          : {/*@bgen(jjtree) ForStmnt */
   ASTForStmnt jjtn000 = new ASTForStmnt(JJTFORSTMNT);

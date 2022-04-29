@@ -74,30 +74,6 @@ public class Eg12DumpVisitor implements Eg12Visitor
     return data;
   }
   
-  public Object visit(ASTBlock node, Object data) {
-    System.out.println(indentString() + node);
-    ++indent;
-    data = node.childrenAccept(this, data);
-    --indent;
-    return data;
-  }
-  
-  public Object visit(ASTStmnt node, Object data) {
-    System.out.println(indentString() + node);
-    ++indent;
-    data = node.childrenAccept(this, data);
-    --indent;
-    return data;
-  }
-  
-  public Object visit(ASTStmntSuffix node, Object data) {
-    System.out.println(indentString() + node);
-    ++indent;
-    data = node.childrenAccept(this, data);
-    --indent;
-    return data;
-  }
-  
   public Object visit(ASTForStmnt node, Object data) {
     System.out.println(indentString() + node);
     ++indent;

@@ -3,9 +3,6 @@ public interface Eg12Visitor
 {
   public Object visit(SimpleNode node, Object data);
   public Object visit(ASTStart node, Object data);
-  public Object visit(ASTBlock node, Object data);
-  public Object visit(ASTStmnt node, Object data);
-  public Object visit(ASTStmntSuffix node, Object data);
   public Object visit(ASTForStmnt node, Object data);
   public Object visit(ASTIfStmnt node, Object data);
   public Object visit(ASTElseStmnt node, Object data);
@@ -23,4 +20,4 @@ public interface Eg12Visitor
   public Object visit(ASTParamSuffix node, Object data);
   public Object visit(ASTLiteral node, Object data);
 }
-/* JavaCC - OriginalChecksum=32e87694632f250faade491ec0811f49 (do not edit this line) */
+/* JavaCC - OriginalChecksum=71f804c0c2f33ce5f02f8ca5758bbbd7 (do not edit this line) */
