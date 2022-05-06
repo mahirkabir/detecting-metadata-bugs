@@ -11,14 +11,15 @@ public interface Eg12TreeConstants
   public int JJTEXPRESSION = 7;
   public int JJTMSGSTMNT = 8;
   public int JJTMSGSUFFIX = 9;
-  public int JJTTYPE = 10;
-  public int JJTFUNCTIONORID = 11;
-  public int JJTFUNCTIONTAIL = 12;
-  public int JJTSIMEXP = 13;
-  public int JJTEXPSUFFIX = 14;
-  public int JJTPARAMS = 15;
-  public int JJTPARAMSUFFIX = 16;
-  public int JJTLITERAL = 17;
+  public int JJTFUNCTIONORID = 10;
+  public int JJTFUNCTIONTAIL = 11;
+  public int JJTSIMEXP = 12;
+  public int JJTEXPSUFFIX = 13;
+  public int JJTPARAMS = 14;
+  public int JJTPARAMSUFFIX = 15;
+  public int JJTLITERAL = 16;
+  public int JJTIDENTIFIER = 17;
+  public int JJTTYPE = 18;
 
 
   public String[] jjtNodeName = {
@@ -32,7 +33,6 @@ public interface Eg12TreeConstants
     "Expression",
     "MsgStmnt",
     "MsgSuffix",
-    "Type",
     "FunctionOrId",
     "FunctionTail",
     "SimExp",
@@ -40,6 +40,8 @@ public interface Eg12TreeConstants
     "Params",
     "ParamSuffix",
     "Literal",
+    "Identifier",
+    "Type",
   };
 }
-/* JavaCC - OriginalChecksum=ba0df5a889506a8b853b99316540fae6 (do not edit this line) */
+/* JavaCC - OriginalChecksum=5fa45e7c8e5b418ee17e204640b596bd (do not edit this line) */

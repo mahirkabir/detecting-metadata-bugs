@@ -1,19 +1,19 @@
-public class ASTType extends SimpleNode {
+public class ASTIdentifier extends SimpleNode {
 	private String name;
 
 	/**
 	* Constructor.
 	* @param id the id
 	*/
-	public ASTType(int id) {
+	public ASTIdentifier(int id) {
 		super(id);
 	}
 
 	/**
-	* Set the Type
-	* @param n - Type
+	* Set the Identifier
+	* @param n - Identifier
 	*/
-	public void setType(String n) {
+	public void setIdentifier(String n) {
 		name = n;
 	}
 
@@ -22,7 +22,7 @@ public class ASTType extends SimpleNode {
 	* @see org.javacc.examples.jjtree.eg2.SimpleNode#toString()
 	*/
 	public String toString() {
-		return "Type: " + name;
+		return "ID: " + name;
 	}
 
 	/** Accept the visitor. **/

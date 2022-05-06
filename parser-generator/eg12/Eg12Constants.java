@@ -17,125 +17,127 @@ public interface Eg12Constants {
   /** RegularExpression Id. */
   int RULE = 9;
   /** RegularExpression Id. */
-  int FILE = 10;
+  int FUNCTION = 10;
   /** RegularExpression Id. */
-  int CLASS = 11;
+  int IN = 11;
   /** RegularExpression Id. */
-  int METHOD = 12;
+  int FOR = 12;
   /** RegularExpression Id. */
-  int FIELD = 13;
+  int IF = 13;
   /** RegularExpression Id. */
-  int STRING = 14;
+  int ELSE = 14;
   /** RegularExpression Id. */
-  int BOOL = 15;
+  int ASSERT = 15;
   /** RegularExpression Id. */
-  int FUNCTION = 16;
+  int MSG = 16;
   /** RegularExpression Id. */
-  int IN = 17;
+  int EXISTS = 17;
   /** RegularExpression Id. */
-  int FOR = 18;
+  int NOT = 18;
   /** RegularExpression Id. */
-  int IF = 19;
+  int AND = 19;
   /** RegularExpression Id. */
-  int ELSE = 20;
+  int OR = 20;
   /** RegularExpression Id. */
-  int ASSERT = 21;
+  int INTEGER_LITERAL = 21;
   /** RegularExpression Id. */
-  int MSG = 22;
+  int DECIMAL_LITERAL = 22;
   /** RegularExpression Id. */
-  int EXISTS = 23;
+  int HEX_LITERAL = 23;
   /** RegularExpression Id. */
-  int NOT = 24;
+  int OCTAL_LITERAL = 24;
   /** RegularExpression Id. */
-  int AND = 25;
+  int FLOATING_POINT_LITERAL = 25;
   /** RegularExpression Id. */
-  int OR = 26;
+  int EXPONENT = 26;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 27;
+  int CHARACTER_LITERAL = 27;
   /** RegularExpression Id. */
-  int DECIMAL_LITERAL = 28;
+  int STRING_LITERAL = 28;
   /** RegularExpression Id. */
-  int HEX_LITERAL = 29;
+  int TYPES = 29;
   /** RegularExpression Id. */
-  int OCTAL_LITERAL = 30;
+  int FILE = 30;
   /** RegularExpression Id. */
-  int FLOATING_POINT_LITERAL = 31;
+  int CLASS = 31;
   /** RegularExpression Id. */
-  int EXPONENT = 32;
+  int METHOD = 32;
   /** RegularExpression Id. */
-  int CHARACTER_LITERAL = 33;
+  int FIELD = 33;
   /** RegularExpression Id. */
-  int STRING_LITERAL = 34;
+  int STRING = 34;
   /** RegularExpression Id. */
-  int IDENTIFIER = 35;
+  int BOOL = 35;
   /** RegularExpression Id. */
-  int LETTER = 36;
+  int IDENTIFIER = 36;
   /** RegularExpression Id. */
-  int DIGIT = 37;
+  int LETTER = 37;
   /** RegularExpression Id. */
-  int COLON = 38;
+  int DIGIT = 38;
   /** RegularExpression Id. */
-  int DASH = 39;
+  int COLON = 39;
   /** RegularExpression Id. */
-  int STAR = 40;
+  int DASH = 40;
   /** RegularExpression Id. */
-  int LPAREN = 41;
+  int STAR = 41;
   /** RegularExpression Id. */
-  int RPAREN = 42;
+  int LPAREN = 42;
   /** RegularExpression Id. */
-  int LBRACE = 43;
+  int RPAREN = 43;
   /** RegularExpression Id. */
-  int RBRACE = 44;
+  int LBRACE = 44;
   /** RegularExpression Id. */
-  int LBRACKET = 45;
+  int RBRACE = 45;
   /** RegularExpression Id. */
-  int RBRACKET = 46;
+  int LBRACKET = 46;
   /** RegularExpression Id. */
-  int SEMICOLON = 47;
+  int RBRACKET = 47;
   /** RegularExpression Id. */
-  int COMMA = 48;
+  int SEMICOLON = 48;
   /** RegularExpression Id. */
-  int DOT = 49;
+  int COMMA = 49;
   /** RegularExpression Id. */
-  int ASSIGN = 50;
+  int DOT = 50;
   /** RegularExpression Id. */
-  int GT = 51;
+  int ASSIGN = 51;
   /** RegularExpression Id. */
-  int LT = 52;
+  int GT = 52;
   /** RegularExpression Id. */
-  int BANG = 53;
+  int LT = 53;
   /** RegularExpression Id. */
-  int TILDE = 54;
+  int BANG = 54;
   /** RegularExpression Id. */
-  int HOOK = 55;
+  int TILDE = 55;
   /** RegularExpression Id. */
-  int EQ = 56;
+  int HOOK = 56;
   /** RegularExpression Id. */
-  int LE = 57;
+  int EQ = 57;
   /** RegularExpression Id. */
-  int GE = 58;
+  int LE = 58;
   /** RegularExpression Id. */
-  int NE = 59;
+  int GE = 59;
   /** RegularExpression Id. */
-  int SC_OR = 60;
+  int NE = 60;
   /** RegularExpression Id. */
-  int SC_AND = 61;
+  int SC_OR = 61;
   /** RegularExpression Id. */
-  int INCR = 62;
+  int SC_AND = 62;
   /** RegularExpression Id. */
-  int DECR = 63;
+  int INCR = 63;
   /** RegularExpression Id. */
-  int PLUS = 64;
+  int DECR = 64;
   /** RegularExpression Id. */
-  int SLASH = 65;
+  int PLUS = 65;
   /** RegularExpression Id. */
-  int BIT_AND = 66;
+  int SLASH = 66;
   /** RegularExpression Id. */
-  int BIT_OR = 67;
+  int BIT_AND = 67;
   /** RegularExpression Id. */
-  int XOR = 68;
+  int BIT_OR = 68;
   /** RegularExpression Id. */
-  int REM = 69;
+  int XOR = 69;
+  /** RegularExpression Id. */
+  int REM = 70;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -152,12 +154,6 @@ public interface Eg12Constants {
     "<FORMAL_COMMENT>",
     "<MULTI_LINE_COMMENT>",
     "\"Rule\"",
-    "\"file\"",
-    "\"class\"",
-    "\"method\"",
-    "\"field\"",
-    "\"String\"",
-    "\"bool\"",
     "\"function\"",
     "\"in\"",
     "\"for\"",
@@ -177,6 +173,13 @@ public interface Eg12Constants {
     "<EXPONENT>",
     "<CHARACTER_LITERAL>",
     "<STRING_LITERAL>",
+    "<TYPES>",
+    "\"file\"",
+    "\"class\"",
+    "\"method\"",
+    "\"field\"",
+    "\"String\"",
+    "\"bool\"",
     "<IDENTIFIER>",
     "<LETTER>",
     "<DIGIT>",

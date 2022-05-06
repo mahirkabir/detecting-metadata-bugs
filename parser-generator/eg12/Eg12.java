@@ -32,7 +32,7 @@ public class Eg12/*@bgen(jjtree)*/implements Eg12TreeConstants, Eg12Constants {/
   jjtree.openNodeScope(jjtn000);
     try {
       jj_consume_token(RULE);
-      jj_consume_token(IDENTIFIER);
+      Identifier();
       Block();
       jj_consume_token(0);
 jjtree.closeNodeScope(jjtn000, true);
@@ -64,16 +64,10 @@ if (jjtc000) {
     jj_consume_token(LBRACE);
     Stmnt();
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case FILE:
-    case CLASS:
-    case METHOD:
-    case FIELD:
-    case STRING:
-    case BOOL:
     case FOR:
     case IF:
     case ASSERT:
-    case LT:{
+    case TYPES:{
       StmntSuffix();
       break;
       }
@@ -98,13 +92,7 @@ if (jjtc000) {
       AssertStmnt();
       break;
       }
-    case FILE:
-    case CLASS:
-    case METHOD:
-    case FIELD:
-    case STRING:
-    case BOOL:
-    case LT:{
+    case TYPES:{
       DeclStmnt();
       jj_consume_token(SEMICOLON);
       break;
@@ -119,16 +107,10 @@ if (jjtc000) {
   final public void StmntSuffix() throws ParseException {
     Stmnt();
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case FILE:
-    case CLASS:
-    case METHOD:
-    case FIELD:
-    case STRING:
-    case BOOL:
     case FOR:
     case IF:
     case ASSERT:
-    case LT:{
+    case TYPES:{
       StmntSuffix();
       break;
       }
@@ -279,7 +261,7 @@ if (jjtc000) {
   jjtree.openNodeScope(jjtn000);
     try {
       Type();
-      jj_consume_token(IDENTIFIER);
+      Identifier();
       jj_consume_token(ASSIGN);
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case IDENTIFIER:{
@@ -364,7 +346,7 @@ if (jjtc000) {
     try {
       jj_consume_token(MSG);
       jj_consume_token(LPAREN);
-      jj_consume_token(STRING_LITERAL);
+      StringLiteral();
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case COMMA:{
         MsgSuffix();
@@ -433,67 +415,19 @@ if (jjtc000) {
     }
 }
 
-  final public void Type() throws ParseException {/*@bgen(jjtree) Type */
-  ASTType jjtn000 = new ASTType(JJTTYPE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-    try {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case FILE:{
-        jj_consume_token(FILE);
-        break;
-        }
-      case LT:{
-        jj_consume_token(LT);
-        jj_consume_token(IDENTIFIER);
-        jj_consume_token(GT);
-        break;
-        }
-      case CLASS:{
-        jj_consume_token(CLASS);
-        break;
-        }
-      case METHOD:{
-        jj_consume_token(METHOD);
-        break;
-        }
-      case FIELD:{
-        jj_consume_token(FIELD);
-        break;
-        }
-      case STRING:{
-        jj_consume_token(STRING);
-        break;
-        }
-      case BOOL:{
-        jj_consume_token(BOOL);
-        break;
-        }
-      default:
-        jj_la1[8] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    } finally {
-if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-    }
-}
-
   final public void FunctionOrId() throws ParseException {/*@bgen(jjtree) FunctionOrId */
   ASTFunctionOrId jjtn000 = new ASTFunctionOrId(JJTFUNCTIONORID);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      jj_consume_token(IDENTIFIER);
+      Identifier();
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case LPAREN:{
         FunctionTail();
         break;
         }
       default:
-        jj_la1[9] = jj_gen;
+        jj_la1[8] = jj_gen;
         ;
       }
     } catch (Throwable jjte000) {
@@ -524,26 +458,20 @@ if (jjtc000) {
     try {
       jj_consume_token(LPAREN);
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case FILE:
-      case CLASS:
-      case METHOD:
-      case FIELD:
-      case STRING:
-      case BOOL:
       case EXISTS:
       case NOT:
       case INTEGER_LITERAL:
       case FLOATING_POINT_LITERAL:
       case CHARACTER_LITERAL:
       case STRING_LITERAL:
+      case TYPES:
       case IDENTIFIER:
-      case LPAREN:
-      case LT:{
+      case LPAREN:{
         Params();
         break;
         }
       default:
-        jj_la1[10] = jj_gen;
+        jj_la1[9] = jj_gen;
         ;
       }
       jj_consume_token(RPAREN);
@@ -585,15 +513,9 @@ if (jjtc000) {
         Literal();
         break;
         }
-      case FILE:
-      case CLASS:
-      case METHOD:
-      case FIELD:
-      case STRING:
-      case BOOL:
-      case LT:{
+      case TYPES:{
         Type();
-        jj_consume_token(IDENTIFIER);
+        Identifier();
         break;
         }
       case LPAREN:{
@@ -620,7 +542,7 @@ if (jjtc000) {
         break;
         }
       default:
-        jj_la1[11] = jj_gen;
+        jj_la1[10] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -667,7 +589,7 @@ if (jjtc000) {
         break;
         }
       default:
-        jj_la1[12] = jj_gen;
+        jj_la1[11] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -704,7 +626,7 @@ if (jjtc000) {
         break;
         }
       default:
-        jj_la1[13] = jj_gen;
+        jj_la1[12] = jj_gen;
         ;
       }
     } catch (Throwable jjte000) {
@@ -741,7 +663,7 @@ if (jjtc000) {
         break;
         }
       default:
-        jj_la1[14] = jj_gen;
+        jj_la1[13] = jj_gen;
         ;
       }
     } catch (Throwable jjte000) {
@@ -765,37 +687,175 @@ if (jjtc000) {
     }
 }
 
-  final public void Literal() throws ParseException {/*@bgen(jjtree) Literal */
-  ASTLiteral jjtn000 = new ASTLiteral(JJTLITERAL);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-    try {
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case STRING_LITERAL:{
-        jj_consume_token(STRING_LITERAL);
-        break;
-        }
-      case CHARACTER_LITERAL:{
-        jj_consume_token(CHARACTER_LITERAL);
-        break;
-        }
-      case INTEGER_LITERAL:{
-        jj_consume_token(INTEGER_LITERAL);
-        break;
-        }
-      case FLOATING_POINT_LITERAL:{
-        jj_consume_token(FLOATING_POINT_LITERAL);
-        break;
-        }
-      default:
-        jj_la1[15] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
+  final public void Literal() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case STRING_LITERAL:{
+      StringLiteral();
+      break;
       }
+    case CHARACTER_LITERAL:{
+      CharLiteral();
+      break;
+      }
+    case INTEGER_LITERAL:{
+      IntLiteral();
+      break;
+      }
+    case FLOATING_POINT_LITERAL:{
+      FloatLiteral();
+      break;
+      }
+    default:
+      jj_la1[14] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+}
+
+  final public void StringLiteral() throws ParseException {/*@bgen(jjtree) Literal */
+        ASTLiteral jjtn000 = new ASTLiteral(JJTLITERAL);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);Token t;
+    try {
+      t = jj_consume_token(STRING_LITERAL);
+jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+jjtn000.setLitType("String");
+                jjtn000.setLitValue(t.image);
     } finally {
 if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);
           }
+    }
+}
+
+  final public void CharLiteral() throws ParseException {/*@bgen(jjtree) Literal */
+        ASTLiteral jjtn000 = new ASTLiteral(JJTLITERAL);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);Token t;
+    try {
+      t = jj_consume_token(CHARACTER_LITERAL);
+jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+jjtn000.setLitValue(t.image);
+                jjtn000.setLitType("Character");
+    } finally {
+if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+    }
+}
+
+  final public void IntLiteral() throws ParseException {/*@bgen(jjtree) Literal */
+        ASTLiteral jjtn000 = new ASTLiteral(JJTLITERAL);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);Token t;
+    try {
+      t = jj_consume_token(INTEGER_LITERAL);
+jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+jjtn000.setLitValue(t.image);
+                jjtn000.setLitType("Integer");
+    } finally {
+if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+    }
+}
+
+  final public void FloatLiteral() throws ParseException {/*@bgen(jjtree) Literal */
+        ASTLiteral jjtn000 = new ASTLiteral(JJTLITERAL);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);Token t;
+    try {
+      t = jj_consume_token(FLOATING_POINT_LITERAL);
+jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+jjtn000.setLitValue(t.image);
+                jjtn000.setLitType("Float");
+    } finally {
+if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+    }
+}
+
+  final public void Identifier() throws ParseException {/*@bgen(jjtree) Identifier */
+        ASTIdentifier jjtn000 = new ASTIdentifier(JJTIDENTIFIER);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);Token t;
+    try {
+      t = jj_consume_token(IDENTIFIER);
+jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+jjtn000.setIdentifier(t.image);
+    } finally {
+if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+    }
+}
+
+  final public void Type() throws ParseException {/*@bgen(jjtree) Type */
+        ASTType jjtn000 = new ASTType(JJTTYPE);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);Token t;
+    try {
+      /*t = <FILE>
+      	| t = "<" Identifier() ">"
+      	| t = <CLASS>
+      	| t = <METHOD>
+      	| t = <FIELD>
+      	| t = <STRING>
+      	| t = <BOOL>
+      	*/
+              t = jj_consume_token(TYPES);
+jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+jjtn000.setType(t.image);
+    } finally {
+if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+    }
+}
+
+  final public void Types() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+    case FILE:{
+      jj_consume_token(FILE);
+      break;
+      }
+    case LT:{
+      jj_consume_token(LT);
+      Identifier();
+      jj_consume_token(GT);
+      break;
+      }
+    case CLASS:{
+      jj_consume_token(CLASS);
+      break;
+      }
+    case METHOD:{
+      jj_consume_token(METHOD);
+      break;
+      }
+    case FIELD:{
+      jj_consume_token(FIELD);
+      break;
+      }
+    case STRING:{
+      jj_consume_token(STRING);
+      break;
+      }
+    case BOOL:{
+      jj_consume_token(BOOL);
+      break;
+      }
+    default:
+      jj_la1[15] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
     }
 }
 
@@ -818,10 +878,10 @@ if (jjtc000) {
 	   jj_la1_init_2();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0x2cfc00,0x2cfc00,0x2cfc00,0x100000,0x88000000,0x6000000,0x0,0x0,0xfc00,0x0,0x8980fc00,0x8980fc00,0x6000000,0x0,0x0,0x88000000,};
+	   jj_la1_0 = new int[] {0x2000b000,0x2000b000,0x2000b000,0x4000,0x1a200000,0x180000,0x0,0x0,0x0,0x3a260000,0x3a260000,0x180000,0x0,0x0,0x1a200000,0xc0000000,};
 	}
 	private static void jj_la1_init_1() {
-	   jj_la1_1 = new int[] {0x100000,0x100000,0x100000,0x0,0xe,0x1000000,0x10000,0x10000,0x100000,0x200,0x10020e,0x10020e,0x1000000,0x10000,0x10000,0x6,};
+	   jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x10,0x2000000,0x20000,0x20000,0x400,0x410,0x410,0x2000000,0x20000,0x20000,0x0,0x20000f,};
 	}
 	private static void jj_la1_init_2() {
 	   jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
@@ -952,7 +1012,7 @@ if (jjtc000) {
   /** Generate ParseException. */
   public ParseException generateParseException() {
 	 jj_expentries.clear();
-	 boolean[] la1tokens = new boolean[70];
+	 boolean[] la1tokens = new boolean[71];
 	 if (jj_kind >= 0) {
 	   la1tokens[jj_kind] = true;
 	   jj_kind = -1;
@@ -972,7 +1032,7 @@ if (jjtc000) {
 		 }
 	   }
 	 }
-	 for (int i = 0; i < 70; i++) {
+	 for (int i = 0; i < 71; i++) {
 	   if (la1tokens[i]) {
 		 jj_expentry = new int[1];
 		 jj_expentry[0] = i;

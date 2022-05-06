@@ -57,13 +57,14 @@ SPECIAL_TOKEN : /* COMMENTS */
 
  TOKEN :
  {
-   <RULE: "Rule">
- | <FILE: "file" >
+   <RULE: "Rule">	
+ /*| <FILE: "file" >
  | <CLASS: "class" >
  | <METHOD: "method" >
  | <FIELD: "field" >
  | <STRING: "String">
  | <BOOL: "bool" >
+ */
  | <FUNCTION: "function">
 
  | <IN: "in">
@@ -147,6 +148,23 @@ SPECIAL_TOKEN : /* COMMENTS */
        )*
        "\""
    >
+ }
+
+ TOKEN: /* TYPES */
+ {
+	<TYPES: <FILE>
+		| "<" <IDENTIFIER> ">"
+		| <CLASS>
+		| <METHOD>
+		| <FIELD>
+		| <STRING>
+		| <BOOL> >
+	| <FILE: "file" >
+	| <CLASS: "class" >
+	| <METHOD: "method" >
+	| <FIELD: "field" >
+	| <STRING: "String">
+	| <BOOL: "bool" >
  }
 
  TOKEN : /* IDENTIFIERS */
@@ -243,7 +261,6 @@ SPECIAL_TOKEN : /* COMMENTS */
  | <REM: "%" >
  }
 
-
 /** Main production. */
 ASTStart Start()       : {/*@bgen(jjtree) Start */
   ASTStart jjtn000 = new ASTStart(JJTSTART);
@@ -253,7 +270,7 @@ ASTStart Start()       : {/*@bgen(jjtree) Start */
 {/*@bgen(jjtree) Start */
         try {
 /*@egen*/
-	<RULE> <IDENTIFIER> Block()
+	<RULE> Identifier() Block()
 	<EOF>/*@bgen(jjtree)*/
         {
           jjtree.closeNodeScope(jjtn000, true);
@@ -433,7 +450,7 @@ void DeclStmnt()           : {/*@bgen(jjtree) DeclStmnt */
 {/*@bgen(jjtree) DeclStmnt */
         try {
 /*@egen*/
-	Type() <IDENTIFIER> "=" (FunctionOrId() | Literal())/*@bgen(jjtree)*/
+	Type() Identifier() "=" (FunctionOrId() | Literal())/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -495,7 +512,7 @@ void MsgStmnt()          : {/*@bgen(jjtree) MsgStmnt */
 {/*@bgen(jjtree) MsgStmnt */
         try {
 /*@egen*/
-	<MSG> "(" <STRING_LITERAL> (MsgSuffix())? ")"/*@bgen(jjtree)*/
+	<MSG> "(" StringLiteral() (MsgSuffix())? ")"/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -549,29 +566,6 @@ void MsgSuffix()           : {/*@bgen(jjtree) MsgSuffix */
 /*@egen*/
 }
 
-void Type()      : {/*@bgen(jjtree) Type */
-  ASTType jjtn000 = new ASTType(JJTTYPE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) Type */
-        try {
-/*@egen*/
-	<FILE>
-	| "<" <IDENTIFIER> ">"
-	| <CLASS>
-	| <METHOD>
-	| <FIELD>
-	| <STRING>
-	| <BOOL>/*@bgen(jjtree)*/
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
-}
-
 void FunctionOrId()              : {/*@bgen(jjtree) FunctionOrId */
   ASTFunctionOrId jjtn000 = new ASTFunctionOrId(JJTFUNCTIONORID);
   boolean jjtc000 = true;
@@ -580,7 +574,7 @@ void FunctionOrId()              : {/*@bgen(jjtree) FunctionOrId */
 {/*@bgen(jjtree) FunctionOrId */
         try {
 /*@egen*/
-	<IDENTIFIER> (FunctionTail())?/*@bgen(jjtree)*/
+	Identifier() (FunctionTail())?/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -644,7 +638,7 @@ void SimExp()        : {/*@bgen(jjtree) SimExp */
 /*@egen*/
 	FunctionOrId()
 	| Literal()
-	| Type() <IDENTIFIER>
+	| Type() Identifier()
 	| "(" Expression() ")"
 	| <EXISTS> "(" Expression() <IN> Expression() ")" "(" Expression() ")"
 	| <NOT> SimExp()/*@bgen(jjtree)*/
@@ -765,19 +759,198 @@ void ParamSuffix()             : {/*@bgen(jjtree) ParamSuffix */
 /*@egen*/
 }
 
-void Literal()         : {/*@bgen(jjtree) Literal */
-  ASTLiteral jjtn000 = new ASTLiteral(JJTLITERAL);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
+void Literal(): {}
+{
+	StringLiteral() | CharLiteral() | IntLiteral() | FloatLiteral()
+}
+
+void StringLiteral()          :
+{/*@bgen(jjtree) Literal */
+        ASTLiteral jjtn000 = new ASTLiteral(JJTLITERAL);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);
+/*@egen*/
+	Token t;
+}
 {/*@bgen(jjtree) Literal */
         try {
 /*@egen*/
-	<STRING_LITERAL> | <CHARACTER_LITERAL> | <INTEGER_LITERAL> | <FLOATING_POINT_LITERAL>/*@bgen(jjtree)*/
+	t = <STRING_LITERAL>/*@bgen(jjtree)*/
+        {
+          jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+        }
+/*@egen*/
+	{	
+		jjtn000.setLitType("String");
+		jjtn000.setLitValue(t.image);
+	}/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);
           }
         }
 /*@egen*/
+}
+
+void CharLiteral()          :
+{/*@bgen(jjtree) Literal */
+        ASTLiteral jjtn000 = new ASTLiteral(JJTLITERAL);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);
+/*@egen*/
+	Token t;
+}
+{/*@bgen(jjtree) Literal */
+        try {
+/*@egen*/
+	t = <CHARACTER_LITERAL>/*@bgen(jjtree)*/
+        {
+          jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+        }
+/*@egen*/
+	{	
+		jjtn000.setLitValue(t.image);
+		jjtn000.setLitType("Character");
+	}/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void IntLiteral()          :
+{/*@bgen(jjtree) Literal */
+        ASTLiteral jjtn000 = new ASTLiteral(JJTLITERAL);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);
+/*@egen*/
+	Token t;
+}
+{/*@bgen(jjtree) Literal */
+        try {
+/*@egen*/
+	t = <INTEGER_LITERAL>/*@bgen(jjtree)*/
+        {
+          jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+        }
+/*@egen*/
+	{	
+		jjtn000.setLitValue(t.image);
+		jjtn000.setLitType("Integer");
+	}/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void FloatLiteral()          :
+{/*@bgen(jjtree) Literal */
+        ASTLiteral jjtn000 = new ASTLiteral(JJTLITERAL);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);
+/*@egen*/
+	Token t;
+}
+{/*@bgen(jjtree) Literal */
+        try {
+/*@egen*/
+	t = <FLOATING_POINT_LITERAL>/*@bgen(jjtree)*/
+        {
+          jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+        }
+/*@egen*/
+	{	
+		jjtn000.setLitValue(t.image);
+		jjtn000.setLitType("Float");
+	}/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void Identifier()             :
+{/*@bgen(jjtree) Identifier */
+        ASTIdentifier jjtn000 = new ASTIdentifier(JJTIDENTIFIER);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);
+/*@egen*/
+	Token t;
+}
+{/*@bgen(jjtree) Identifier */
+        try {
+/*@egen*/
+	t = <IDENTIFIER>/*@bgen(jjtree)*/
+        {
+          jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+        }
+/*@egen*/
+	{
+		jjtn000.setIdentifier(t.image);
+	}/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void Type()       :
+{/*@bgen(jjtree) Type */
+        ASTType jjtn000 = new ASTType(JJTTYPE);
+        boolean jjtc000 = true;
+        jjtree.openNodeScope(jjtn000);
+/*@egen*/
+	Token t;
+}
+{/*@bgen(jjtree) Type */
+        try {
+/*@egen*/
+	/*t = <FILE>
+	| t = "<" Identifier() ">"
+	| t = <CLASS>
+	| t = <METHOD>
+	| t = <FIELD>
+	| t = <STRING>
+	| t = <BOOL>
+	*/
+	t = <TYPES>/*@bgen(jjtree)*/
+        {
+          jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+        }
+/*@egen*/
+	{
+		jjtn000.setType(t.image);
+	}/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void Types(): {}
+{
+	<FILE>
+	| "<" Identifier() ">"
+	| <CLASS>
+	| <METHOD>
+	| <FIELD>
+	| <STRING>
+	| <BOOL>
 }

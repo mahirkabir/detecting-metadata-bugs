@@ -53,13 +53,14 @@ SPECIAL_TOKEN : /* COMMENTS */
 
  TOKEN :
  {
-   <RULE: "Rule">
- | <FILE: "file" >
+   <RULE: "Rule">	
+ /*| <FILE: "file" >
  | <CLASS: "class" >
  | <METHOD: "method" >
  | <FIELD: "field" >
  | <STRING: "String">
  | <BOOL: "bool" >
+ */
  | <FUNCTION: "function">
 
  | <IN: "in">
@@ -143,6 +144,23 @@ SPECIAL_TOKEN : /* COMMENTS */
        )*
        "\""
    >
+ }
+
+ TOKEN: /* TYPES */
+ {
+	<TYPES: <FILE>
+		| "<" <IDENTIFIER> ">"
+		| <CLASS>
+		| <METHOD>
+		| <FIELD>
+		| <STRING>
+		| <BOOL> >
+	| <FILE: "file" >
+	| <CLASS: "class" >
+	| <METHOD: "method" >
+	| <FIELD: "field" >
+	| <STRING: "String">
+	| <BOOL: "bool" >
  }
 
  TOKEN : /* IDENTIFIERS */
@@ -239,11 +257,10 @@ SPECIAL_TOKEN : /* COMMENTS */
  | <REM: "%" >
  }
 
-
 /** Main production. */
 ASTStart Start() #Start: {}
 {
-	<RULE> <IDENTIFIER> Block()
+	<RULE> Identifier() Block()
 	<EOF>
 
 	{ return jjtThis; }
@@ -288,7 +305,7 @@ void AssertStmnt() #AssertStmnt: {}
 
 void DeclStmnt() #DeclStmnt: {}
 {
-	Type() <IDENTIFIER> "=" (FunctionOrId() | Literal())
+	Type() Identifier() "=" (FunctionOrId() | Literal())
 }
 
 void Expression() #Expression: {}
@@ -298,7 +315,7 @@ void Expression() #Expression: {}
 
 void MsgStmnt() #MsgStmnt: {}
 {
-	<MSG> "(" <STRING_LITERAL> (MsgSuffix())? ")"
+	<MSG> "(" StringLiteral() (MsgSuffix())? ")"
 }
 
 void MsgSuffix() #MsgSuffix: {}
@@ -306,20 +323,9 @@ void MsgSuffix() #MsgSuffix: {}
 	"," Expression() (MsgSuffix())?
 }
 
-void Type() #Type: {}
-{
-	<FILE>
-	| "<" <IDENTIFIER> ">"
-	| <CLASS>
-	| <METHOD>
-	| <FIELD>
-	| <STRING>
-	| <BOOL>
-}
-
 void FunctionOrId() #FunctionOrId: {}
 {
-	<IDENTIFIER> (FunctionTail())?
+	Identifier() (FunctionTail())?
 }
 
 void FunctionTail() #FunctionTail: {}
@@ -331,7 +337,7 @@ void SimExp() #SimExp: {}
 {
 	FunctionOrId()
 	| Literal()
-	| Type() <IDENTIFIER>
+	| Type() Identifier()
 	| "(" Expression() ")"
 	| <EXISTS> "(" Expression() <IN> Expression() ")" "(" Expression() ")"
 	| <NOT> SimExp()
@@ -354,7 +360,96 @@ void ParamSuffix() #ParamSuffix: {}
 	"," SimExp() (ParamSuffix())?
 }
 
-void Literal() #Literal: {}
+void Literal(): {}
 {
-	<STRING_LITERAL> | <CHARACTER_LITERAL> | <INTEGER_LITERAL> | <FLOATING_POINT_LITERAL>
+	StringLiteral() | CharLiteral() | IntLiteral() | FloatLiteral()
+}
+
+void StringLiteral() #Literal :
+{
+	Token t;
+}
+{
+	t = <STRING_LITERAL>
+	{	
+		jjtThis.setLitType("String");
+		jjtThis.setLitValue(t.image);
+	}
+}
+
+void CharLiteral() #Literal :
+{
+	Token t;
+}
+{
+	t = <CHARACTER_LITERAL>
+	{	
+		jjtThis.setLitValue(t.image);
+		jjtThis.setLitType("Character");
+	}
+}
+
+void IntLiteral() #Literal :
+{
+	Token t;
+}
+{
+	t = <INTEGER_LITERAL>
+	{	
+		jjtThis.setLitValue(t.image);
+		jjtThis.setLitType("Integer");
+	}
+}
+
+void FloatLiteral() #Literal :
+{
+	Token t;
+}
+{
+	t = <FLOATING_POINT_LITERAL>
+	{	
+		jjtThis.setLitValue(t.image);
+		jjtThis.setLitType("Float");
+	}
+}
+
+void Identifier() #Identifier :
+{
+	Token t;
+}
+{
+	t = <IDENTIFIER>
+	{
+		jjtThis.setIdentifier(t.image);
+	}
+}
+
+void Type() #Type :
+{
+	Token t;
+}
+{
+	/*t = <FILE>
+	| t = "<" Identifier() ">"
+	| t = <CLASS>
+	| t = <METHOD>
+	| t = <FIELD>
+	| t = <STRING>
+	| t = <BOOL>
+	*/
+	t = <TYPES>
+	{
+		jjtThis.setType(t.image);
+	}
+}
+
+void Types(): {}
+{
+	<FILE>
+	| "<" Identifier() ">"
+	| <CLASS>
+	| <METHOD>
+	| <FIELD>
+	| <STRING>
+	| <BOOL>
 }

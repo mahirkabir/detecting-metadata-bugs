@@ -12,6 +12,9 @@
     <!-- <copy file="ASTMyID.java" todir="eg12"/> -->
     <!-- <copy file="ASTMyOtherID.java" todir="eg12"/> -->
     <copy file="Eg12DumpVisitor.java" todir="eg12"/>
+	<copy file="ASTLiteral.java" todir="eg12"/>
+	<copy file="ASTIdentifier.java" todir="eg12"/>
+	<copy file="ASTType.java" todir="eg12"/>
     <jjtree target="eg12.jjt" outputdirectory="eg12" javacchome="${javacc.home}"/>
     <javacc target="eg12/eg12.jj" outputdirectory="eg12" javacchome="${javacc.home}"/>
     <javac deprecation="false" srcdir="eg12" destdir="eg12" includeantruntime='false'/>
