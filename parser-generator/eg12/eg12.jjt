@@ -53,14 +53,7 @@ SPECIAL_TOKEN : /* COMMENTS */
 
  TOKEN :
  {
-   <RULE: "Rule">	
- /*| <FILE: "file" >
- | <CLASS: "class" >
- | <METHOD: "method" >
- | <FIELD: "field" >
- | <STRING: "String">
- | <BOOL: "bool" >
- */
+   <RULE: "Rule">
  | <FUNCTION: "function">
 
  | <IN: "in">
