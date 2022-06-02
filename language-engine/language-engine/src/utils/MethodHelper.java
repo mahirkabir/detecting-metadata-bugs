@@ -1,9 +1,7 @@
 package utils;
 
-import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.AclEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,16 +10,17 @@ import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
 import com.github.javaparser.utils.SourceRoot;
-import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 
 import models.FieldItem;
+import models.MethodItem;
 
-public class FieldHelper {
+public class MethodHelper {
     private String javaFilePath;
 
     /**
@@ -29,13 +28,13 @@ public class FieldHelper {
      * 
      * @param javaFilePath
      */
-    public FieldHelper(String javaFilePath) {
+    public MethodHelper(String javaFilePath) {
         super();
         this.javaFilePath = javaFilePath;
     }
 
-    public List<FieldItem> GetFields() {
-        List<FieldItem> fields = new ArrayList<FieldItem>();
+    public List<MethodItem> GetMethods() {
+        List<MethodItem> methods = new ArrayList<MethodItem>();
 
         Path path = Paths.get(this.javaFilePath);
         String filename = path.getFileName().toString();
@@ -43,18 +42,17 @@ public class FieldHelper {
 
         Log.setAdapter(new Log.StandardOutStandardErrorAdapter());
         SourceRoot sourceRoot = new SourceRoot(
-                CodeGenerationUtils.mavenModuleRoot(FieldHelper.class)
+                CodeGenerationUtils.mavenModuleRoot(MethodHelper.class)
                         .resolve(folder));
         CompilationUnit cu = sourceRoot.parse("", filename);
 
-        Map<String, FieldDeclaration> declFields = cu
-                .findAll(FieldDeclaration.class)
+        Map<String, MethodDeclaration> declMethods = cu
+                .findAll(MethodDeclaration.class)
                 .stream()
-                .collect(Collectors.toMap(declaration -> declaration.getVariable(0).getNameAsString(),
-                        Function.identity()));
+                .collect(Collectors.toMap(NodeWithSimpleName::getNameAsString, Function.identity()));
 
-        for (Map.Entry<String, FieldDeclaration> mapElm : declFields.entrySet()) {
-            FieldDeclaration decl = mapElm.getValue();
+        for (Map.Entry<String, MethodDeclaration> mapElm : declMethods.entrySet()) {
+            MethodDeclaration decl = mapElm.getValue();
 
             System.out.println("========");
 
@@ -63,25 +61,24 @@ public class FieldHelper {
             String className = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
             System.out.println(className);
 
+            MethodItem methodItem = new MethodItem(
+                    decl.getNameAsString(), decl.getTypeAsString(), className);
+
             List<String> modifiers = new ArrayList<String>();
             decl.getModifiers().forEach(item -> {
                 modifiers.add(item.toString());
             });
 
-            decl.getVariables().forEach(item -> {
-                FieldItem fieldItem = new FieldItem(
-                        item.getNameAsString(), item.getTypeAsString(), className);
-                if (modifiers.size() >= 1)
-                    fieldItem.setAccessModifier(modifiers.get(0));
-                if (modifiers.size() == 2)
-                    fieldItem.setDeclType(modifiers.get(1));
+            if (modifiers.size() >= 1)
+                methodItem.setAccessModifier(modifiers.get(0));
+            if (modifiers.size() == 2)
+                methodItem.setDeclType(modifiers.get(1));
 
-                fields.add(fieldItem);
-            });
+            methods.add(methodItem);
 
             System.out.println("========");
         }
 
-        return fields;
+        return methods;
     }
 }

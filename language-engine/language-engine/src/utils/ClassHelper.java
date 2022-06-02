@@ -51,8 +51,10 @@ public class ClassHelper {
 		List<ClassItem> classes = new ArrayList<ClassItem>();
 		this.loadJavaFiles(this.projectPath);
 		for (String javaFile : this.javaFiles) {
-			FieldHelper fieldHelper = new FieldHelper(javaFile);
-			fieldHelper.GetFields();
+			ClassItem classItem = new ClassItem();
+			classItem.setFields(new FieldHelper(javaFile).GetFields());
+			classItem.setMethods(new MethodHelper(javaFile).GetMethods());
+			classes.add(classItem);
 		}
 		return classes;
 	}
