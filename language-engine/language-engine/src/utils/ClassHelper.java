@@ -1,9 +1,6 @@
 package utils;
 
 import java.io.File;
-import java.io.FilenameFilter;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +50,10 @@ public class ClassHelper {
 	public List<ClassItem> getClasses() {
 		List<ClassItem> classes = new ArrayList<ClassItem>();
 		this.loadJavaFiles(this.projectPath);
-		System.out.println(this.javaFiles.size());
+		for (String javaFile : this.javaFiles) {
+			FieldHelper fieldHelper = new FieldHelper(javaFile);
+			fieldHelper.GetFields();
+		}
 		return classes;
 	}
 }
