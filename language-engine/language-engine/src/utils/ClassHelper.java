@@ -49,13 +49,19 @@ public class ClassHelper {
 	 */
 	public List<ClassItem> getClasses() {
 		List<ClassItem> classes = new ArrayList<ClassItem>();
+
+		List<ClassItem> classItems = new ArrayList<ClassItem>();
 		this.loadJavaFiles(this.projectPath);
 		for (String javaFile : this.javaFiles) {
 			ClassItem classItem = new ClassItem();
 			classItem.setFields(new FieldHelper(javaFile).GetFields());
 			classItem.setMethods(new MethodHelper(javaFile).GetMethods());
-			classes.add(classItem);
+			classItem.setInvocations(new InvocationHelper(javaFile).GetInvocations());
+			classItems.add(classItem);
 		}
+
+		// TODO: Need to separate class items from each class and load in classes list
+
 		return classes;
 	}
 }
