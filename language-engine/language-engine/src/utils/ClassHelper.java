@@ -57,6 +57,8 @@ public class ClassHelper {
 			classItem.setFields(new FieldHelper(javaFile).GetFields());
 			classItem.setMethods(new MethodHelper(javaFile).GetMethods());
 			classItem.setInvocations(new InvocationHelper(javaFile).GetInvocations());
+			classItem.setAnnotations(new AnnotationHelper(javaFile).GetAnnotations());
+
 			classItems.add(classItem);
 		}
 
