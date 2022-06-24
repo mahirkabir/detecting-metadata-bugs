@@ -209,6 +209,94 @@ public class Eg12DumpVisitor implements Eg12Visitor
 		--indent;
 		return data;
 	}
+	
+	public Object visit(ASTAndOp node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
+	public Object visit(ASTOrOp node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
+	public Object visit(ASTEqOp node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
+	public Object visit(ASTExists node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
+	public Object visit(ASTNot node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
+	public Object visit(ASTFile node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
+	public Object visit(ASTClass node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
+	public Object visit(ASTMethod node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
+	public Object visit(ASTField node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
+	public Object visit(ASTString node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
+	public Object visit(ASTBool node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
 }
 
 /*end*/

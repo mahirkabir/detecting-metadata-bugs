@@ -633,8 +633,34 @@ void SimExp()        : {/*@bgen(jjtree) SimExp */
 	| Literal()
 	| Type() Identifier()
 	| "(" Expression() ")"
-	| <EXISTS> "(" Expression() <IN> Expression() ")" "(" Expression() ")"
-	| <NOT> SimExp()/*@bgen(jjtree)*/
+	|/*@bgen(jjtree) Exists */
+          {
+            ASTExists jjtn001 = new ASTExists(JJTEXISTS);
+            boolean jjtc001 = true;
+            jjtree.openNodeScope(jjtn001);
+          }
+          try {
+/*@egen*/ <EXISTS>/*@bgen(jjtree)*/
+          } finally {
+            if (jjtc001) {
+              jjtree.closeNodeScope(jjtn001, true);
+            }
+          }
+/*@egen*/         "(" Expression() <IN> Expression() ")" "(" Expression() ")"
+	|/*@bgen(jjtree) Not */
+          {
+            ASTNot jjtn002 = new ASTNot(JJTNOT);
+            boolean jjtc002 = true;
+            jjtree.openNodeScope(jjtn002);
+          }
+          try {
+/*@egen*/ <NOT>/*@bgen(jjtree)*/
+          } finally {
+            if (jjtc002) {
+              jjtree.closeNodeScope(jjtn002, true);
+            }
+          }
+/*@egen*/      SimExp()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -664,10 +690,49 @@ void ExpSuffix()           : {/*@bgen(jjtree) ExpSuffix */
 /*@egen*/}
 {/*@bgen(jjtree) ExpSuffix */
         try {
+/*@egen*//*@bgen(jjtree) AndOp */
+        {
+          ASTAndOp jjtn001 = new ASTAndOp(JJTANDOP);
+          boolean jjtc001 = true;
+          jjtree.openNodeScope(jjtn001);
+        }
+        try {
 /*@egen*/
-	<AND> Expression()
-		| <OR> Expression()
-		| <EQ> Expression()/*@bgen(jjtree)*/
+	<AND>/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc001) {
+            jjtree.closeNodeScope(jjtn001, true);
+          }
+        }
+/*@egen*/        Expression()
+		|/*@bgen(jjtree) OrOp */
+                  {
+                    ASTOrOp jjtn002 = new ASTOrOp(JJTOROP);
+                    boolean jjtc002 = true;
+                    jjtree.openNodeScope(jjtn002);
+                  }
+                  try {
+/*@egen*/ <OR>/*@bgen(jjtree)*/
+                  } finally {
+                    if (jjtc002) {
+                      jjtree.closeNodeScope(jjtn002, true);
+                    }
+                  }
+/*@egen*/       Expression()
+		|/*@bgen(jjtree) EqOp */
+                  {
+                    ASTEqOp jjtn003 = new ASTEqOp(JJTEQOP);
+                    boolean jjtc003 = true;
+                    jjtree.openNodeScope(jjtn003);
+                  }
+                  try {
+/*@egen*/ <EQ>/*@bgen(jjtree)*/
+                  } finally {
+                    if (jjtc003) {
+                      jjtree.closeNodeScope(jjtn003, true);
+                    }
+                  }
+/*@egen*/       Expression()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -938,12 +1003,90 @@ void Type()       :
 }
 
 void Types(): {}
-{
-	<FILE>
+{/*@bgen(jjtree) File */
+        {
+          ASTFile jjtn001 = new ASTFile(JJTFILE);
+          boolean jjtc001 = true;
+          jjtree.openNodeScope(jjtn001);
+        }
+        try {
+/*@egen*/
+	<FILE>/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc001) {
+            jjtree.closeNodeScope(jjtn001, true);
+          }
+        }
+/*@egen*/      
 	| "<" Identifier() ">"
-	| <CLASS>
-	| <METHOD>
-	| <FIELD>
-	| <STRING>
-	| <BOOL>
+	|/*@bgen(jjtree) Class */
+          {
+            ASTClass jjtn002 = new ASTClass(JJTCLASS);
+            boolean jjtc002 = true;
+            jjtree.openNodeScope(jjtn002);
+          }
+          try {
+/*@egen*/ <CLASS>/*@bgen(jjtree)*/
+          } finally {
+            if (jjtc002) {
+              jjtree.closeNodeScope(jjtn002, true);
+            }
+          }
+/*@egen*/       
+	|/*@bgen(jjtree) Method */
+          {
+            ASTMethod jjtn003 = new ASTMethod(JJTMETHOD);
+            boolean jjtc003 = true;
+            jjtree.openNodeScope(jjtn003);
+          }
+          try {
+/*@egen*/ <METHOD>/*@bgen(jjtree)*/
+          } finally {
+            if (jjtc003) {
+              jjtree.closeNodeScope(jjtn003, true);
+            }
+          }
+/*@egen*/        
+	|/*@bgen(jjtree) Field */
+          {
+            ASTField jjtn004 = new ASTField(JJTFIELD);
+            boolean jjtc004 = true;
+            jjtree.openNodeScope(jjtn004);
+          }
+          try {
+/*@egen*/ <FIELD>/*@bgen(jjtree)*/
+          } finally {
+            if (jjtc004) {
+              jjtree.closeNodeScope(jjtn004, true);
+            }
+          }
+/*@egen*/       
+	|/*@bgen(jjtree) String */
+          {
+            ASTString jjtn005 = new ASTString(JJTSTRING);
+            boolean jjtc005 = true;
+            jjtree.openNodeScope(jjtn005);
+          }
+          try {
+/*@egen*/ <STRING>/*@bgen(jjtree)*/
+          } finally {
+            if (jjtc005) {
+              jjtree.closeNodeScope(jjtn005, true);
+            }
+          }
+/*@egen*/        
+	|/*@bgen(jjtree) Bool */
+          {
+            ASTBool jjtn006 = new ASTBool(JJTBOOL);
+            boolean jjtc006 = true;
+            jjtree.openNodeScope(jjtn006);
+          }
+          try {
+/*@egen*/ <BOOL>/*@bgen(jjtree)*/
+          } finally {
+            if (jjtc006) {
+              jjtree.closeNodeScope(jjtn006, true);
+            }
+          }
+/*@egen*/      
 }

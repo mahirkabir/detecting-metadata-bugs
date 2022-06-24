@@ -332,15 +332,15 @@ void SimExp() #SimExp: {}
 	| Literal()
 	| Type() Identifier()
 	| "(" Expression() ")"
-	| <EXISTS> "(" Expression() <IN> Expression() ")" "(" Expression() ")"
-	| <NOT> SimExp()
+	| <EXISTS> #Exists "(" Expression() <IN> Expression() ")" "(" Expression() ")"
+	| <NOT> #Not SimExp()
 }
 
 void ExpSuffix() #ExpSuffix: {}
 {
-	<AND> Expression()
-		| <OR> Expression()
-		| <EQ> Expression()
+	<AND> #AndOp Expression()
+		| <OR> #OrOp Expression()
+		| <EQ> #EqOp Expression()
 }
 
 void Params() #Params: {}
@@ -438,11 +438,11 @@ void Type() #Type :
 
 void Types(): {}
 {
-	<FILE>
+	<FILE> #File
 	| "<" Identifier() ">"
-	| <CLASS>
-	| <METHOD>
-	| <FIELD>
-	| <STRING>
-	| <BOOL>
+	| <CLASS> #Class
+	| <METHOD> #Method
+	| <FIELD> #Field
+	| <STRING> #String
+	| <BOOL> #Bool
 }

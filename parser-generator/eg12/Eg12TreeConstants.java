@@ -14,12 +14,23 @@ public interface Eg12TreeConstants
   public int JJTFUNCTIONORID = 10;
   public int JJTFUNCTIONTAIL = 11;
   public int JJTSIMEXP = 12;
-  public int JJTEXPSUFFIX = 13;
-  public int JJTPARAMS = 14;
-  public int JJTPARAMSUFFIX = 15;
-  public int JJTLITERAL = 16;
-  public int JJTIDENTIFIER = 17;
-  public int JJTTYPE = 18;
+  public int JJTEXISTS = 13;
+  public int JJTNOT = 14;
+  public int JJTEXPSUFFIX = 15;
+  public int JJTANDOP = 16;
+  public int JJTOROP = 17;
+  public int JJTEQOP = 18;
+  public int JJTPARAMS = 19;
+  public int JJTPARAMSUFFIX = 20;
+  public int JJTLITERAL = 21;
+  public int JJTIDENTIFIER = 22;
+  public int JJTTYPE = 23;
+  public int JJTFILE = 24;
+  public int JJTCLASS = 25;
+  public int JJTMETHOD = 26;
+  public int JJTFIELD = 27;
+  public int JJTSTRING = 28;
+  public int JJTBOOL = 29;
 
 
   public String[] jjtNodeName = {
@@ -36,12 +47,23 @@ public interface Eg12TreeConstants
     "FunctionOrId",
     "FunctionTail",
     "SimExp",
+    "Exists",
+    "Not",
     "ExpSuffix",
+    "AndOp",
+    "OrOp",
+    "EqOp",
     "Params",
     "ParamSuffix",
     "Literal",
     "Identifier",
     "Type",
+    "File",
+    "Class",
+    "Method",
+    "Field",
+    "String",
+    "Bool",
   };
 }
-/* JavaCC - OriginalChecksum=5fa45e7c8e5b418ee17e204640b596bd (do not edit this line) */
+/* JavaCC - OriginalChecksum=50ebfc0c9cac6ead8da0b4de122f007e (do not edit this line) */

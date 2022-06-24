@@ -43,7 +43,22 @@ public class Eg12DefaultVisitor implements Eg12Visitor{
   public Object visit(ASTSimExp node, Object data){
     return defaultVisit(node, data);
   }
+  public Object visit(ASTExists node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTNot node, Object data){
+    return defaultVisit(node, data);
+  }
   public Object visit(ASTExpSuffix node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTAndOp node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTOrOp node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTEqOp node, Object data){
     return defaultVisit(node, data);
   }
   public Object visit(ASTParams node, Object data){
@@ -61,5 +76,23 @@ public class Eg12DefaultVisitor implements Eg12Visitor{
   public Object visit(ASTType node, Object data){
     return defaultVisit(node, data);
   }
+  public Object visit(ASTFile node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTClass node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTMethod node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTField node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTString node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTBool node, Object data){
+    return defaultVisit(node, data);
+  }
 }
-/* JavaCC - OriginalChecksum=ef6568cb369534c72f18aa1fa99e6498 (do not edit this line) */
+/* JavaCC - OriginalChecksum=31ecd0eecadb4800bc949b8bc51b0f44 (do not edit this line) */
