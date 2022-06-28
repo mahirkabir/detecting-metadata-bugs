@@ -20,7 +20,7 @@ public class ASTType extends SimpleNode {
 	/**
 	* Get the Type
 	*/
-	public void getType(String n) {
+	public String getType(String n) {
 		return name;
 	}
 

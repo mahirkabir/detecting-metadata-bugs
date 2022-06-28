@@ -16,6 +16,13 @@ public class ASTIdentifier extends SimpleNode {
 	public void setIdentifier(String n) {
 		name = n;
 	}
+	
+	/**
+	* Get the Identifier
+	*/
+	public String getIdentifier() {
+		return name;
+	}
 
 	/**
 	* {@inheritDoc}

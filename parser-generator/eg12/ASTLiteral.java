@@ -17,6 +17,13 @@ public class ASTLiteral extends SimpleNode {
 	public void setLitType(String n) {
 		type = n;
 	}
+	
+	/**
+	* Get the Type of the Literal
+	*/
+	public String getLitType() {
+		return type;
+	}
 
 	/**
 	* Set the Value of the Literal
@@ -24,6 +31,13 @@ public class ASTLiteral extends SimpleNode {
 	*/
 	public void setLitValue(String n) {
 		value = n;
+	}
+	
+	/**
+	* Get the Value of the Literal
+	*/
+	public String getLitValue() {
+		return value;
 	}
 
 	/**
