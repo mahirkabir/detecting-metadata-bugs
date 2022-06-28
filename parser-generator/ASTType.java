@@ -16,6 +16,13 @@ public class ASTType extends SimpleNode {
 	public void setType(String n) {
 		name = n;
 	}
+	
+	/**
+	* Get the Type
+	*/
+	public void getType(String n) {
+		return name;
+	}
 
 	/**
 	* {@inheritDoc}
