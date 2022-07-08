@@ -28,6 +28,15 @@ public class Eg12DefaultVisitor implements Eg12Visitor{
   public Object visit(ASTExpression node, Object data){
     return defaultVisit(node, data);
   }
+  public Object visit(ASTConditionalOrExp node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTConditionalAndExp node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTConditionalEqExp node, Object data){
+    return defaultVisit(node, data);
+  }
   public Object visit(ASTMsgStmnt node, Object data){
     return defaultVisit(node, data);
   }
@@ -95,4 +104,4 @@ public class Eg12DefaultVisitor implements Eg12Visitor{
     return defaultVisit(node, data);
   }
 }
-/* JavaCC - OriginalChecksum=31ecd0eecadb4800bc949b8bc51b0f44 (do not edit this line) */
+/* JavaCC - OriginalChecksum=392199a9c6db89e24cb20da4dcdb8830 (do not edit this line) */

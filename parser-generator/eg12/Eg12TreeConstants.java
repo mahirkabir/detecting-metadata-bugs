@@ -9,28 +9,31 @@ public interface Eg12TreeConstants
   public int JJTASSERTSTMNT = 5;
   public int JJTDECLSTMNT = 6;
   public int JJTEXPRESSION = 7;
-  public int JJTMSGSTMNT = 8;
-  public int JJTMSGSUFFIX = 9;
-  public int JJTFUNCTIONORID = 10;
-  public int JJTFUNCTIONTAIL = 11;
-  public int JJTSIMEXP = 12;
-  public int JJTEXISTS = 13;
-  public int JJTNOT = 14;
-  public int JJTEXPSUFFIX = 15;
-  public int JJTANDOP = 16;
-  public int JJTOROP = 17;
-  public int JJTEQOP = 18;
-  public int JJTPARAMS = 19;
-  public int JJTPARAMSUFFIX = 20;
-  public int JJTLITERAL = 21;
-  public int JJTIDENTIFIER = 22;
-  public int JJTTYPE = 23;
-  public int JJTFILE = 24;
-  public int JJTCLASS = 25;
-  public int JJTMETHOD = 26;
-  public int JJTFIELD = 27;
-  public int JJTSTRING = 28;
-  public int JJTBOOL = 29;
+  public int JJTCONDITIONALOREXP = 8;
+  public int JJTCONDITIONALANDEXP = 9;
+  public int JJTCONDITIONALEQEXP = 10;
+  public int JJTMSGSTMNT = 11;
+  public int JJTMSGSUFFIX = 12;
+  public int JJTFUNCTIONORID = 13;
+  public int JJTFUNCTIONTAIL = 14;
+  public int JJTSIMEXP = 15;
+  public int JJTEXISTS = 16;
+  public int JJTNOT = 17;
+  public int JJTEXPSUFFIX = 18;
+  public int JJTANDOP = 19;
+  public int JJTOROP = 20;
+  public int JJTEQOP = 21;
+  public int JJTPARAMS = 22;
+  public int JJTPARAMSUFFIX = 23;
+  public int JJTLITERAL = 24;
+  public int JJTIDENTIFIER = 25;
+  public int JJTTYPE = 26;
+  public int JJTFILE = 27;
+  public int JJTCLASS = 28;
+  public int JJTMETHOD = 29;
+  public int JJTFIELD = 30;
+  public int JJTSTRING = 31;
+  public int JJTBOOL = 32;
 
 
   public String[] jjtNodeName = {
@@ -42,6 +45,9 @@ public interface Eg12TreeConstants
     "AssertStmnt",
     "DeclStmnt",
     "Expression",
+    "ConditionalOrExp",
+    "ConditionalAndExp",
+    "ConditionalEqExp",
     "MsgStmnt",
     "MsgSuffix",
     "FunctionOrId",
@@ -66,4 +72,4 @@ public interface Eg12TreeConstants
     "Bool",
   };
 }
-/* JavaCC - OriginalChecksum=50ebfc0c9cac6ead8da0b4de122f007e (do not edit this line) */
+/* JavaCC - OriginalChecksum=c2fc4a7517a53ad2052f1f7282add3f8 (do not edit this line) */

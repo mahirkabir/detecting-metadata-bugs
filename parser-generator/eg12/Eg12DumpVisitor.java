@@ -297,6 +297,30 @@ public class Eg12DumpVisitor implements Eg12Visitor
 		--indent;
 		return data;
 	}
+	
+	public Object visit(ASTConditionalOrExp node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
+	public Object visit(ASTConditionalAndExp node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
+	public Object visit(ASTConditionalEqExp node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
 }
 
 /*end*/

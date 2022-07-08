@@ -303,7 +303,23 @@ void DeclStmnt() #DeclStmnt: {}
 
 void Expression() #Expression: {}
 {
-	SimExp() (ExpSuffix())?
+	//SimExp() (ExpSuffix())?
+	ConditionalOrExp()
+}
+
+void ConditionalOrExp() #ConditionalOrExp(>1): {}
+{
+	ConditionalAndExp() (LOOKAHEAD(2) <OR> ConditionalAndExp())*
+}
+
+void ConditionalAndExp() #ConditionalAndExp(>1): {}
+{
+	ConditionalEqExp() (LOOKAHEAD(2) <AND> ConditionalEqExp())*
+}
+
+void ConditionalEqExp() #ConditionalEqExp(>1): {}
+{
+	SimExp() (LOOKAHEAD(2) <EQ> SimExp())*
 }
 
 void MsgStmnt() #MsgStmnt: {}

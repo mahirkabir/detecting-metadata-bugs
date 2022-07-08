@@ -9,6 +9,9 @@ public interface Eg12Visitor
   public Object visit(ASTAssertStmnt node, Object data);
   public Object visit(ASTDeclStmnt node, Object data);
   public Object visit(ASTExpression node, Object data);
+  public Object visit(ASTConditionalOrExp node, Object data);
+  public Object visit(ASTConditionalAndExp node, Object data);
+  public Object visit(ASTConditionalEqExp node, Object data);
   public Object visit(ASTMsgStmnt node, Object data);
   public Object visit(ASTMsgSuffix node, Object data);
   public Object visit(ASTFunctionOrId node, Object data);
@@ -32,4 +35,4 @@ public interface Eg12Visitor
   public Object visit(ASTString node, Object data);
   public Object visit(ASTBool node, Object data);
 }
-/* JavaCC - OriginalChecksum=162acfa18dd53deacf0c305d4ecbefad (do not edit this line) */
+/* JavaCC - OriginalChecksum=cb4696d4dfa42708bcf7ac1087fbaa1d (do not edit this line) */
