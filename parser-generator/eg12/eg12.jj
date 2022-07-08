@@ -474,7 +474,6 @@ void Expression()            : {/*@bgen(jjtree) Expression */
 {/*@bgen(jjtree) Expression */
         try {
 /*@egen*/
-	//SimExp() (ExpSuffix())?
 	ConditionalOrExp()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
@@ -755,78 +754,6 @@ void SimExp()        : {/*@bgen(jjtree) SimExp */
             }
           }
 /*@egen*/      SimExp()/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
-}
-
-void ExpSuffix()           : {/*@bgen(jjtree) ExpSuffix */
-  ASTExpSuffix jjtn000 = new ASTExpSuffix(JJTEXPSUFFIX);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) ExpSuffix */
-        try {
-/*@egen*//*@bgen(jjtree) AndOp */
-        {
-          ASTAndOp jjtn001 = new ASTAndOp(JJTANDOP);
-          boolean jjtc001 = true;
-          jjtree.openNodeScope(jjtn001);
-        }
-        try {
-/*@egen*/
-	<AND>/*@bgen(jjtree)*/
-        } finally {
-          if (jjtc001) {
-            jjtree.closeNodeScope(jjtn001, true);
-          }
-        }
-/*@egen*/        Expression()
-		|/*@bgen(jjtree) OrOp */
-                  {
-                    ASTOrOp jjtn002 = new ASTOrOp(JJTOROP);
-                    boolean jjtc002 = true;
-                    jjtree.openNodeScope(jjtn002);
-                  }
-                  try {
-/*@egen*/ <OR>/*@bgen(jjtree)*/
-                  } finally {
-                    if (jjtc002) {
-                      jjtree.closeNodeScope(jjtn002, true);
-                    }
-                  }
-/*@egen*/       Expression()
-		|/*@bgen(jjtree) EqOp */
-                  {
-                    ASTEqOp jjtn003 = new ASTEqOp(JJTEQOP);
-                    boolean jjtc003 = true;
-                    jjtree.openNodeScope(jjtn003);
-                  }
-                  try {
-/*@egen*/ <EQ>/*@bgen(jjtree)*/
-                  } finally {
-                    if (jjtc003) {
-                      jjtree.closeNodeScope(jjtn003, true);
-                    }
-                  }
-/*@egen*/       Expression()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

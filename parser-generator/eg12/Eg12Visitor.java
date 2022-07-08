@@ -19,10 +19,6 @@ public interface Eg12Visitor
   public Object visit(ASTSimExp node, Object data);
   public Object visit(ASTExists node, Object data);
   public Object visit(ASTNot node, Object data);
-  public Object visit(ASTExpSuffix node, Object data);
-  public Object visit(ASTAndOp node, Object data);
-  public Object visit(ASTOrOp node, Object data);
-  public Object visit(ASTEqOp node, Object data);
   public Object visit(ASTParams node, Object data);
   public Object visit(ASTParamSuffix node, Object data);
   public Object visit(ASTLiteral node, Object data);
@@ -35,4 +31,4 @@ public interface Eg12Visitor
   public Object visit(ASTString node, Object data);
   public Object visit(ASTBool node, Object data);
 }
-/* JavaCC - OriginalChecksum=cb4696d4dfa42708bcf7ac1087fbaa1d (do not edit this line) */
+/* JavaCC - OriginalChecksum=97944c88950fbe5329d29478896b1796 (do not edit this line) */

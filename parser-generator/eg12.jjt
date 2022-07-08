@@ -303,7 +303,6 @@ void DeclStmnt() #DeclStmnt: {}
 
 void Expression() #Expression: {}
 {
-	//SimExp() (ExpSuffix())?
 	ConditionalOrExp()
 }
 
@@ -350,13 +349,6 @@ void SimExp() #SimExp: {}
 	| "(" Expression() ")"
 	| <EXISTS> #Exists "(" Expression() <IN> Expression() ")" "(" Expression() ")"
 	| <NOT> #Not SimExp()
-}
-
-void ExpSuffix() #ExpSuffix: {}
-{
-	<AND> #AndOp Expression()
-		| <OR> #OrOp Expression()
-		| <EQ> #EqOp Expression()
 }
 
 void Params() #Params: {}

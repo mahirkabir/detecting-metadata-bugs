@@ -162,14 +162,6 @@ public class Eg12DumpVisitor implements Eg12Visitor
 		return data;
 	}
 
-	public Object visit(ASTExpSuffix node, Object data) {
-		System.out.println(indentString() + node);
-		++indent;
-		data = node.childrenAccept(this, data);
-		--indent;
-		return data;
-	}
-
 	public Object visit(ASTParams node, Object data) {
 		System.out.println(indentString() + node);
 		++indent;
@@ -203,30 +195,6 @@ public class Eg12DumpVisitor implements Eg12Visitor
 	}
 
 	public Object visit(ASTType node, Object data) {
-		System.out.println(indentString() + node);
-		++indent;
-		data = node.childrenAccept(this, data);
-		--indent;
-		return data;
-	}
-	
-	public Object visit(ASTAndOp node, Object data) {
-		System.out.println(indentString() + node);
-		++indent;
-		data = node.childrenAccept(this, data);
-		--indent;
-		return data;
-	}
-	
-	public Object visit(ASTOrOp node, Object data) {
-		System.out.println(indentString() + node);
-		++indent;
-		data = node.childrenAccept(this, data);
-		--indent;
-		return data;
-	}
-	
-	public Object visit(ASTEqOp node, Object data) {
 		System.out.println(indentString() + node);
 		++indent;
 		data = node.childrenAccept(this, data);
