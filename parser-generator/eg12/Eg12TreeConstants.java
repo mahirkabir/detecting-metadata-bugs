@@ -20,16 +20,15 @@ public interface Eg12TreeConstants
   public int JJTEXISTS = 16;
   public int JJTNOT = 17;
   public int JJTPARAMS = 18;
-  public int JJTPARAMSUFFIX = 19;
-  public int JJTLITERAL = 20;
-  public int JJTIDENTIFIER = 21;
-  public int JJTTYPE = 22;
-  public int JJTFILE = 23;
-  public int JJTCLASS = 24;
-  public int JJTMETHOD = 25;
-  public int JJTFIELD = 26;
-  public int JJTSTRING = 27;
-  public int JJTBOOL = 28;
+  public int JJTLITERAL = 19;
+  public int JJTIDENTIFIER = 20;
+  public int JJTTYPE = 21;
+  public int JJTFILE = 22;
+  public int JJTCLASS = 23;
+  public int JJTMETHOD = 24;
+  public int JJTFIELD = 25;
+  public int JJTSTRING = 26;
+  public int JJTBOOL = 27;
 
 
   public String[] jjtNodeName = {
@@ -52,7 +51,6 @@ public interface Eg12TreeConstants
     "Exists",
     "Not",
     "Params",
-    "ParamSuffix",
     "Literal",
     "Identifier",
     "Type",
@@ -64,4 +62,4 @@ public interface Eg12TreeConstants
     "Bool",
   };
 }
-/* JavaCC - OriginalChecksum=f4e96a0688399b19ea1467f0cb884326 (do not edit this line) */
+/* JavaCC - OriginalChecksum=ef947b50188dba0a035bf76aad627ede (do not edit this line) */

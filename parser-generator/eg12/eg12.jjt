@@ -328,7 +328,7 @@ void MsgStmnt() #MsgStmnt: {}
 
 void MsgSuffix() #MsgSuffix: {}
 {
-	"," Expression() (MsgSuffix())?
+	"," SimExp() ("," SimExp())*
 }
 
 void FunctionOrId() #FunctionOrId: {}
@@ -353,12 +353,7 @@ void SimExp() #SimExp: {}
 
 void Params() #Params: {}
 {
-	SimExp() (ParamSuffix())?
-}
-
-void ParamSuffix() #ParamSuffix: {}
-{
-	"," SimExp() (ParamSuffix())?
+	SimExp() ("," SimExp())*
 }
 
 void Literal(): {}

@@ -20,7 +20,6 @@ public interface Eg12Visitor
   public Object visit(ASTExists node, Object data);
   public Object visit(ASTNot node, Object data);
   public Object visit(ASTParams node, Object data);
-  public Object visit(ASTParamSuffix node, Object data);
   public Object visit(ASTLiteral node, Object data);
   public Object visit(ASTIdentifier node, Object data);
   public Object visit(ASTType node, Object data);
@@ -31,4 +30,4 @@ public interface Eg12Visitor
   public Object visit(ASTString node, Object data);
   public Object visit(ASTBool node, Object data);
 }
-/* JavaCC - OriginalChecksum=97944c88950fbe5329d29478896b1796 (do not edit this line) */
+/* JavaCC - OriginalChecksum=0f0bce86af519fe295dbdd796dea8884 (do not edit this line) */
