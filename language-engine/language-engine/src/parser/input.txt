@@ -1,3 +1,5 @@
 Rule test {
-	String str = "";
+	if (a OR NOT NOT call(b)) {
+		String c = "";
+	}
 }
