@@ -10,4 +10,8 @@ public class Constants {
     public static final String TYPE_STRING = "String";
     public static final String TYPE_BOOLEAN = "bool";
     public static final String EXPRESSION_NOT = "Not";
+    public static final String DECL_STMNT = "DeclStmnt";
+    public static final String IF_STMNT = "IfStmnt";
+    public static final String FOR_STMNT = "ForStmnt";
+    public static final String ASSERT_STMNT = "AssertStmnt";
 }

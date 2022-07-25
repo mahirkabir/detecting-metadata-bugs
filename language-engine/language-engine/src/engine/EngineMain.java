@@ -1,13 +1,17 @@
 package engine;
 
+import parser.ASTDeclStmnt;
 import parser.ASTExpression;
 import parser.ASTIfStmnt;
 import parser.ASTStart;
 import parser.Eg12;
+import parser.Node;
+import utils.Constants;
 
 public class EngineMain {
 	public static void main(String args[]) {
-		IEngineEvaluate evaluator = new EngineEvaluate();
+		IEngineDecl engineDecl = new EngineDecl();
+		IEngineEvaluate evaluator = new EngineEvaluate(engineDecl);
 
 		Eg12 t;
 		System.out.println("Reading from standard input...");
@@ -19,11 +23,26 @@ public class EngineMain {
 		}
 		try {
 			ASTStart n = t.Start();
+			engineDecl.createFrame();
 
-			ASTIfStmnt ifStmnt = (ASTIfStmnt) n.jjtGetChild(1);
-			ASTExpression ifExpr = (ASTExpression) ifStmnt.jjtGetChild(0);
-			boolean result = evaluator.evalBooleanExpr(ifExpr);
-			System.out.println(result);
+			int totalChildren = n.jjtGetNumChildren();
+			for (int i = 0; i < totalChildren; ++i) {
+				Node stmnt = n.jjtGetChild(i);
+
+				switch (stmnt.toString()) {
+					case Constants.IF_STMNT:
+						ASTIfStmnt ifStmnt = (ASTIfStmnt) stmnt;
+						ASTExpression ifExpr = (ASTExpression) ifStmnt.jjtGetChild(0);
+						boolean result = evaluator.evalBooleanExpr(ifExpr);
+						System.out.println(result);
+						break;
+
+					case Constants.DECL_STMNT:
+						ASTDeclStmnt declStmnt = (ASTDeclStmnt) stmnt;
+						engineDecl.declareVariable(declStmnt);
+						break;
+				}
+			}
 
 			// Eg12Visitor v = new Eg12DumpVisitor();
 			// n.jjtAccept(v, null);

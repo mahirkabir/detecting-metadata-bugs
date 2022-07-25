@@ -10,6 +10,12 @@ public class EvalResult {
         this.result = "false";
     }
 
+    public EvalResult(String type, String result) {
+        super();
+        this.type = type;
+        this.result = result;
+    }
+
     public String getType() {
         return type;
     }

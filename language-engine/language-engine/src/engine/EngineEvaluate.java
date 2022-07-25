@@ -14,6 +14,12 @@ import utils.Logger;
 
 public class EngineEvaluate implements IEngineEvaluate {
 
+    IEngineDecl engineDecl;
+    public EngineEvaluate(IEngineDecl engineDecl) {
+        super();
+        this.engineDecl = engineDecl;
+    }
+
     /*
      * (non-Javadoc)
      * 

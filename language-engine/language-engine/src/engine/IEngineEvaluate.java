@@ -11,6 +11,7 @@ import parser.ASTSimExp;
 public interface IEngineEvaluate {
     /**
      * Evaulate Boolean Expression
+     * 
      * @param expr
      * @return true or false
      */
@@ -18,6 +19,7 @@ public interface IEngineEvaluate {
 
     /**
      * Evaluate Or Expression
+     * 
      * @param orExp
      * @return true or false
      */
@@ -25,6 +27,7 @@ public interface IEngineEvaluate {
 
     /**
      * Evaluate And Expression
+     * 
      * @param andExp
      * @return true or false
      */
@@ -32,6 +35,7 @@ public interface IEngineEvaluate {
 
     /**
      * Evaluate Eq Expression
+     * 
      * @param eqExp
      * @return true or false
      */
@@ -39,6 +43,7 @@ public interface IEngineEvaluate {
 
     /**
      * Evaluate Simple Expression
+     * 
      * @param simExp
      * @return EvalResult object
      */
@@ -46,6 +51,7 @@ public interface IEngineEvaluate {
 
     /**
      * Evaluate Functions
+     * 
      * @param funcExp
      * @return EvalResult object
      */
@@ -53,6 +59,7 @@ public interface IEngineEvaluate {
 
     /**
      * Evaluate Id
+     * 
      * @param idExp
      * @return EvalResult Object
      */
