@@ -2,6 +2,7 @@ package engine;
 
 import parser.ASTDeclStmnt;
 import parser.ASTExpression;
+import parser.ASTForStmnt;
 import parser.ASTIfStmnt;
 import parser.ASTStart;
 import parser.Eg12;
@@ -11,6 +12,7 @@ import utils.Constants;
 public class EngineMain {
 	public static void main(String args[]) {
 		IEngineDecl engineDecl = new EngineDecl();
+		IEngineFor engineFor = new EngineFor(engineDecl);
 		IEngineEvaluate evaluator = new EngineEvaluate(engineDecl);
 
 		Eg12 t;
@@ -41,6 +43,15 @@ public class EngineMain {
 						ASTDeclStmnt declStmnt = (ASTDeclStmnt) stmnt;
 						engineDecl.declareVariable(declStmnt);
 						break;
+
+					case Constants.FOR_STMNT:
+						ASTForStmnt forStmnt = (ASTForStmnt) stmnt;
+						System.out.println(forStmnt);
+						break;
+
+					case Constants.ASSERT_STMNT:
+						break;
+
 				}
 			}
 

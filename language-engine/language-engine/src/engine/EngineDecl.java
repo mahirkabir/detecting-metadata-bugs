@@ -24,9 +24,9 @@ public class EngineDecl implements IEngineDecl {
 
     @Override
     public void declareVariable(ASTDeclStmnt declNode) {
-        // TODO: Remove ASTType.getType param
-        // TODO: Need to add boolean literals
-        String type = ((ASTType) declNode.jjtGetChild(0)).getType("");
+        // TODO: Need to add boolean literals (Not necessary now)
+        // TODO: Need to be able to compare with literals (Not necessary now)
+        String type = ((ASTType) declNode.jjtGetChild(0)).getType();
         String varName = ((ASTIdentifier) declNode.jjtGetChild(1)).getIdentifier();
         String value = ((ASTLiteral) declNode.jjtGetChild(2)).getLitValue();
         this.updateVariableInMap(type, varName, value);
