@@ -6,6 +6,7 @@ import parser.ASTConditionalEqExp;
 import parser.ASTConditionalOrExp;
 import parser.ASTExpression;
 import parser.ASTFunctionOrId;
+import parser.ASTIdentifier;
 import parser.ASTSimExp;
 import parser.Node;
 import utils.Constants;
@@ -111,7 +112,9 @@ public class EngineEvaluate implements IEngineEvaluate {
     @Override
     public EvalResult evalId(ASTFunctionOrId idExp) {
         Logger.log("Id");
-        return new EvalResult();
+        ASTIdentifier id = ((ASTIdentifier) idExp.jjtGetChild(0));
+        EvalResult result = this.engineDecl.extractVariable(id.getIdentifier());
+        return result;
     }
 
     @Override

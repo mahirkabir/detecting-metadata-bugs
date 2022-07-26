@@ -14,7 +14,7 @@ public class StackFrame {
     }
 
     public Map<String, EvalResult> getMapVariables() {
-        return mapVariables;
+        return this.mapVariables;
     }
 
     public void setMapVariables(Map<String, EvalResult> mapVariables) {
@@ -22,7 +22,7 @@ public class StackFrame {
     }
 
     public Map<String, EvalResult> getMapFunctions() {
-        return mapFunctions;
+        return this.mapFunctions;
     }
 
     public void setMapFunctions(Map<String, EvalResult> mapFunctions) {

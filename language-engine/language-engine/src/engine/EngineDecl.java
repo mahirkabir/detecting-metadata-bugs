@@ -1,6 +1,5 @@
 package engine;
 
-import java.lang.System.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,7 @@ import parser.ASTFunctionOrId;
 import parser.ASTIdentifier;
 import parser.ASTLiteral;
 import parser.ASTType;
+import utils.Logger;
 
 public class EngineDecl implements IEngineDecl {
 
@@ -44,7 +44,6 @@ public class EngineDecl implements IEngineDecl {
 
     @Override
     public void declareFunction(ASTFunctionOrId funcNode) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -56,13 +55,25 @@ public class EngineDecl implements IEngineDecl {
      */
     @Override
     public EvalResult extractVariable(String var) {
-        // TODO Auto-generated method stub
-        return null;
+        EvalResult result = null;
+        int totalStackFrames = this.stackFrames.size();
+        for (int i = totalStackFrames - 1; i >= 0; --i) {
+            StackFrame frame = this.stackFrames.get(i);
+            Map<String, EvalResult> mapVars = frame.getMapVariables();
+            if (mapVars.containsKey(var)) {
+                result = mapVars.get(var);
+                break;
+            }
+        }
+
+        if (result == null) {
+            Logger.log("Could not find variable: " + var);
+        }
+        return result;
     }
 
     @Override
     public EvalResult extractFunction(String funcName, String[] params) {
-        // TODO Auto-generated method stub
         return null;
     }
 
