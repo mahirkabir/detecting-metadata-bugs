@@ -70,7 +70,7 @@ public interface IEngineFunctions {
      * @param attrName
      * @return
      */
-    DataResult<String> getAttr(XMLItem node, String attrName);
+    DataResult<StringItem> getAttr(XMLItem node, String attrName);
 
     /**
      * Check if selector can fetch a node in xml
