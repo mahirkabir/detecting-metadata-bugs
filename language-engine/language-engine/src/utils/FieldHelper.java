@@ -1,9 +1,7 @@
 package utils;
 
-import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.AclEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,10 +12,10 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
 import com.github.javaparser.utils.SourceRoot;
-import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 
 import models.FieldItem;
 
@@ -69,8 +67,10 @@ public class FieldHelper {
             });
 
             decl.getVariables().forEach(item -> {
-                FieldItem fieldItem = new FieldItem(
-                        item.getNameAsString(), item.getTypeAsString(), className);
+                FieldItem fieldItem = new FieldItem();
+                fieldItem.setName(item.getNameAsString());
+                fieldItem.setType(item.getTypeAsString());
+                fieldItem.setClassName(className);
                 if (modifiers.size() >= 1)
                     fieldItem.setAccessModifier(modifiers.get(0));
                 if (modifiers.size() == 2)

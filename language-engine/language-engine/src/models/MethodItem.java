@@ -1,12 +1,6 @@
 package models;
 
-import java.util.List;
-
-import com.github.javaparser.ast.body.FieldDeclaration;
-
-public class MethodItem {
-	private String name;
-	private String type;
+public class MethodItem extends JItem {
 	private String className;
 	private String accessModifier;
 	private String declType;
@@ -17,18 +11,6 @@ public class MethodItem {
 
 	public void setDeclType(String declType) {
 		this.declType = declType;
-	}
-
-	public MethodItem(String name, String type, String className) {
-		super();
-
-		this.name = name;
-		this.type = type;
-		this.className = className;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public String getAccessModifier() {
@@ -50,17 +32,5 @@ public class MethodItem {
 
 	public void setClassName(String className) {
 		this.className = className;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getType() {
-		return this.type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 }

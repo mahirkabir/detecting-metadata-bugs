@@ -17,7 +17,6 @@ import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
 import com.github.javaparser.utils.SourceRoot;
 
-import models.FieldItem;
 import models.MethodItem;
 
 public class MethodHelper {
@@ -61,8 +60,10 @@ public class MethodHelper {
             String className = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
             System.out.println(className);
 
-            MethodItem methodItem = new MethodItem(
-                    decl.getNameAsString(), decl.getTypeAsString(), className);
+            MethodItem methodItem = new MethodItem();
+            methodItem.setName(decl.getNameAsString());
+            methodItem.setType(decl.getTypeAsString());
+            methodItem.setClassName(className);
 
             List<String> modifiers = new ArrayList<String>();
             decl.getModifiers().forEach(item -> {
