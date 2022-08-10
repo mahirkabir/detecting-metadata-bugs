@@ -34,26 +34,33 @@ public class EngineFunctions implements IEngineFunctions {
 
     @Override
     public DataResult<List<ClassItem>> getClasses() {
-        DataResult<List<ClassItem>> result = cache.fetchGetClasses();
+        // DataResult<List<ClassItem>> result = cache.fetchGetClasses();
 
-        if (result != null)
-            return result;
+        // if (result != null)
+        // return result;
 
-        this.classHelper.loadJavaFiles(this.projectPath); // Once loaded, it will be ready everywhere in this class
-        result = new DataResult<List<ClassItem>>(Constants.TYPE_CLASS_LIST, classHelper.getClasses());
+        // this.classHelper.loadJavaFiles(this.projectPath); // Once loaded, it will be
+        // ready everywhere in this class
+        // result = new DataResult<List<ClassItem>>(Constants.TYPE_CLASS_LIST,
+        // classHelper.getClasses());
 
-        cache.addGetClasses(result);
-        return result;
+        // cache.addGetClasses(result);
+        // return result;
+        return null;
     }
 
     @Override
     public DataResult<List<XMLItem>> getXMLs() {
-        DataResult<List<XMLItem>> result = null;
+        String functionCall = "getXMLs()";
+        DataResult<List<XMLItem>> result = cache.fetchFunctionCall(functionCall);
 
-        try {
-            result = new DataResult<List<XMLItem>>(Constants.TYPE_XML_LIST, this.xmlHelper.getXMLs());
-        } catch (SAXException | IOException | ParserConfigurationException e) {
-            e.printStackTrace();
+        if (result == null) {
+            try {
+                result = new DataResult<List<XMLItem>>(Constants.TYPE_XML_LIST, this.xmlHelper.getXMLs());
+                cache.addFunctionCall(functionCall, result);
+            } catch (SAXException | IOException | ParserConfigurationException e) {
+                e.printStackTrace();
+            }
         }
 
         return result;
