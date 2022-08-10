@@ -1,6 +1,10 @@
 package utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,6 +16,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import com.github.javaparser.utils.Pair;
 
 import models.XMLItem;
 
@@ -61,21 +67,61 @@ public class XMLHelper {
         XMLItem xmlItem = new XMLItem(this.xmlFilePath); // Root xml item's id is the file path
         xmlItem.setItemType(Constants.NODE_TYPE_ROOT);
         int totalNumOfChildren = nodeList.getLength();
-        for (int i = 0; i < totalNumOfChildren; ++i) {
-            // Tracking all the tags used in the xml
-            Node child = nodeList.item(i);
-            if (child.getNodeType() == Node.ELEMENT_NODE)
-                xmlItem.addChildTag(child.getNodeName());
+
+        if (totalNumOfChildren >= 1) {
+            Node rootNode = nodeList.item(0);
+            Map<String, String> mapAttr = this.getAttrFromNode(rootNode);
+            xmlItem.setMapAttr(mapAttr);
         }
 
-        Node rootNode = nodeList.item(0);
+        for (int i = 0; i < totalNumOfChildren; ++i) {
+            Node child = nodeList.item(i);
+            if (child.getNodeType() == Node.ELEMENT_NODE) {
+                xmlItem.addChildTag(child.getNodeName());
+                String nodeTag = child.getNodeName().toLowerCase();
+                if (nodeTag.equals(Constants.NODE_TYPE_BEAN)) {
+                    xmlItem.addChildNode(nodeTag, this.traverse(child, xmlItem, nodeTag));
+                }
+            }
+        }
+
+        return xmlItem;
+    }
+
+    private Map<String, String> getAttrFromNode(Node rootNode) {
+        Map<String, String> mapAttrs = new HashMap<String, String>();
         NamedNodeMap attMap = rootNode.getAttributes();
         int totalAttrs = attMap.getLength();
         for (int i = 0; i < totalAttrs; ++i) {
             Attr attr = (Attr) attMap.item(i);
-            xmlItem.addAttr(attr.getName(), attr.getValue());
+            mapAttrs.put(attr.getName(), attr.getValue());
+        }
+        return mapAttrs;
+    }
+
+    private XMLItem traverse(Node node, XMLItem parentNode, String tagName) {
+        XMLItem xmlItem = new XMLItem(parentNode.getId() + "-" + tagName);
+        xmlItem.setItemType(tagName);
+        xmlItem.setMapAttr(this.getAttrFromNode(node));
+
+        String idSuffix = xmlItem.getAttr(Constants.ATTR_ID);
+        if (idSuffix.equals(""))
+            idSuffix = xmlItem.getAttr(Constants.ATTR_NAME);
+        xmlItem.setId(xmlItem.getId() + "-" + idSuffix);
+
+        xmlItem.setDomNode(node);
+
+        NodeList nodeList = node.getChildNodes();
+        int totalNumOfChildren = nodeList.getLength();
+        for (int i = 0; i < totalNumOfChildren; ++i) {
+            Node child = nodeList.item(i);
+            if (child.getNodeType() == Node.ELEMENT_NODE) {
+                xmlItem.addChildTag(child.getNodeName());
+                String nodeTag = child.getNodeName().toLowerCase();
+                xmlItem.addChildNode(nodeTag, this.traverse(child, xmlItem, nodeTag));
+            }
         }
 
-        return null;
+        return xmlItem;
     }
 }

@@ -12,7 +12,9 @@ import utils.Constants;
 public class XMLItem {
     private Node domNode;
     private Map<String, String> mapAttr;
-    private Map<String, Boolean> mapChildTags;
+    private Map<String, Boolean> mapChildTags; // Has all tags
+    private Map<String, List<XMLItem>> mapChildNodes; // Has only intended nodes
+
     private String id;
     private String itemType;
 
@@ -21,6 +23,7 @@ public class XMLItem {
         this.id = id;
         this.mapAttr = new HashMap<>();
         this.mapChildTags = new HashMap<>();
+        this.mapChildNodes = new HashMap<>();
     }
 
     public String getItemType() {
@@ -74,7 +77,26 @@ public class XMLItem {
     }
 
     public void addChildTag(String tag) {
-        if (!this.mapChildTags.containsKey(tag))
-            this.mapChildTags.put(tag, true);
+        this.mapChildTags.put(tag, true);
+    }
+
+    public Map<String, List<XMLItem>> getMapChildNodes() {
+        return mapChildNodes;
+    }
+
+    public void setMapChildNodes(Map<String, List<XMLItem>> mapChildNodes) {
+        this.mapChildNodes = mapChildNodes;
+    }
+
+    public void addChildNode(String tag, XMLItem node) {
+        if (!this.mapChildNodes.containsKey(tag))
+            this.mapChildNodes.put(tag, new ArrayList<XMLItem>());
+        this.mapChildNodes.get(tag).add(node);
+    }
+
+    public List<XMLItem> getChildNodes(String tag) {
+        if (!this.mapChildNodes.containsKey(tag))
+            return new ArrayList<XMLItem>();
+        return this.mapChildNodes.get(tag);
     }
 }

@@ -18,4 +18,7 @@ public class Constants {
     public static final String EMPTY_STRING = "";
     public static final String NODE_TYPE_ROOT = "root";
     public static final String NODE_TYPE_BEANS = "beans";
+    public static final String NODE_TYPE_BEAN = "bean";
+    public static final String ATTR_ID = "id";
+    public static final String ATTR_NAME = "name";
 }
