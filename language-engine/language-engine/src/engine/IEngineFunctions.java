@@ -21,7 +21,7 @@ public interface IEngineFunctions {
      * Return all XMLs for the project
      * @return
      */
-    DataResult<List<FileItem>> getXMLs();
+    DataResult<List<XMLItem>> getXMLs();
 
     /**
      * Get the argIdx no. argument of methodName invocation in class c

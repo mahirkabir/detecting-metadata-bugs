@@ -1,27 +1,34 @@
 package engine;
 
+import java.io.IOException;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import models.BooleanItem;
 import models.ClassItem;
 import models.DataResult;
-import models.FileItem;
 import models.MethodItem;
 import models.StringItem;
 import models.XMLItem;
 import utils.ClassHelper;
 import utils.Constants;
+import utils.XMLHelper;
 import utils.caching.ICache;
 
 public class EngineFunctions implements IEngineFunctions {
     private String projectPath;
     private ClassHelper classHelper;
+    private XMLHelper xmlHelper;
     private ICache cache;
 
     public EngineFunctions(String projectPath, ICache cache) {
         super();
         this.projectPath = projectPath;
         this.classHelper = new ClassHelper(this.projectPath);
+        this.xmlHelper = new XMLHelper(this.projectPath);
         this.cache = cache;
     }
 
@@ -32,17 +39,24 @@ public class EngineFunctions implements IEngineFunctions {
         if (result != null)
             return result;
 
-        classHelper.loadJavaFiles(this.projectPath); // Once loaded, it will be ready everywhere in this class
-        result = new DataResult<List<ClassItem>>(Constants.TYPE_CLASS, classHelper.getClasses());
+        this.classHelper.loadJavaFiles(this.projectPath); // Once loaded, it will be ready everywhere in this class
+        result = new DataResult<List<ClassItem>>(Constants.TYPE_CLASS_LIST, classHelper.getClasses());
 
         cache.addGetClasses(result);
         return result;
     }
 
     @Override
-    public DataResult<List<FileItem>> getXMLs() {
-        // TODO Auto-generated method stub
-        return null;
+    public DataResult<List<XMLItem>> getXMLs() {
+        DataResult<List<XMLItem>> result = null;
+
+        try {
+            result = new DataResult<List<XMLItem>>(Constants.TYPE_XML_LIST, this.xmlHelper.getXMLs());
+        } catch (SAXException | IOException | ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     @Override

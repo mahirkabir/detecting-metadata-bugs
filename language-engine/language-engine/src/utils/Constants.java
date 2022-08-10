@@ -10,6 +10,9 @@ public class Constants {
     public static final String TYPE_STRING = "String";
     public static final String TYPE_BOOLEAN = "bool";
     public static final String TYPE_CLASS = "class";
+    public static final String TYPE_CLASS_LIST = "class-list";
+    public static final String TYPE_XML = "xml";
+    public static final String TYPE_XML_LIST = "xml-list";
     public static final String EXPRESSION_NOT = "Not";
     public static final String DECL_STMNT = "DeclStmnt";
     public static final String IF_STMNT = "IfStmnt";
