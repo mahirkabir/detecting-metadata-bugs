@@ -52,7 +52,7 @@ public class EngineFunctions implements IEngineFunctions {
     @Override
     public DataResult<List<XMLItem>> getXMLs() {
         String functionCall = "getXMLs()";
-        DataResult<List<XMLItem>> result = cache.fetchFunctionCall(functionCall);
+        DataResult<List<XMLItem>> result = this.cache.fetchFunctionCall(functionCall);
 
         if (result == null) {
             try {
@@ -91,9 +91,16 @@ public class EngineFunctions implements IEngineFunctions {
     }
 
     @Override
-    public DataResult<XMLItem> getElms(XMLItem xml, String selector) {
-        // TODO Auto-generated method stub
-        return null;
+    public DataResult<List<XMLItem>> getElms(XMLItem xml, String selector) {
+        String functionCall = "getElms()" + "||" + xml.getId() + "||" + selector;
+        DataResult<List<XMLItem>> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            result = new DataResult<List<XMLItem>>(Constants.TYPE_XML_LIST, this.xmlHelper.getElms(xml, selector));
+            cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
     }
 
     @Override

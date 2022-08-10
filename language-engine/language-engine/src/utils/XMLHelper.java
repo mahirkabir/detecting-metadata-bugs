@@ -75,6 +75,10 @@ public class XMLHelper {
         return xmlItems;
     }
 
+    public List<XMLItem> getElms(XMLItem parent, String selector) {
+        return parent.getChildNodes(selector);
+    }
+
     /**
      * Read and parse a single XML file
      * 

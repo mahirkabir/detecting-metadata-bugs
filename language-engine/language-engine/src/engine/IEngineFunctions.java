@@ -5,7 +5,6 @@ import java.util.List;
 import models.BooleanItem;
 import models.ClassItem;
 import models.DataResult;
-import models.FileItem;
 import models.MethodItem;
 import models.StringItem;
 import models.XMLItem;
@@ -57,12 +56,12 @@ public interface IEngineFunctions {
     DataResult<List<String>> getAnnoAttr(ClassItem c, String annotation, String attr);
 
     /**
-     * Select Node from xml using selector
+     * Select Nodes from xml using selector
      * @param xml
      * @param selector
      * @return
      */
-    DataResult<XMLItem> getElms(XMLItem xml, String selector);
+    DataResult<List<XMLItem>> getElms(XMLItem xml, String selector);
 
     /**
      * Get attrName attribute value from xml node
