@@ -24,4 +24,5 @@ public class Constants {
     public static final String NODE_TYPE_BEAN = "bean";
     public static final String ATTR_ID = "id";
     public static final String ATTR_NAME = "name";
+    public static final String PACKAGE = "package";
 }

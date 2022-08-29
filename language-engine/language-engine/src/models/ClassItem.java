@@ -3,10 +3,20 @@ package models;
 import java.util.List;
 
 public class ClassItem extends JItem {
+	private String javaFilename;
 	private List<FieldItem> fields;
 	private List<MethodItem> methods;
 	private List<AnnotationItem> annotations;
 	private List<InvocationItem> invocations;
+
+	public ClassItem(String javaFilename) {
+		super();
+		this.javaFilename = javaFilename;
+	}
+
+	public String getFilename() {
+		return this.javaFilename;
+	}
 
 	public List<FieldItem> getFields() {
 		return fields;

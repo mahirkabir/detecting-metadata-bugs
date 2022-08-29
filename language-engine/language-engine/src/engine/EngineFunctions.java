@@ -34,19 +34,15 @@ public class EngineFunctions implements IEngineFunctions {
 
     @Override
     public DataResult<List<ClassItem>> getClasses() {
-        // DataResult<List<ClassItem>> result = cache.fetchGetClasses();
+        String functionCall = "getClasses()";
+        DataResult<List<ClassItem>> result = this.cache.fetchFunctionCall(functionCall);
 
-        // if (result != null)
-        // return result;
+        if (result == null) {
+            result = new DataResult<List<ClassItem>>(Constants.TYPE_CLASS_LIST, this.classHelper.getClasses());
+            cache.addFunctionCall(functionCall, result);
+        }
 
-        // this.classHelper.loadJavaFiles(this.projectPath); // Once loaded, it will be
-        // ready everywhere in this class
-        // result = new DataResult<List<ClassItem>>(Constants.TYPE_CLASS_LIST,
-        // classHelper.getClasses());
-
-        // cache.addGetClasses(result);
-        // return result;
-        return null;
+        return result;
     }
 
     @Override
