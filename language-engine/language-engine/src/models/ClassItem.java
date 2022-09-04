@@ -2,6 +2,8 @@ package models;
 
 import java.util.List;
 
+import utils.Constants;
+
 public class ClassItem extends JItem {
 	private String javaFilename;
 	private List<FieldItem> fields;
@@ -11,6 +13,7 @@ public class ClassItem extends JItem {
 
 	public ClassItem(String javaFilename) {
 		super();
+		super.setType(Constants.TYPE_CLASS);
 		this.javaFilename = javaFilename;
 	}
 

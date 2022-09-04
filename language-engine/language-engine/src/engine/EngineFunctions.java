@@ -10,6 +10,8 @@ import org.xml.sax.SAXException;
 import models.BooleanItem;
 import models.ClassItem;
 import models.DataResult;
+import models.FieldItem;
+import models.InvocationItem;
 import models.MethodItem;
 import models.StringItem;
 import models.XMLItem;
@@ -167,6 +169,24 @@ public class EngineFunctions implements IEngineFunctions {
 
     @Override
     public DataResult<StringItem> getSN(String className) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public DataResult<List<FieldItem>> getFields(ClassItem c) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public DataResult<List<MethodItem>> getMethods(ClassItem c) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public DataResult<List<InvocationItem>> getInvocations(ClassItem c) {
         // TODO Auto-generated method stub
         return null;
     }

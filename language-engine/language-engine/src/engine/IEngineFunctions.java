@@ -5,6 +5,8 @@ import java.util.List;
 import models.BooleanItem;
 import models.ClassItem;
 import models.DataResult;
+import models.FieldItem;
+import models.InvocationItem;
 import models.MethodItem;
 import models.StringItem;
 import models.XMLItem;
@@ -153,4 +155,25 @@ public interface IEngineFunctions {
      * @return
      */
     DataResult<StringItem> getSN(String className);
+
+    /**
+     * Get all fields of class c
+     * @param c
+     * @return
+     */
+    DataResult<List<FieldItem>> getFields(ClassItem c);
+
+    /**
+     * Get all methods of class c
+     * @param c
+     * @return
+     */
+    DataResult<List<MethodItem>> getMethods(ClassItem c);
+
+    /**
+     * Get all invocations of any methods inside class c
+     * @param c
+     * @return
+     */
+    DataResult<List<InvocationItem>> getInvocations(ClassItem c);
 }
