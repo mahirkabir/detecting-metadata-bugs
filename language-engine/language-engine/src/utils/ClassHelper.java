@@ -136,7 +136,7 @@ public class ClassHelper {
 
 			String classname = decl.getNameAsString();
 			classItem.setName(classname);
-			if (packageName.isEmpty())
+			if (packageName == null || packageName.isEmpty())
 				classItem.setFqn(classname);
 			else
 				classItem.setFqn(packageName + "." + classname);
