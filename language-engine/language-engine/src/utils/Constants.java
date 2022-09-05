@@ -25,4 +25,5 @@ public class Constants {
     public static final String ATTR_ID = "id";
     public static final String ATTR_NAME = "name";
     public static final String PACKAGE = "package";
+    public static final String FUNCTION_GET_CLASSES = "getClasses";
 }

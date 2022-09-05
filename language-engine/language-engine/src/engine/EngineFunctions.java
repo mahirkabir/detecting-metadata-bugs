@@ -15,6 +15,8 @@ import models.InvocationItem;
 import models.MethodItem;
 import models.StringItem;
 import models.XMLItem;
+import parser.ASTFunctionOrId;
+import parser.ASTIdentifier;
 import utils.ClassHelper;
 import utils.Constants;
 import utils.XMLHelper;
@@ -25,13 +27,15 @@ public class EngineFunctions implements IEngineFunctions {
     private ClassHelper classHelper;
     private XMLHelper xmlHelper;
     private ICache cache;
+    private IEngineDecl engineDecl;
 
-    public EngineFunctions(String projectPath, ICache cache) {
+    public EngineFunctions(String projectPath, ICache cache, IEngineDecl engineDecl) {
         super();
         this.projectPath = projectPath;
         this.classHelper = new ClassHelper(this.projectPath);
         this.xmlHelper = new XMLHelper(this.projectPath);
         this.cache = cache;
+        this.engineDecl = engineDecl;
     }
 
     @Override
@@ -189,6 +193,19 @@ public class EngineFunctions implements IEngineFunctions {
     public DataResult<List<InvocationItem>> getInvocations(ClassItem c) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public DataResult callFunction(ASTFunctionOrId funcNode) {
+        // TODO: Make other methods private
+        DataResult result = null;
+        ASTIdentifier name = (ASTIdentifier) funcNode.jjtGetChild(0);
+        switch (name.getIdentifier()) {
+            case Constants.FUNCTION_GET_CLASSES:
+                result = this.getClasses();
+                break;
+        }
+        return result;
     }
 
 }

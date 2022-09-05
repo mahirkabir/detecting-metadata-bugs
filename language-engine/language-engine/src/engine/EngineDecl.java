@@ -39,6 +39,11 @@ public class EngineDecl implements IEngineDecl {
         }
     }
 
+    @Override
+    public void declareVariable(String varName, DataResult value) {
+        this.updateVariableInMap(varName, value);
+    }
+
     private void updateVariableInMap(String varName, DataResult value) {
         StackFrame topFrame = this.stackFrames.get(this.stackFrames.size() - 1);
         Map<String, DataResult> mapVars = topFrame.getMapVariables();

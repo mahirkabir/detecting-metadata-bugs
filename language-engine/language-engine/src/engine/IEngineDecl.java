@@ -24,10 +24,20 @@ public interface IEngineDecl {
 
     /**
      * Declare variable in the top most frame in the frame-stack
+     * Using AST class
      * 
      * @param declNode
      */
     void declareVariable(ASTDeclStmnt declNode);
+
+    /**
+     * Declare variable in the top most frame in the frame-stack
+     * Using variable name and value
+     * 
+     * @param varName
+     * @param value
+     */
+    void declareVariable(String varName, DataResult value);
 
     /**
      * Declare function in the top most frame in the frame-stack

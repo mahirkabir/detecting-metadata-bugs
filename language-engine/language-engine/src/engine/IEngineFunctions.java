@@ -10,22 +10,34 @@ import models.InvocationItem;
 import models.MethodItem;
 import models.StringItem;
 import models.XMLItem;
+import parser.ASTFunctionOrId;
 
 public interface IEngineFunctions {
     /**
+     * Determine and call function to return result
+     * 
+     * @param funcNode
+     * @return
+     */
+    DataResult callFunction(ASTFunctionOrId funcNode);
+
+    /**
      * Return all class items for the project
+     * 
      * @return
      */
     DataResult<List<ClassItem>> getClasses();
 
     /**
      * Return all XMLs for the project
+     * 
      * @return
      */
     DataResult<List<XMLItem>> getXMLs();
 
     /**
      * Get the argIdx no. argument of methodName invocation in class c
+     * 
      * @param c
      * @param methodName
      * @param argIdx
@@ -35,6 +47,7 @@ public interface IEngineFunctions {
 
     /**
      * Check if methodName is invoked in class c
+     * 
      * @param c
      * @param methodName
      * @return
@@ -43,6 +56,7 @@ public interface IEngineFunctions {
 
     /**
      * Get the fully qualified name of class c
+     * 
      * @param c
      * @return
      */
@@ -50,6 +64,7 @@ public interface IEngineFunctions {
 
     /**
      * Get the attr attribute value for annotation in class c
+     * 
      * @param c
      * @param annotation
      * @param attr
@@ -59,6 +74,7 @@ public interface IEngineFunctions {
 
     /**
      * Select Nodes from xml using selector
+     * 
      * @param xml
      * @param selector
      * @return
@@ -67,6 +83,7 @@ public interface IEngineFunctions {
 
     /**
      * Get attrName attribute value from xml node
+     * 
      * @param node
      * @param attrName
      * @return
@@ -75,6 +92,7 @@ public interface IEngineFunctions {
 
     /**
      * Check if selector can fetch a node in xml
+     * 
      * @param xml
      * @param selector
      * @return
@@ -83,6 +101,7 @@ public interface IEngineFunctions {
 
     /**
      * Get name of the method
+     * 
      * @param m
      * @return
      */
@@ -90,6 +109,7 @@ public interface IEngineFunctions {
 
     /**
      * Check if path exists
+     * 
      * @param path
      * @return
      */
@@ -97,6 +117,7 @@ public interface IEngineFunctions {
 
     /**
      * Get substring starting from index - st
+     * 
      * @param str
      * @param st
      * @return
@@ -105,6 +126,7 @@ public interface IEngineFunctions {
 
     /**
      * Get substring starting from index - st, & ending at index - en
+     * 
      * @param str
      * @param st
      * @param en
@@ -114,6 +136,7 @@ public interface IEngineFunctions {
 
     /**
      * Convert str to uppercase
+     * 
      * @param str
      * @return
      */
@@ -121,6 +144,7 @@ public interface IEngineFunctions {
 
     /**
      * Get list of entities of type entity having annotation
+     * 
      * @param annotation
      * @param entityType
      * @return
@@ -129,6 +153,7 @@ public interface IEngineFunctions {
 
     /**
      * Join lists
+     * 
      * @param lists
      * @return
      */
@@ -136,6 +161,7 @@ public interface IEngineFunctions {
 
     /**
      * Check if list is empty
+     * 
      * @param list
      * @return
      */
@@ -143,6 +169,7 @@ public interface IEngineFunctions {
 
     /**
      * Check if string ends with suffix
+     * 
      * @param str
      * @param suffix
      * @return
@@ -151,6 +178,7 @@ public interface IEngineFunctions {
 
     /**
      * Get short name for class - className
+     * 
      * @param className
      * @return
      */
@@ -158,6 +186,7 @@ public interface IEngineFunctions {
 
     /**
      * Get all fields of class c
+     * 
      * @param c
      * @return
      */
@@ -165,6 +194,7 @@ public interface IEngineFunctions {
 
     /**
      * Get all methods of class c
+     * 
      * @param c
      * @return
      */
@@ -172,6 +202,7 @@ public interface IEngineFunctions {
 
     /**
      * Get all invocations of any methods inside class c
+     * 
      * @param c
      * @return
      */
