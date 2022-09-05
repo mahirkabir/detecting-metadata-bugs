@@ -1,6 +1,6 @@
 package engine;
 
-import models.EvalResult;
+import models.DataResult;
 import parser.ASTConditionalAndExp;
 import parser.ASTConditionalEqExp;
 import parser.ASTConditionalOrExp;
@@ -45,23 +45,23 @@ public interface IEngineEvaluate {
      * Evaluate Simple Expression
      * 
      * @param simExp
-     * @return EvalResult object
+     * @return DataResult object
      */
-    EvalResult evalSimExp(ASTSimExp simExp);
+    DataResult evalSimExp(ASTSimExp simExp);
 
     /**
      * Evaluate Functions
      * 
      * @param funcExp
-     * @return EvalResult object
+     * @return DataResult object
      */
-    EvalResult evalFunction(ASTFunctionOrId funcExp);
+    DataResult evalFunction(ASTFunctionOrId funcExp);
 
     /**
      * Evaluate Id
      * 
      * @param idExp
-     * @return EvalResult Object
+     * @return DataResult Object
      */
-    EvalResult evalId(ASTFunctionOrId idExp);
+    DataResult evalId(ASTFunctionOrId idExp);
 }

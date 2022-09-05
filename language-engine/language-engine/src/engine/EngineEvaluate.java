@@ -1,5 +1,8 @@
 package engine;
 
+import javax.xml.crypto.Data;
+
+import models.DataResult;
 import models.EvalResult;
 import parser.ASTConditionalAndExp;
 import parser.ASTConditionalEqExp;
@@ -16,6 +19,7 @@ import utils.Logger;
 public class EngineEvaluate implements IEngineEvaluate {
 
     IEngineDecl engineDecl;
+
     public EngineEvaluate(IEngineDecl engineDecl) {
         super();
         this.engineDecl = engineDecl;
@@ -98,27 +102,27 @@ public class EngineEvaluate implements IEngineEvaluate {
     @Override
     public boolean evalOperator(ASTConditionalEqExp eqExp) {
         Logger.log("ConditionalEqExp");
-        EvalResult firstResult = evalSimExp((ASTSimExp) eqExp.jjtGetChild(0));
-        EvalResult secondResult = evalSimExp((ASTSimExp) eqExp.jjtGetChild(1));
+        DataResult firstResult = evalSimExp((ASTSimExp) eqExp.jjtGetChild(0));
+        DataResult secondResult = evalSimExp((ASTSimExp) eqExp.jjtGetChild(1));
         return Helper.isEqual(firstResult, secondResult);
     }
 
     @Override
-    public EvalResult evalFunction(ASTFunctionOrId funcExp) {
+    public DataResult evalFunction(ASTFunctionOrId funcExp) {
         Logger.log("Function");
-        return new EvalResult();
+        return null;
     }
 
     @Override
-    public EvalResult evalId(ASTFunctionOrId idExp) {
+    public DataResult evalId(ASTFunctionOrId idExp) {
         Logger.log("Id");
         ASTIdentifier id = ((ASTIdentifier) idExp.jjtGetChild(0));
-        EvalResult result = this.engineDecl.extractVariable(id.getIdentifier());
+        DataResult result = this.engineDecl.extractVariable(id.getIdentifier());
         return result;
     }
 
     @Override
-    public EvalResult evalSimExp(ASTSimExp simExp) {
+    public DataResult evalSimExp(ASTSimExp simExp) {
         Logger.log("SimExp");
 
         boolean isNot = false;
@@ -129,7 +133,7 @@ public class EngineEvaluate implements IEngineEvaluate {
         }
 
         Node functionOrIdNode = simExp.jjtGetChild(0);
-        EvalResult result = new EvalResult();
+        DataResult result = null;
         switch (functionOrIdNode.jjtGetNumChildren()) {
             case 1:
                 // Only one child node exists. FunctionTail is not there. This child is an ID
@@ -141,7 +145,7 @@ public class EngineEvaluate implements IEngineEvaluate {
                 break;
         }
 
-        if (isNot && result.getType().equals(Constants.TYPE_BOOLEAN)) {
+        if (isNot && result != null && result.getType().equals(Constants.TYPE_BOOLEAN)) {
             if (result.getResult().equals(Constants.BOOLEAN_FALSE))
                 result.setResult(Constants.BOOLEAN_TRUE);
             else

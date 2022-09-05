@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import models.EvalResult;
+import models.DataResult;
 import models.StackFrame;
 import parser.ASTDeclStmnt;
 import parser.ASTFunctionOrId;
 import parser.ASTIdentifier;
 import parser.ASTLiteral;
 import parser.ASTType;
+import utils.Constants;
 import utils.Logger;
 
 public class EngineDecl implements IEngineDecl {
@@ -28,16 +29,22 @@ public class EngineDecl implements IEngineDecl {
         // TODO: Need to be able to compare with literals (Not necessary now)
         String type = ((ASTType) declNode.jjtGetChild(0)).getType();
         String varName = ((ASTIdentifier) declNode.jjtGetChild(1)).getIdentifier();
-        String value = ((ASTLiteral) declNode.jjtGetChild(2)).getLitValue();
-        this.updateVariableInMap(type, varName, value);
+
+        switch (type) {
+            case Constants.TYPE_STRING:
+                String value = ((ASTLiteral) declNode.jjtGetChild(2)).getLitValue();
+                this.updateVariableInMap(varName, new DataResult<String>(type, value));
+                break;
+            // TODO: Other types
+        }
     }
 
-    private void updateVariableInMap(String type, String varName, String value) {
+    private void updateVariableInMap(String varName, DataResult value) {
         StackFrame topFrame = this.stackFrames.get(this.stackFrames.size() - 1);
-        Map<String, EvalResult> mapVars = topFrame.getMapVariables();
+        Map<String, DataResult> mapVars = topFrame.getMapVariables();
         if (mapVars.containsKey(varName))
             System.out.println(varName + " already existed. Replaced.");
-        mapVars.put(varName, new EvalResult(type, value));
+        mapVars.put(varName, value);
         topFrame.setMapVariables(mapVars);
         this.stackFrames.set(this.stackFrames.size() - 1, topFrame);
     }
@@ -54,12 +61,12 @@ public class EngineDecl implements IEngineDecl {
      * 
      */
     @Override
-    public EvalResult extractVariable(String var) {
-        EvalResult result = null;
+    public DataResult extractVariable(String var) {
+        DataResult result = null;
         int totalStackFrames = this.stackFrames.size();
         for (int i = totalStackFrames - 1; i >= 0; --i) {
             StackFrame frame = this.stackFrames.get(i);
-            Map<String, EvalResult> mapVars = frame.getMapVariables();
+            Map<String, DataResult> mapVars = frame.getMapVariables();
             if (mapVars.containsKey(var)) {
                 result = mapVars.get(var);
                 break;
@@ -73,7 +80,7 @@ public class EngineDecl implements IEngineDecl {
     }
 
     @Override
-    public EvalResult extractFunction(String funcName, String[] params) {
+    public DataResult extractFunction(String funcName, String[] params) {
         return null;
     }
 

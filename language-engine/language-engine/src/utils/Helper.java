@@ -1,14 +1,13 @@
 package utils;
 
-import models.EvalResult;
+import models.DataResult;
 
 public class Helper {
-    public static boolean isEqual(EvalResult firstResult, EvalResult secondResult) {
+    public static boolean isEqual(DataResult firstResult, DataResult secondResult) {
         if (firstResult.getType().equals("String")) {
             return firstResult.getResult().equals(secondResult.getResult());
         } else if (firstResult.getType().equals("bool")) {
-            return Boolean.parseBoolean(
-                    firstResult.getResult()) == Boolean.parseBoolean(secondResult.getResult());
+            return firstResult.getResult() == secondResult.getResult();
         }
         // Note: Currently, we do not have equality comparisons for class, method,
         // field, & file type

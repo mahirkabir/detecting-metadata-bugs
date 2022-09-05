@@ -1,6 +1,6 @@
 package engine;
 
-import models.EvalResult;
+import models.DataResult;
 import parser.ASTDeclStmnt;
 import parser.ASTFunctionOrId;
 
@@ -11,7 +11,7 @@ public interface IEngineDecl {
      * @param var
      * @return
      */
-    EvalResult extractVariable(String var);
+    DataResult extractVariable(String var);
 
     /**
      * Extract the value of the function with the params as arguments
@@ -20,7 +20,7 @@ public interface IEngineDecl {
      * @param params
      * @return
      */
-    EvalResult extractFunction(String funcName, String[] params);
+    DataResult extractFunction(String funcName, String[] params);
 
     /**
      * Declare variable in the top most frame in the frame-stack
