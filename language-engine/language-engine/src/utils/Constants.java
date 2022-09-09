@@ -18,6 +18,7 @@ public class Constants {
     public static final String IF_STMNT = "IfStmnt";
     public static final String FOR_STMNT = "ForStmnt";
     public static final String ASSERT_STMNT = "AssertStmnt";
+    public static final String AST_EXISTS = "Exists";
     public static final String EMPTY_STRING = "";
     public static final String NODE_TYPE_ROOT = "root";
     public static final String NODE_TYPE_BEANS = "beans";

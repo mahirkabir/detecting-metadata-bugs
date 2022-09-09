@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.github.javaparser.utils.Pair;
 
 import models.DataResult;
+import parser.ASTAssertStmnt;
 import parser.ASTDeclStmnt;
 import parser.ASTExpression;
 import parser.ASTForStmnt;
@@ -65,32 +66,10 @@ public class EngineMain {
 	}
 
 	/**
-	 * Process a for statement
+	 * Process a node
 	 * 
-	 * @param forStmnt
+	 * @param node
 	 */
-	private static void processFor(ASTForStmnt forStmnt) {
-		engineDecl.createFrame();
-		Pair<ASTType, ASTIdentifier> pIterator = getIterator(forStmnt);
-		DataResult containerValue = getContainer(forStmnt);
-
-		String iteratorType = pIterator.a.getType();
-		String iteratorVar = pIterator.b.getIdentifier();
-		ArrayList containerList = (ArrayList) containerValue.getResult();
-		int totalChildren = forStmnt.jjtGetNumChildren();
-
-		for (Object element : containerList) {
-			DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
-			engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
-
-			for (int i = 2; i < totalChildren; ++i) {
-				Node forChild = forStmnt.jjtGetChild(i);
-				processNode(forChild);
-			}
-		}
-		engineDecl.removeFrame();
-	}
-
 	private static void processNode(Node node) {
 		switch (node.toString()) {
 			case Constants.IF_STMNT:
@@ -113,21 +92,91 @@ public class EngineMain {
 				break;
 
 			case Constants.ASSERT_STMNT:
+				ASTAssertStmnt assertStmnt = (ASTAssertStmnt) node;
+				System.out.println("Start: " + assertStmnt);
+				processAssert(assertStmnt);
+				System.out.println("End: " + assertStmnt);
 				break;
 
 		}
 	}
 
 	/**
+	 * Process a for statement
+	 * 
+	 * @param forStmnt
+	 */
+	private static void processFor(ASTForStmnt forStmnt) {
+		engineDecl.createFrame();
+		ASTExpression forExp = (ASTExpression) forStmnt.jjtGetChild(0);
+		Pair<ASTType, ASTIdentifier> pIterator = getIterator(forExp);
+		ASTExpression forContExp = (ASTExpression) forStmnt.jjtGetChild(1);
+		DataResult containerValue = getContainer(forContExp);
+
+		String iteratorType = pIterator.a.getType();
+		String iteratorVar = pIterator.b.getIdentifier();
+		ArrayList containerList = (ArrayList) containerValue.getResult();
+		int totalChildren = forStmnt.jjtGetNumChildren();
+
+		for (Object element : containerList) {
+			DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
+			engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
+
+			for (int i = 2; i < totalChildren; ++i) {
+				Node forChild = forStmnt.jjtGetChild(i);
+				processNode(forChild);
+			}
+		}
+		engineDecl.removeFrame();
+	}
+
+	/**
+	 * Process an assert statement
+	 * 
+	 * @param assertStmnt
+	 */
+	private static void processAssert(ASTAssertStmnt assertStmnt) {
+		engineDecl.createFrame();
+		ASTExpression assertExp = (ASTExpression) assertStmnt.jjtGetChild(0);
+		ASTSimExp assertSimExp = (ASTSimExp) assertExp.jjtGetChild(0);
+		Node firstChild = assertSimExp.jjtGetChild(0);
+		if (firstChild.toString().equals(Constants.AST_EXISTS)) {
+			ASTExpression iterationExp = (ASTExpression) assertSimExp.jjtGetChild(1);
+			Pair<ASTType, ASTIdentifier> pIterator = getIterator(iterationExp);
+			ASTExpression containerExp = (ASTExpression) assertSimExp.jjtGetChild(2);
+			DataResult containerValue = getContainer(containerExp);
+
+			String iteratorType = pIterator.a.getType();
+			String iteratorVar = pIterator.b.getIdentifier();
+			ArrayList containerList = (ArrayList) containerValue.getResult();
+
+			boolean assertPass = true;
+			for (Object element : containerList) {
+				DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
+				engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
+				ASTExpression booleanExp = (ASTExpression) assertSimExp.jjtGetChild(3);
+				assertPass &= evaluator.evalBooleanExpr(booleanExp);
+			}
+
+			if (!assertPass) {
+				System.out.println("Assert Failed");
+			}
+		} else {
+
+		}
+
+		engineDecl.removeFrame();
+	}
+
+	/**
 	 * Get loop container
 	 * 
-	 * @param loopStmnt
+	 * @param containerExp
 	 * @return
 	 */
-	private static DataResult getContainer(Node loopStmnt) {
+	private static DataResult getContainer(ASTExpression containerExp) {
 		DataResult containerValue = null;
 
-		ASTExpression containerExp = (ASTExpression) loopStmnt.jjtGetChild(1);
 		ASTSimExp containerSimExp = (ASTSimExp) containerExp.jjtGetChild(0);
 		ASTFunctionOrId containerFunctionOrId = (ASTFunctionOrId) containerSimExp.jjtGetChild(0);
 		int totalChildren = containerFunctionOrId.jjtGetNumChildren();
@@ -147,14 +196,13 @@ public class EngineMain {
 	/**
 	 * Get loop iterator
 	 * 
-	 * @param stmnt
+	 * @param iteratorExp
 	 * @return
 	 */
-	private static Pair<ASTType, ASTIdentifier> getIterator(Node stmnt) {
-		ASTExpression iteratorExp = (ASTExpression) stmnt.jjtGetChild(0);
-		ASTSimExp iteratorSimExpr = (ASTSimExp) iteratorExp.jjtGetChild(0);
-		ASTType iteratorType = (ASTType) iteratorSimExpr.jjtGetChild(0);
-		ASTIdentifier iteratorId = (ASTIdentifier) iteratorSimExpr.jjtGetChild(1);
+	private static Pair<ASTType, ASTIdentifier> getIterator(ASTExpression iteratorExp) {
+		ASTSimExp iteratorSimExp = (ASTSimExp) iteratorExp.jjtGetChild(0);
+		ASTType iteratorType = (ASTType) iteratorSimExp.jjtGetChild(0);
+		ASTIdentifier iteratorId = (ASTIdentifier) iteratorSimExp.jjtGetChild(1);
 		return new Pair<ASTType, ASTIdentifier>(iteratorType, iteratorId);
 	}
 }
