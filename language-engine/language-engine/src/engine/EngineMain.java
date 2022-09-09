@@ -10,6 +10,7 @@ import parser.ASTDeclStmnt;
 import parser.ASTExpression;
 import parser.ASTForStmnt;
 import parser.ASTFunctionOrId;
+import parser.ASTFunctionTail;
 import parser.ASTIdentifier;
 import parser.ASTIfStmnt;
 import parser.ASTSimExp;
@@ -138,31 +139,45 @@ public class EngineMain {
 	private static void processAssert(ASTAssertStmnt assertStmnt) {
 		engineDecl.createFrame();
 		ASTExpression assertExp = (ASTExpression) assertStmnt.jjtGetChild(0);
-		ASTSimExp assertSimExp = (ASTSimExp) assertExp.jjtGetChild(0);
-		Node firstChild = assertSimExp.jjtGetChild(0);
-		if (firstChild.toString().equals(Constants.AST_EXISTS)) {
-			ASTExpression iterationExp = (ASTExpression) assertSimExp.jjtGetChild(1);
-			Pair<ASTType, ASTIdentifier> pIterator = getIterator(iterationExp);
-			ASTExpression containerExp = (ASTExpression) assertSimExp.jjtGetChild(2);
-			DataResult containerValue = getContainer(containerExp);
+		Node assertExpChild = assertExp.jjtGetChild(0);
+		if (assertExpChild.toString().equals(Constants.SIMPLE_EXP)) {
+			ASTSimExp assertSimExp = (ASTSimExp) assertExpChild;
+			Node firstChild = assertSimExp.jjtGetChild(0);
+			if (firstChild.toString().equals(Constants.EXISTS)) {
+				ASTExpression iterationExp = (ASTExpression) assertSimExp.jjtGetChild(1);
+				Pair<ASTType, ASTIdentifier> pIterator = getIterator(iterationExp);
+				ASTExpression containerExp = (ASTExpression) assertSimExp.jjtGetChild(2);
+				DataResult containerValue = getContainer(containerExp);
 
-			String iteratorType = pIterator.a.getType();
-			String iteratorVar = pIterator.b.getIdentifier();
-			ArrayList containerList = (ArrayList) containerValue.getResult();
+				String iteratorType = pIterator.a.getType();
+				String iteratorVar = pIterator.b.getIdentifier();
+				ArrayList containerList = (ArrayList) containerValue.getResult();
 
-			boolean assertPass = true;
-			for (Object element : containerList) {
-				DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
-				engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
-				ASTExpression booleanExp = (ASTExpression) assertSimExp.jjtGetChild(3);
-				assertPass &= evaluator.evalBooleanExpr(booleanExp);
+				boolean assertPass = true;
+				for (Object element : containerList) {
+					DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
+					engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
+					ASTExpression booleanExp = (ASTExpression) assertSimExp.jjtGetChild(3);
+					assertPass &= evaluator.evalBooleanExpr(booleanExp);
+				}
+
+				if (!assertPass) {
+					System.out.println("Assert Failed");
+				}
+			} else {
+				ASTFunctionOrId functionOrId = (ASTFunctionOrId) firstChild;
+				if (functionOrId.jjtGetNumChildren() > 1) {
+					DataResult assertResult = engineFunctions.callFunction(functionOrId);
+					if (assertResult.getType().equals(Constants.TYPE_BOOLEAN)) {
+						if (!(Boolean) assertResult.getResult()) {
+							System.out.println("TODO: Assert failed");
+						}
+					}
+				}
 			}
 
-			if (!assertPass) {
-				System.out.println("Assert Failed");
-			}
 		} else {
-
+			System.out.println("TODO: Need to implement for assert(conditional expression)");
 		}
 
 		engineDecl.removeFrame();

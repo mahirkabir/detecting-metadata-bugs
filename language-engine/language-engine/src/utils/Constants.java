@@ -5,6 +5,7 @@ public class Constants {
     public static final String CONDITIONAL_AND_EXP = "ConditionalAndExp";
     public static final String CONDITIONAL_EQ_EXP = "ConditionalEqExp";
     public static final String SIMPLE_EXP = "SimExp";
+    public static final String EXISTS = "Exists";
     public static final String BOOLEAN_TRUE = "true";
     public static final String BOOLEAN_FALSE = "false";
     public static final String TYPE_STRING = "String";
@@ -18,7 +19,6 @@ public class Constants {
     public static final String IF_STMNT = "IfStmnt";
     public static final String FOR_STMNT = "ForStmnt";
     public static final String ASSERT_STMNT = "AssertStmnt";
-    public static final String AST_EXISTS = "Exists";
     public static final String EMPTY_STRING = "";
     public static final String NODE_TYPE_ROOT = "root";
     public static final String NODE_TYPE_BEANS = "beans";
@@ -27,4 +27,5 @@ public class Constants {
     public static final String ATTR_NAME = "name";
     public static final String PACKAGE = "package";
     public static final String FUNCTION_GET_CLASSES = "getClasses";
+    public static final String FUNCTION_PATH_EXISTS = "pathExists";
 }

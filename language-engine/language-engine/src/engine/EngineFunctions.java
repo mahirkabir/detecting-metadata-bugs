@@ -204,6 +204,11 @@ public class EngineFunctions implements IEngineFunctions {
             case Constants.FUNCTION_GET_CLASSES:
                 result = this.getClasses();
                 break;
+            case Constants.FUNCTION_PATH_EXISTS:
+                result = new DataResult<Boolean>(Constants.TYPE_BOOLEAN, false);
+                //TODO: Implement
+                break;
+
         }
         return result;
     }
