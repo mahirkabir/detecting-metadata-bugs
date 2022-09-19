@@ -1,24 +1,25 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import utils.Constants;
 
 public class ClassItem extends JItem {
-	private String javaFilename;
+	private String javaFilePath;
 	private List<FieldItem> fields;
 	private List<MethodItem> methods;
 	private List<AnnotationItem> annotations;
 	private List<InvocationItem> invocations;
 
-	public ClassItem(String javaFilename) {
+	public ClassItem(String javaFilePath) {
 		super();
 		super.setType(Constants.TYPE_CLASS);
-		this.javaFilename = javaFilename;
+		this.javaFilePath = javaFilePath;
 	}
 
-	public String getFilename() {
-		return this.javaFilename;
+	public String getFilePath() {
+		return this.javaFilePath;
 	}
 
 	public List<FieldItem> getFields() {
@@ -27,6 +28,12 @@ public class ClassItem extends JItem {
 
 	public void setFields(List<FieldItem> fields) {
 		this.fields = fields;
+	}
+
+	public void addField(FieldItem field) {
+		if (this.fields == null)
+			this.fields = new ArrayList<FieldItem>();
+		this.fields.add(field);
 	}
 
 	public List<MethodItem> getMethods() {

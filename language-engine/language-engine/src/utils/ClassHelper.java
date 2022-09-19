@@ -4,31 +4,27 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
 import com.github.javaparser.utils.SourceRoot;
 
-import models.AnnotationItem;
 import models.ClassItem;
 import models.FieldItem;
-import models.InvocationItem;
-import models.MethodItem;
 
 public class ClassHelper {
 	private List<String> javaFiles;
 	private String projectPath;
+	private Map<String, ClassItem> dictClass;
 
 	/**
 	 * Instantiate project path for the project
@@ -39,6 +35,7 @@ public class ClassHelper {
 		super();
 		this.javaFiles = new ArrayList<String>();
 		this.projectPath = projectPath;
+		this.dictClass = new HashMap<String, ClassItem>();
 	}
 
 	/**
@@ -83,6 +80,7 @@ public class ClassHelper {
 			classInstances.forEach(classInstance -> {
 				// classInstance is one of the classes located in javaFile
 				classes.add(classInstance);
+				this.dictClass.put(classInstance.getFqn(), classInstance);
 			});
 		}
 
@@ -119,7 +117,7 @@ public class ClassHelper {
 
 			System.out.println("========");
 
-			ClassItem classItem = new ClassItem(filename);
+			ClassItem classItem = new ClassItem(javaFilePath);
 			Node parentNode = decl.getParentNode().get();
 			if (packageName == null) {
 				// Only look for the package for the first class.
@@ -145,5 +143,48 @@ public class ClassHelper {
 		}
 
 		return classInstances;
+	}
+
+	/**
+	 * Get all fields for class with cFqn as fully qualified name
+	 * 
+	 * @param cFqn
+	 * @return
+	 */
+	public List<FieldItem> getFields(String cFqn) {
+		if (!this.dictClass.containsKey(cFqn))
+			return new ArrayList<FieldItem>();
+
+		ClassItem classItem = this.dictClass.get(cFqn);
+		if (classItem.getFields() != null)
+			// If already loaded before, return the memoized result
+			return classItem.getFields();
+
+		String javaFilePath = classItem.getFilePath();
+		List<FieldItem> fields = new FieldHelper(javaFilePath).GetFields();
+
+		Map<String, String> dictRelevantClasses = new HashMap<String, String>();
+		for (Map.Entry<String, ClassItem> entry : this.dictClass.entrySet()) {
+			// Collecting all classes in the javaFilePath
+			// Because, FieldHelper will get all fields from javaFilePath
+			// We need to assign each field to the corresponding class using the class SN
+			// Note: This will not be an extra O(N) operation as for each java file, it will
+			// be done only once. For the later times, memoized values will be returned
+			ClassItem elm = entry.getValue();
+			if (elm.getFilePath().equals(javaFilePath))
+				dictRelevantClasses.put(elm.getName(), elm.getFqn());
+		}
+
+		for (FieldItem field : fields) {
+			String classSN = field.getClassName();
+			if (dictRelevantClasses.containsKey(classSN)) {
+				String classFQN = dictRelevantClasses.get(classSN);
+				if (this.dictClass.containsKey(classFQN)) {
+					this.dictClass.get(classFQN).addField(field);
+				}
+			}
+		}
+
+		return classItem.getFields();
 	}
 }

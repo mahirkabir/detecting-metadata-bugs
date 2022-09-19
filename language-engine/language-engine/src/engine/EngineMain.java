@@ -57,8 +57,8 @@ public class EngineMain {
 
 			engineDecl.removeFrame();
 			System.out.println("Thank you.");
+			
 		} catch (
-
 		Exception e) {
 			System.out.println("Oops.");
 			System.out.println(e.getMessage());
@@ -153,12 +153,12 @@ public class EngineMain {
 				String iteratorVar = pIterator.b.getIdentifier();
 				ArrayList containerList = (ArrayList) containerValue.getResult();
 
-				boolean assertPass = true;
+				boolean assertPass = false;
 				for (Object element : containerList) {
 					DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
 					engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
 					ASTExpression booleanExp = (ASTExpression) assertSimExp.jjtGetChild(3);
-					assertPass &= evaluator.evalBooleanExpr(booleanExp);
+					assertPass |= evaluator.evalBooleanExpr(booleanExp);
 				}
 
 				if (!assertPass) {

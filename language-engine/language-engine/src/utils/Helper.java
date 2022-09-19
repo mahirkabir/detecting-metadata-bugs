@@ -2,6 +2,7 @@ package utils;
 
 import models.ClassItem;
 import models.DataResult;
+import models.FieldItem;
 
 public class Helper {
     /**
@@ -34,8 +35,12 @@ public class Helper {
 
         switch (iteratorType) {
             case Constants.TYPE_CLASS:
-                ClassItem converted = (ClassItem) element;
-                result = new DataResult<ClassItem>(iteratorType, converted);
+                ClassItem convertedClassItem = (ClassItem) element;
+                result = new DataResult<ClassItem>(iteratorType, convertedClassItem);
+                break;
+            case Constants.TYPE_FIELD:
+                FieldItem convertedFieldItem = (FieldItem) element;
+                result = new DataResult<FieldItem>(Constants.TYPE_FIELD, convertedFieldItem);
                 break;
         }
 

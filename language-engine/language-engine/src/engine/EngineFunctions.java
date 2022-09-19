@@ -16,7 +16,10 @@ import models.MethodItem;
 import models.StringItem;
 import models.XMLItem;
 import parser.ASTFunctionOrId;
+import parser.ASTFunctionTail;
 import parser.ASTIdentifier;
+import parser.ASTParams;
+import parser.ASTSimExp;
 import utils.ClassHelper;
 import utils.Constants;
 import utils.XMLHelper;
@@ -179,8 +182,15 @@ public class EngineFunctions implements IEngineFunctions {
 
     @Override
     public DataResult<List<FieldItem>> getFields(ClassItem c) {
-        // TODO Auto-generated method stub
-        return null;
+        String functionCall = "getFields()" + "||" + c.getFqn();
+        DataResult<List<FieldItem>> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            result = new DataResult<List<FieldItem>>(Constants.TYPE_FIELD_LIST, this.classHelper.getFields(c.getFqn()));
+            cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
     }
 
     @Override
@@ -206,7 +216,16 @@ public class EngineFunctions implements IEngineFunctions {
                 break;
             case Constants.FUNCTION_PATH_EXISTS:
                 result = new DataResult<Boolean>(Constants.TYPE_BOOLEAN, false);
-                //TODO: Implement
+                // TODO: Implement
+                break;
+            case Constants.FUNCTION_GET_FIELDS:
+                ASTFunctionTail tail = (ASTFunctionTail) funcNode.jjtGetChild(1);
+                ASTParams params = (ASTParams) tail.jjtGetChild(0);
+                ASTSimExp simExp = (ASTSimExp) params.jjtGetChild(0);
+                ASTFunctionOrId id = (ASTFunctionOrId) simExp.jjtGetChild(0);
+                String classVar = ((ASTIdentifier) id.jjtGetChild(0)).getIdentifier();
+                DataResult<ClassItem> classItem = engineDecl.extractVariable(classVar);
+                result = this.getFields(classItem.getResult());
                 break;
 
         }
