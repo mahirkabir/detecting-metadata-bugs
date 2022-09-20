@@ -195,8 +195,15 @@ public class EngineFunctions implements IEngineFunctions {
 
     @Override
     public DataResult<List<MethodItem>> getMethods(ClassItem c) {
-        // TODO Auto-generated method stub
-        return null;
+        String functionCall = "getMethods()" + "||" + c.getFqn();
+        DataResult<List<MethodItem>> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            result = new DataResult<List<MethodItem>>(Constants.TYPE_METHOD_LIST, this.classHelper.getMethods(c.getFqn()));
+            cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
     }
 
     @Override
@@ -218,7 +225,7 @@ public class EngineFunctions implements IEngineFunctions {
                 result = new DataResult<Boolean>(Constants.TYPE_BOOLEAN, false);
                 // TODO: Implement
                 break;
-            case Constants.FUNCTION_GET_FIELDS:
+            case Constants.FUNCTION_GET_FIELDS: {
                 ASTFunctionTail tail = (ASTFunctionTail) funcNode.jjtGetChild(1);
                 ASTParams params = (ASTParams) tail.jjtGetChild(0);
                 ASTSimExp simExp = (ASTSimExp) params.jjtGetChild(0);
@@ -226,6 +233,17 @@ public class EngineFunctions implements IEngineFunctions {
                 String classVar = ((ASTIdentifier) id.jjtGetChild(0)).getIdentifier();
                 DataResult<ClassItem> classItem = engineDecl.extractVariable(classVar);
                 result = this.getFields(classItem.getResult());
+            }
+                break;
+            case Constants.FUNCTION_GET_METHODS: {
+                ASTFunctionTail tail = (ASTFunctionTail) funcNode.jjtGetChild(1);
+                ASTParams params = (ASTParams) tail.jjtGetChild(0);
+                ASTSimExp simExp = (ASTSimExp) params.jjtGetChild(0);
+                ASTFunctionOrId id = (ASTFunctionOrId) simExp.jjtGetChild(0);
+                String classVar = ((ASTIdentifier) id.jjtGetChild(0)).getIdentifier();
+                DataResult<ClassItem> classItem = engineDecl.extractVariable(classVar);
+                result = this.getMethods(classItem.getResult());
+            }
                 break;
 
         }

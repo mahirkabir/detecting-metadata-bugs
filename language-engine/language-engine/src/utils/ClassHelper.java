@@ -20,6 +20,7 @@ import com.github.javaparser.utils.SourceRoot;
 
 import models.ClassItem;
 import models.FieldItem;
+import models.MethodItem;
 
 public class ClassHelper {
 	private List<String> javaFiles;
@@ -186,5 +187,48 @@ public class ClassHelper {
 		}
 
 		return classItem.getFields();
+	}
+
+	/**
+	 * Get all methods for class with cFqn as fully qualified name
+	 * 
+	 * @param cFqn
+	 * @return
+	 */
+	public List<MethodItem> getMethods(String cFqn) {
+		if (!this.dictClass.containsKey(cFqn))
+			return new ArrayList<MethodItem>();
+
+		ClassItem classItem = this.dictClass.get(cFqn);
+		if (classItem.getMethods() != null)
+			// If already loaded before, return the memoized result
+			return classItem.getMethods();
+
+		String javaFilePath = classItem.getFilePath();
+		List<MethodItem> methods = new MethodHelper(javaFilePath).GetMethods();
+
+		Map<String, String> dictRelevantClasses = new HashMap<String, String>();
+		for (Map.Entry<String, ClassItem> entry : this.dictClass.entrySet()) {
+			// Collecting all classes in the javaFilePath
+			// Because, MethodHelper will get all fields from javaFilePath
+			// We need to assign each method to the corresponding class using the class SN
+			// Note: This will not be an extra O(N) operation as for each java file, it will
+			// be done only once. For the later times, memoized values will be returned
+			ClassItem elm = entry.getValue();
+			if (elm.getFilePath().equals(javaFilePath))
+				dictRelevantClasses.put(elm.getName(), elm.getFqn());
+		}
+
+		for (MethodItem method : methods) {
+			String classSN = method.getClassName();
+			if (dictRelevantClasses.containsKey(classSN)) {
+				String classFQN = dictRelevantClasses.get(classSN);
+				if (this.dictClass.containsKey(classFQN)) {
+					this.dictClass.get(classFQN).addMethod(method);
+				}
+			}
+		}
+
+		return classItem.getMethods();
 	}
 }

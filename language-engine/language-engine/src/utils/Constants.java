@@ -16,6 +16,8 @@ public class Constants {
     public static final String TYPE_XML_LIST = "xml-list";
     public static final String TYPE_FIELD_LIST = "field-list";
     public static final String TYPE_FIELD = "field";
+    public static final String TYPE_METHOD_LIST = "method-list";
+    public static final String TYPE_METHOD = "method";
     public static final String EXPRESSION_NOT = "Not";
     public static final String DECL_STMNT = "DeclStmnt";
     public static final String IF_STMNT = "IfStmnt";
@@ -31,4 +33,5 @@ public class Constants {
     public static final String FUNCTION_GET_CLASSES = "getClasses";
     public static final String FUNCTION_PATH_EXISTS = "pathExists";
     public static final String FUNCTION_GET_FIELDS = "getFields";
+    public static final String FUNCTION_GET_METHODS = "getMethods";
 }

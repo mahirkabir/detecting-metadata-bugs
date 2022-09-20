@@ -44,6 +44,12 @@ public class ClassItem extends JItem {
 		this.methods = methods;
 	}
 
+	public void addMethod(MethodItem method) {
+		if (this.methods == null)
+			this.methods = new ArrayList<MethodItem>();
+		this.methods.add(method);
+	}
+
 	public List<AnnotationItem> getAnnotations() {
 		return annotations;
 	}

@@ -3,6 +3,7 @@ package utils;
 import models.ClassItem;
 import models.DataResult;
 import models.FieldItem;
+import models.MethodItem;
 
 public class Helper {
     /**
@@ -41,6 +42,11 @@ public class Helper {
             case Constants.TYPE_FIELD:
                 FieldItem convertedFieldItem = (FieldItem) element;
                 result = new DataResult<FieldItem>(Constants.TYPE_FIELD, convertedFieldItem);
+                break;
+
+            case Constants.TYPE_METHOD:
+                MethodItem convertedMethodItem = (MethodItem) element;
+                result = new DataResult<MethodItem>(Constants.TYPE_METHOD, convertedMethodItem);
                 break;
         }
 
