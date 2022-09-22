@@ -4,9 +4,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
@@ -33,8 +30,6 @@ public class FieldHelper {
     }
 
     public List<FieldItem> GetFields() {
-        List<FieldItem> fields = new ArrayList<FieldItem>();
-
         Path path = Paths.get(this.javaFilePath);
         String filename = path.getFileName().toString();
         String folder = path.getParent().toString();
@@ -45,21 +40,12 @@ public class FieldHelper {
                         .resolve(folder));
         CompilationUnit cu = sourceRoot.parse("", filename);
 
-        Map<String, FieldDeclaration> declFields = cu
-                .findAll(FieldDeclaration.class)
-                .stream()
-                .collect(Collectors.toMap(declaration -> declaration.getVariable(0).getNameAsString(),
-                        Function.identity()));
-
-        for (Map.Entry<String, FieldDeclaration> mapElm : declFields.entrySet()) {
-            FieldDeclaration decl = mapElm.getValue();
-
-            System.out.println("========");
-
+        List<FieldItem> fields = new ArrayList<FieldItem>();
+        List<FieldDeclaration> fieldDecls = cu.findAll(FieldDeclaration.class);
+        fieldDecls.forEach(decl -> {
             Node parentNode = decl.getParentNode().get();
             @SuppressWarnings("unchecked")
             String className = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
-            System.out.println(className);
 
             List<String> modifiers = new ArrayList<String>();
             decl.getModifiers().forEach(item -> {
@@ -78,9 +64,7 @@ public class FieldHelper {
 
                 fields.add(fieldItem);
             });
-
-            System.out.println("========");
-        }
+        });
 
         return fields;
     }

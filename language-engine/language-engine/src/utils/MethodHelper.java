@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
@@ -33,8 +35,6 @@ public class MethodHelper {
     }
 
     public List<MethodItem> GetMethods() {
-        List<MethodItem> methods = new ArrayList<MethodItem>();
-
         Path path = Paths.get(this.javaFilePath);
         String filename = path.getFileName().toString();
         String folder = path.getParent().toString();
@@ -45,40 +45,32 @@ public class MethodHelper {
                         .resolve(folder));
         CompilationUnit cu = sourceRoot.parse("", filename);
 
-        Map<String, MethodDeclaration> declMethods = cu
+        List<MethodItem> methods = cu
                 .findAll(MethodDeclaration.class)
                 .stream()
-                .collect(Collectors.toMap(NodeWithSimpleName::getNameAsString, Function.identity()));
+                .map(decl -> {
+                    Node parentNode = decl.getParentNode().get();
+                    @SuppressWarnings("unchecked")
+                    String className = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
 
-        for (Map.Entry<String, MethodDeclaration> mapElm : declMethods.entrySet()) {
-            MethodDeclaration decl = mapElm.getValue();
+                    MethodItem methodItem = new MethodItem();
+                    methodItem.setName(decl.getNameAsString());
+                    methodItem.setType(decl.getTypeAsString());
+                    methodItem.setClassName(className);
 
-            System.out.println("========");
+                    List<String> modifiers = new ArrayList<String>();
+                    decl.getModifiers().forEach(item -> {
+                        modifiers.add(item.toString());
+                    });
 
-            Node parentNode = decl.getParentNode().get();
-            @SuppressWarnings("unchecked")
-            String className = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
-            System.out.println(className);
+                    if (modifiers.size() >= 1)
+                        methodItem.setAccessModifier(modifiers.get(0));
+                    if (modifiers.size() == 2)
+                        methodItem.setDeclType(modifiers.get(1));
 
-            MethodItem methodItem = new MethodItem();
-            methodItem.setName(decl.getNameAsString());
-            methodItem.setType(decl.getTypeAsString());
-            methodItem.setClassName(className);
-
-            List<String> modifiers = new ArrayList<String>();
-            decl.getModifiers().forEach(item -> {
-                modifiers.add(item.toString());
-            });
-
-            if (modifiers.size() >= 1)
-                methodItem.setAccessModifier(modifiers.get(0));
-            if (modifiers.size() == 2)
-                methodItem.setDeclType(modifiers.get(1));
-
-            methods.add(methodItem);
-
-            System.out.println("========");
-        }
+                    return methodItem;
+                })
+                .collect(Collectors.toList());
 
         return methods;
     }
