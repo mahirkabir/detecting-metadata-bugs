@@ -1,4 +1,4 @@
-package engine;
+package _engine;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,22 +23,26 @@ import parser.ASTSimExp;
 import utils.ClassHelper;
 import utils.Constants;
 import utils.XMLHelper;
+import utils.caching.ICache;
 
 public class EngineFunctions implements IEngineFunctions {
     private String projectPath;
     private ClassHelper classHelper;
     private XMLHelper xmlHelper;
-    private IEngineCache cache;
+    private ICache cache;
+    private IEngineDecl engineDecl;
 
-    public EngineFunctions() {
+    public EngineFunctions(String projectPath, ICache cache, IEngineDecl engineDecl) {
         super();
-        this.projectPath = EngineFactory.getProjectPath();
+        this.projectPath = projectPath;
         this.classHelper = new ClassHelper(this.projectPath);
         this.xmlHelper = new XMLHelper(this.projectPath);
-        this.cache = EngineFactory.getEngineCache();
+        this.cache = cache;
+        this.engineDecl = engineDecl;
     }
 
-    private DataResult<List<ClassItem>> getClasses() {
+    @Override
+    public DataResult<List<ClassItem>> getClasses() {
         String functionCall = "getClasses()";
         DataResult<List<ClassItem>> result = this.cache.fetchFunctionCall(functionCall);
 
@@ -50,7 +54,8 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
-    private DataResult<List<XMLItem>> getXMLs() {
+    @Override
+    public DataResult<List<XMLItem>> getXMLs() {
         String functionCall = "getXMLs()";
         DataResult<List<XMLItem>> result = this.cache.fetchFunctionCall(functionCall);
 
@@ -66,27 +71,32 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
-    private DataResult<StringItem> getArg(ClassItem c, String methodName, int argIdx) {
+    @Override
+    public DataResult<StringItem> getArg(ClassItem c, String methodName, int argIdx) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<BooleanItem> callExists(ClassItem c, String methodName) {
+    @Override
+    public DataResult<BooleanItem> callExists(ClassItem c, String methodName) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<String> getFQN(ClassItem c) {
+    @Override
+    public DataResult<String> getFQN(ClassItem c) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<List<String>> getAnnoAttr(ClassItem c, String annotation, String attr) {
+    @Override
+    public DataResult<List<String>> getAnnoAttr(ClassItem c, String annotation, String attr) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<List<XMLItem>> getElms(XMLItem xml, String selector) {
+    @Override
+    public DataResult<List<XMLItem>> getElms(XMLItem xml, String selector) {
         String functionCall = "getElms()" + "||" + xml.getId() + "||" + selector;
         DataResult<List<XMLItem>> result = this.cache.fetchFunctionCall(functionCall);
 
@@ -98,67 +108,80 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
-    private DataResult<StringItem> getAttr(XMLItem node, String attrName) {
+    @Override
+    public DataResult<StringItem> getAttr(XMLItem node, String attrName) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<BooleanItem> elementExists(XMLItem xml, String selector) {
+    @Override
+    public DataResult<BooleanItem> elementExists(XMLItem xml, String selector) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<StringItem> getName(MethodItem m) {
+    @Override
+    public DataResult<StringItem> getName(MethodItem m) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<BooleanItem> pathExists(String path) {
+    @Override
+    public DataResult<BooleanItem> pathExists(String path) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<StringItem> subString(String str, int st) {
+    @Override
+    public DataResult<StringItem> subString(String str, int st) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<StringItem> subString(String str, int st, int en) {
+    @Override
+    public DataResult<StringItem> subString(String str, int st, int en) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<StringItem> upperCase(String str) {
+    @Override
+    public DataResult<StringItem> upperCase(String str) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<List<String>> getAnnotated(String annotation, String entityType) {
+    @Override
+    public DataResult<List<String>> getAnnotated(String annotation, String entityType) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<List<String>> join(List<String> lists) {
+    @Override
+    public DataResult<List<String>> join(List<String> lists) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<BooleanItem> isEmpty(List<String> list) {
+    @Override
+    public DataResult<BooleanItem> isEmpty(List<String> list) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<BooleanItem> endsWith(String str, String suffix) {
+    @Override
+    public DataResult<BooleanItem> endsWith(String str, String suffix) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<StringItem> getSN(String className) {
+    @Override
+    public DataResult<StringItem> getSN(String className) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    private DataResult<List<FieldItem>> getFields(ClassItem c) {
+    @Override
+    public DataResult<List<FieldItem>> getFields(ClassItem c) {
         String functionCall = "getFields()" + "||" + c.getFqn();
         DataResult<List<FieldItem>> result = this.cache.fetchFunctionCall(functionCall);
 
@@ -170,35 +193,33 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
-    private DataResult<List<MethodItem>> getMethods(ClassItem c) {
+    @Override
+    public DataResult<List<MethodItem>> getMethods(ClassItem c) {
         String functionCall = "getMethods()" + "||" + c.getFqn();
         DataResult<List<MethodItem>> result = this.cache.fetchFunctionCall(functionCall);
 
         if (result == null) {
-            result = new DataResult<List<MethodItem>>(Constants.TYPE_METHOD_LIST,
-                    this.classHelper.getMethods(c.getFqn()));
+            result = new DataResult<List<MethodItem>>(Constants.TYPE_METHOD_LIST, this.classHelper.getMethods(c.getFqn()));
             cache.addFunctionCall(functionCall, result);
         }
 
         return result;
     }
 
-    private DataResult<List<InvocationItem>> getInvocations(ClassItem c) {
+    @Override
+    public DataResult<List<InvocationItem>> getInvocations(ClassItem c) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public DataResult callFunction(ASTFunctionOrId funcNode) {
-        IEngineDecl engineDecl = EngineFactory.getEngineDecl();
+        // TODO: Make other methods private
         DataResult result = null;
         ASTIdentifier name = (ASTIdentifier) funcNode.jjtGetChild(0);
         switch (name.getIdentifier()) {
             case Constants.FUNCTION_GET_CLASSES:
                 result = this.getClasses();
-                break;
-            case Constants.FUNCTION_GET_XMLS:
-                result = this.getXMLs();
                 break;
             case Constants.FUNCTION_PATH_EXISTS:
                 result = new DataResult<Boolean>(Constants.TYPE_BOOLEAN, false);

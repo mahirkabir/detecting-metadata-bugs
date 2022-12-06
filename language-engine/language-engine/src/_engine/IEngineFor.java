@@ -1,11 +1,12 @@
-package engine;
+package _engine;
 
 import parser.ASTForStmnt;
 
 public interface IEngineFor {
     /**
-     * Process the for statement node
+     * Process the for loop
      * @param forStmnt
      */
-    void process(ASTForStmnt forStmnt);
+    void processFor(ASTForStmnt forStmnt);
+
 }

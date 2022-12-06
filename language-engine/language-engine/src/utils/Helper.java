@@ -1,9 +1,27 @@
 package utils;
 
+import engine.IEngineEvaluate;
+import engine.IEngineDecl;
+import engine.IEngineFor;
+import engine.IEngineFunctions;
+
+import com.github.javaparser.utils.Pair;
+
+import engine.EngineFactory;
 import models.ClassItem;
 import models.DataResult;
 import models.FieldItem;
 import models.MethodItem;
+import parser.ASTAssertStmnt;
+import parser.ASTDeclStmnt;
+import parser.ASTExpression;
+import parser.ASTForStmnt;
+import parser.ASTFunctionOrId;
+import parser.ASTIdentifier;
+import parser.ASTIfStmnt;
+import parser.ASTSimExp;
+import parser.ASTType;
+import parser.Node;
 
 public class Helper {
     /**
@@ -51,5 +69,84 @@ public class Helper {
         }
 
         return result;
+    }
+
+    /**
+     * Process a node
+     * 
+     * @param node
+     */
+    public static void process(Node node) {
+        switch (node.toString()) {
+            case Constants.IF_STMNT:
+                ASTIfStmnt ifStmnt = (ASTIfStmnt) node;
+                ASTExpression ifExpr = (ASTExpression) ifStmnt.jjtGetChild(0);
+                IEngineEvaluate evaluator = EngineFactory.getEvaluator();
+                boolean result = evaluator.evalBooleanExpr(ifExpr);
+                System.out.println(result);
+                break;
+
+            case Constants.DECL_STMNT:
+                ASTDeclStmnt declStmnt = (ASTDeclStmnt) node;
+                IEngineDecl engineDecl = EngineFactory.getEngineDecl();
+                engineDecl.declareVariable(declStmnt);
+                break;
+
+            case Constants.FOR_STMNT:
+                ASTForStmnt forStmnt = (ASTForStmnt) node;
+                System.out.println("Start: " + forStmnt);
+                IEngineFor engineFor = EngineFactory.getEngineFor();
+                engineFor.process(forStmnt);
+                System.out.println("End: " + forStmnt);
+                break;
+
+            case Constants.ASSERT_STMNT:
+                ASTAssertStmnt assertStmnt = (ASTAssertStmnt) node;
+                System.out.println("Start: " + assertStmnt);
+                // processAssert(assertStmnt);
+                System.out.println("End: " + assertStmnt);
+                break;
+
+        }
+    }
+
+    /**
+     * Get loop container
+     * 
+     * @param containerExp
+     * @return
+     */
+    public static DataResult getContainer(ASTExpression containerExp) {
+        IEngineDecl engineDecl = EngineFactory.getEngineDecl();
+        IEngineFunctions engineFunctions = EngineFactory.getEngineFunctions();
+        DataResult containerValue = null;
+
+        ASTSimExp containerSimExp = (ASTSimExp) containerExp.jjtGetChild(0);
+        ASTFunctionOrId containerFunctionOrId = (ASTFunctionOrId) containerSimExp.jjtGetChild(0);
+        int totalChildren = containerFunctionOrId.jjtGetNumChildren();
+        if (totalChildren == 1) {
+            // Container is a variable
+            ASTIdentifier containerId = (ASTIdentifier) containerFunctionOrId.jjtGetChild(0);
+            String containerVarName = containerId.getIdentifier().toString();
+            containerValue = engineDecl.extractVariable(containerVarName);
+        } else if (totalChildren == 2) {
+            // Container is a function call
+            containerValue = engineFunctions.callFunction(containerFunctionOrId);
+        }
+
+        return containerValue;
+    }
+
+    /**
+     * Get loop iterator
+     * 
+     * @param iteratorExp
+     * @return
+     */
+    public static Pair<ASTType, ASTIdentifier> getIterator(ASTExpression iteratorExp) {
+        ASTSimExp iteratorSimExp = (ASTSimExp) iteratorExp.jjtGetChild(0);
+        ASTType iteratorType = (ASTType) iteratorSimExp.jjtGetChild(0);
+        ASTIdentifier iteratorId = (ASTIdentifier) iteratorSimExp.jjtGetChild(1);
+        return new Pair<ASTType, ASTIdentifier>(iteratorType, iteratorId);
     }
 }

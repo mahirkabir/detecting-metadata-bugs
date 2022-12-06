@@ -1,6 +1,9 @@
-package engine;
+package _engine;
+
+import javax.xml.crypto.Data;
 
 import models.DataResult;
+import models.EvalResult;
 import parser.ASTConditionalAndExp;
 import parser.ASTConditionalEqExp;
 import parser.ASTConditionalOrExp;
@@ -17,9 +20,9 @@ public class EngineEvaluate implements IEngineEvaluate {
 
     IEngineDecl engineDecl;
 
-    public EngineEvaluate() {
+    public EngineEvaluate(IEngineDecl engineDecl) {
         super();
-        this.engineDecl = EngineFactory.getEngineDecl();
+        this.engineDecl = engineDecl;
     }
 
     /*
@@ -47,13 +50,14 @@ public class EngineEvaluate implements IEngineEvaluate {
         return result;
     }
 
-    /**
-     * Apply OR operator on all child nodes (Or always comes over AND, EQ)
+    /*
+     * (non-Javadoc)
      * 
-     * @param orExp
-     * @return
+     * @see engine.IEngineEvaluate#evalOperator(parser.ASTConditionalOrExp)
+     * Apply OR operator on all child nodes (Or always comes over AND, EQ)
      */
-    private boolean evalOperator(ASTConditionalOrExp orExp) {
+    @Override
+    public boolean evalOperator(ASTConditionalOrExp orExp) {
         Logger.log("ConditionalOrExp");
         boolean result = false;
         int totalChildren = orExp.jjtGetNumChildren();
@@ -75,13 +79,8 @@ public class EngineEvaluate implements IEngineEvaluate {
         return result;
     }
 
-    /**
-     * Apply AND operator on all child nodes (Or always comes over EQ)
-     * 
-     * @param andExp
-     * @return
-     */
-    private boolean evalOperator(ASTConditionalAndExp andExp) {
+    @Override
+    public boolean evalOperator(ASTConditionalAndExp andExp) {
         Logger.log("ConditionalAndExp");
         boolean result = true;
         int totalChildren = andExp.jjtGetNumChildren();
@@ -100,13 +99,8 @@ public class EngineEvaluate implements IEngineEvaluate {
         return result;
     }
 
-    /**
-     * Apply EQ operator on all child nodes
-     * 
-     * @param eqExp
-     * @return
-     */
-    private boolean evalOperator(ASTConditionalEqExp eqExp) {
+    @Override
+    public boolean evalOperator(ASTConditionalEqExp eqExp) {
         Logger.log("ConditionalEqExp");
         DataResult firstResult = evalSimExp((ASTSimExp) eqExp.jjtGetChild(0));
         DataResult secondResult = evalSimExp((ASTSimExp) eqExp.jjtGetChild(1));
@@ -127,7 +121,8 @@ public class EngineEvaluate implements IEngineEvaluate {
         return result;
     }
 
-    private DataResult evalSimExp(ASTSimExp simExp) {
+    @Override
+    public DataResult evalSimExp(ASTSimExp simExp) {
         Logger.log("SimExp");
 
         boolean isNot = false;

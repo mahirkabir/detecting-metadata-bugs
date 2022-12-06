@@ -1,8 +1,8 @@
-package utils.caching;
+package engine;
 
 import models.DataResult;
 
-public interface ICache {
+public interface IEngineCache {
     /**
      * Add result of the function call in cache
      * 
@@ -13,6 +13,7 @@ public interface ICache {
 
     /**
      * Fetch result of the function call from the cache
+     * 
      * @param functionCall
      * @return
      */

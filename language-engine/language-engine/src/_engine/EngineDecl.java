@@ -1,4 +1,4 @@
-package engine;
+package _engine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.Map;
 import models.DataResult;
 import models.StackFrame;
 import parser.ASTDeclStmnt;
+import parser.ASTFunctionOrId;
 import parser.ASTIdentifier;
 import parser.ASTLiteral;
 import parser.ASTType;
@@ -53,6 +54,11 @@ public class EngineDecl implements IEngineDecl {
         this.stackFrames.set(this.stackFrames.size() - 1, topFrame);
     }
 
+    @Override
+    public void declareFunction(ASTFunctionOrId funcNode) {
+
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -76,6 +82,11 @@ public class EngineDecl implements IEngineDecl {
             Logger.log("Could not find variable: " + var);
         }
         return result;
+    }
+
+    @Override
+    public DataResult extractFunction(String funcName, String[] params) {
+        return null;
     }
 
     @Override

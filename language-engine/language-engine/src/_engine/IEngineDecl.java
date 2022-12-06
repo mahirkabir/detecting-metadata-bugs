@@ -1,7 +1,8 @@
-package engine;
+package _engine;
 
 import models.DataResult;
 import parser.ASTDeclStmnt;
+import parser.ASTFunctionOrId;
 
 public interface IEngineDecl {
     /**
@@ -11,6 +12,15 @@ public interface IEngineDecl {
      * @return
      */
     DataResult extractVariable(String var);
+
+    /**
+     * Extract the value of the function with the params as arguments
+     * 
+     * @param funcName
+     * @param params
+     * @return
+     */
+    DataResult extractFunction(String funcName, String[] params);
 
     /**
      * Declare variable in the top most frame in the frame-stack
@@ -28,6 +38,13 @@ public interface IEngineDecl {
      * @param value
      */
     void declareVariable(String varName, DataResult value);
+
+    /**
+     * Declare function in the top most frame in the frame-stack
+     * 
+     * @param funcNode
+     */
+    void declareFunction(ASTFunctionOrId funcNode);
 
     /**
      * Create a new frame for the variables and push in the frame-stack

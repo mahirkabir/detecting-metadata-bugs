@@ -31,6 +31,7 @@ public class Constants {
     public static final String ATTR_NAME = "name";
     public static final String PACKAGE = "package";
     public static final String FUNCTION_GET_CLASSES = "getClasses";
+    public static final String FUNCTION_GET_XMLS = "getXMLs";
     public static final String FUNCTION_PATH_EXISTS = "pathExists";
     public static final String FUNCTION_GET_FIELDS = "getFields";
     public static final String FUNCTION_GET_METHODS = "getMethods";

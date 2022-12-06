@@ -21,7 +21,7 @@ public class DataResult<T> {
     public T getResult() {
         return result;
     }
-
+    
     public void setResult(T result) {
         this.result = result;
     }
