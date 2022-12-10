@@ -7,6 +7,7 @@ import parser.ASTConditionalOrExp;
 import parser.ASTExpression;
 import parser.ASTFunctionOrId;
 import parser.ASTIdentifier;
+import parser.ASTLiteral;
 import parser.ASTSimExp;
 import parser.Node;
 import utils.Constants;
@@ -15,11 +16,8 @@ import utils.Logger;
 
 public class EngineEvaluate implements IEngineEvaluate {
 
-    IEngineDecl engineDecl;
-
     public EngineEvaluate() {
         super();
-        this.engineDecl = EngineFactory.getEngineDecl();
     }
 
     /*
@@ -31,17 +29,21 @@ public class EngineEvaluate implements IEngineEvaluate {
     @Override
     public boolean evalBooleanExpr(ASTExpression expr) {
         Logger.log("Expression");
-        Node operatorNode = expr.jjtGetChild(0);
+        Node operatorOrIdNode = expr.jjtGetChild(0);
         boolean result = false;
-        switch (operatorNode.toString()) {
+        switch (operatorOrIdNode.toString()) {
             case Constants.CONDITIONAL_OR_EXP:
-                result = evalOperator((ASTConditionalOrExp) operatorNode);
+                result = evalOperator((ASTConditionalOrExp) operatorOrIdNode);
                 break;
             case Constants.CONDITIONAL_AND_EXP:
-                result = evalOperator((ASTConditionalAndExp) operatorNode);
+                result = evalOperator((ASTConditionalAndExp) operatorOrIdNode);
                 break;
             case Constants.CONDITIONAL_EQ_EXP:
-                result = evalOperator((ASTConditionalEqExp) operatorNode);
+                result = evalOperator((ASTConditionalEqExp) operatorOrIdNode);
+                break;
+            case Constants.SIMPLE_EXP:
+                result = evalSimExp((ASTSimExp) operatorOrIdNode).getResult()
+                        .toString().equals(Constants.BOOLEAN_TRUE);
                 break;
         }
         return result;
@@ -116,18 +118,21 @@ public class EngineEvaluate implements IEngineEvaluate {
     @Override
     public DataResult evalFunction(ASTFunctionOrId funcExp) {
         Logger.log("Function");
-        return null;
+        IEngineFunctions engineFunctions = EngineFactory.getEngineFunctions();
+        DataResult result = engineFunctions.callFunction(funcExp);
+        return result;
     }
 
     @Override
     public DataResult evalId(ASTFunctionOrId idExp) {
         Logger.log("Id");
+        IEngineDecl engineDecl = EngineFactory.getEngineDecl();
         ASTIdentifier id = ((ASTIdentifier) idExp.jjtGetChild(0));
-        DataResult result = this.engineDecl.extractVariable(id.getIdentifier());
+        DataResult result = engineDecl.extractVariable(id.getIdentifier());
         return result;
     }
 
-    private DataResult evalSimExp(ASTSimExp simExp) {
+    public DataResult evalSimExp(ASTSimExp simExp) {
         Logger.log("SimExp");
 
         boolean isNot = false;
@@ -137,17 +142,29 @@ public class EngineEvaluate implements IEngineEvaluate {
             simExp = (ASTSimExp) simExp.jjtGetChild(1);
         }
 
-        Node functionOrIdNode = simExp.jjtGetChild(0);
         DataResult result = null;
-        switch (functionOrIdNode.jjtGetNumChildren()) {
-            case 1:
-                // Only one child node exists. FunctionTail is not there. This child is an ID
+        Node child = simExp.jjtGetChild(0);
+        if (child.toString().equals(Constants.FUNCTION_OR_ID)) {
+            ASTFunctionOrId functionOrIdNode = (ASTFunctionOrId) child;
+            if (child.jjtGetNumChildren() == 1) {
+                // FunctionTail is not there
                 result = evalId((ASTFunctionOrId) functionOrIdNode);
-                break;
-            case 2:
-                // Second child is FunctionTail. This child is a function
+            } else {
+                // Second child is FunctionTail
                 result = evalFunction((ASTFunctionOrId) functionOrIdNode);
-                break;
+            }
+        } else {
+            ASTLiteral literal = (ASTLiteral) child;
+            switch (literal.getLitType()) {
+                case Constants.TYPE_STRING:
+                    result = new DataResult<String>(literal.getLitType(),
+                            literal.getLitValue());
+                    break;
+                case Constants.TYPE_INTEGER:
+                    result = new DataResult<Integer>(literal.getLitType(),
+                            Integer.parseInt(literal.getLitValue()));
+                    break;
+            }
         }
 
         if (isNot && result != null && result.getType().equals(Constants.TYPE_BOOLEAN)) {

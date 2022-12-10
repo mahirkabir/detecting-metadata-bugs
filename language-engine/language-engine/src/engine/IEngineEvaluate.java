@@ -3,6 +3,7 @@ package engine;
 import models.DataResult;
 import parser.ASTExpression;
 import parser.ASTFunctionOrId;
+import parser.ASTSimExp;
 
 public interface IEngineEvaluate {
     /**
@@ -28,4 +29,11 @@ public interface IEngineEvaluate {
      * @return DataResult Object
      */
     DataResult evalId(ASTFunctionOrId idExp);
+
+    /**
+     * Evaluate a simple expression
+     * @param simExp
+     * @return
+     */
+    DataResult evalSimExp(ASTSimExp simExp);
 }

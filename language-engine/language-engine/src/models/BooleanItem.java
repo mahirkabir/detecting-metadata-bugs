@@ -1,5 +1,7 @@
 package models;
 
+import utils.Constants;
+
 public class BooleanItem {
     private boolean b;
 
@@ -14,5 +16,11 @@ public class BooleanItem {
 
     public void setValue(boolean b) {
         this.b = b;
+    }
+
+    public String toString() {
+        if (this.b)
+            return Constants.BOOLEAN_TRUE;
+        return Constants.BOOLEAN_FALSE;
     }
 }

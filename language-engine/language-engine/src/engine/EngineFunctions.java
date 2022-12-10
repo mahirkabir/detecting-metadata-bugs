@@ -1,6 +1,9 @@
 package engine;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -114,8 +117,9 @@ public class EngineFunctions implements IEngineFunctions {
     }
 
     private DataResult<BooleanItem> pathExists(String path) {
-        // TODO Auto-generated method stub
-        return null;
+        path = path.substring(1, path.length() - 1);
+        BooleanItem booleanItem = new BooleanItem(Files.exists(Paths.get(path)));
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, booleanItem);
     }
 
     private DataResult<StringItem> subString(String str, int st) {
@@ -188,6 +192,11 @@ public class EngineFunctions implements IEngineFunctions {
         return null;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see engine.IEngineFunctions#callFunction(parser.ASTFunctionOrId)
+     */
     @Override
     public DataResult callFunction(ASTFunctionOrId funcNode) {
         IEngineDecl engineDecl = EngineFactory.getEngineDecl();
@@ -200,9 +209,10 @@ public class EngineFunctions implements IEngineFunctions {
             case Constants.FUNCTION_GET_XMLS:
                 result = this.getXMLs();
                 break;
-            case Constants.FUNCTION_PATH_EXISTS:
-                result = new DataResult<Boolean>(Constants.TYPE_BOOLEAN, false);
-                // TODO: Implement
+            case Constants.FUNCTION_PATH_EXISTS: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                result = this.pathExists((String) params.get(0).getResult());
+            }
                 break;
             case Constants.FUNCTION_GET_FIELDS: {
                 ASTFunctionTail tail = (ASTFunctionTail) funcNode.jjtGetChild(1);
@@ -227,6 +237,24 @@ public class EngineFunctions implements IEngineFunctions {
 
         }
         return result;
+    }
+
+    /**
+     * Prepares the params list from the functionTail node
+     * 
+     * @param jjtGetChild
+     * @return
+     */
+    private List<DataResult> getParams(ASTFunctionTail functionTail) {
+        List<DataResult> params = new ArrayList<>();
+        ASTParams paramsAST = (ASTParams) functionTail.jjtGetChild(0);
+        int totParams = paramsAST.jjtGetNumChildren();
+        for (int i = 0; i < totParams; ++i) {
+            ASTSimExp paramSimExp = (ASTSimExp) paramsAST.jjtGetChild(i);
+            IEngineEvaluate evaluate = EngineFactory.getEvaluator();
+            params.add(evaluate.evalSimExp(paramSimExp));
+        }
+        return params;
     }
 
 }
