@@ -46,8 +46,10 @@ public class EngineFunctions implements IEngineFunctions {
         DataResult<List<ClassItem>> result = this.cache.fetchFunctionCall(functionCall);
 
         if (result == null) {
-            result = new DataResult<List<ClassItem>>(Constants.TYPE_CLASS_LIST, this.classHelper.getClasses());
-            cache.addFunctionCall(functionCall, result);
+            List<ClassItem> classItems = this.classHelper.getClasses();
+            result = new DataResult<List<ClassItem>>(Constants.TYPE_CLASS_LIST, classItems);
+            this.cache.saveClasses(classItems);
+            this.cache.addFunctionCall(functionCall, result);
         }
 
         return result;
@@ -80,8 +82,7 @@ public class EngineFunctions implements IEngineFunctions {
     }
 
     private DataResult<String> getFQN(ClassItem c) {
-        // TODO Auto-generated method stub
-        return null;
+        return new DataResult<String>(Constants.TYPE_STRING, c.getFqn());
     }
 
     private DataResult<List<String>> getAnnoAttr(ClassItem c, String annotation, String attr) {
@@ -235,6 +236,12 @@ public class EngineFunctions implements IEngineFunctions {
             }
                 break;
 
+            case Constants.FUNCTION_GET_FQN: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                result = this.getFQN((ClassItem) params.get(0).getResult()); // Consistent
+            }
+
+                break;
         }
         return result;
     }

@@ -20,7 +20,6 @@ public class EngineFor implements IEngineFor {
         this.engineDecl = EngineFactory.getEngineDecl();
     }
 
-
     @Override
     public void process(ASTForStmnt forStmnt) {
         this.engineDecl.createFrame();
@@ -42,6 +41,8 @@ public class EngineFor implements IEngineFor {
                 Node forChild = forStmnt.jjtGetChild(i);
                 Helper.process(forChild);
             }
+
+            engineDecl.resetFrame();
         }
         engineDecl.removeFrame();
     }

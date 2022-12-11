@@ -30,6 +30,11 @@ public interface IEngineDecl {
     void declareVariable(String varName, DataResult value);
 
     /**
+     * Clear the iteration frame after the iteration
+     */
+    void resetFrame();
+
+    /**
      * Create a new frame for the variables and push in the frame-stack
      */
     void createFrame();

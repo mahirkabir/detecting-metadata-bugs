@@ -1,6 +1,7 @@
 package engine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,8 @@ public class EngineDecl implements IEngineDecl {
         switch (type) {
             case Constants.TYPE_STRING:
                 String value = ((ASTLiteral) declNode.jjtGetChild(2)).getLitValue();
+                if (value.startsWith("\""))
+                    value = value.substring(1, value.length() - 1);
                 this.updateVariableInMap(varName, new DataResult<String>(type, value));
                 break;
             // TODO: Other types
@@ -87,6 +90,13 @@ public class EngineDecl implements IEngineDecl {
     public void removeFrame() {
         int sz = this.stackFrames.size();
         this.stackFrames.remove(sz - 1);
+    }
+
+    @Override
+    public void resetFrame() {
+        StackFrame topFrame = this.stackFrames.get(this.stackFrames.size() - 1);
+        topFrame.setMapVariables(new HashMap<String, DataResult>());
+        this.stackFrames.set(this.stackFrames.size() - 1, topFrame);
     }
 
 }

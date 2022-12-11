@@ -34,7 +34,24 @@ public class Constants {
     public static final String PACKAGE = "package";
     public static final String FUNCTION_GET_CLASSES = "getClasses";
     public static final String FUNCTION_GET_XMLS = "getXMLs";
-    public static final String FUNCTION_PATH_EXISTS = "pathExists";
     public static final String FUNCTION_GET_FIELDS = "getFields";
     public static final String FUNCTION_GET_METHODS = "getMethods";
+    public static final String FUNCTION_GET_FQN = "getFQN";
+    public static final String FUNCTION_GET_SN = "getSN";
+    public static final String FUNCTION_GET_ARG = "getArg";
+    public static final String FUNCTION_GET_ELMS = "getElms";
+    public static final String FUNCTION_GET_NAME = "getName";
+    public static final String FUNCTION_GET_ATTR = "getAttr";
+    public static final String FUNCTION_GET_ANNO_ATTR = "getAnnoAttr";
+    public static final String FUNCTION_GET_ANNOTATED = "getAnnotated";
+    public static final String FUNCTION_GET_FILE_NAME = "getFileName";
+    public static final String FUNCTION_GET_TYPE = "getType";
+    public static final String FUNCTION_PATH_EXISTS = "pathExists";
+    public static final String FUNCTION_CALL_EXISTS = "callExists";
+    public static final String FUNCTION_ELEMENT_EXISTS = "elementExists";
+    public static final String FUNCTION_SUBSTRING = "substring";
+    public static final String FUNCTION_UPPERCASE = "upperCase";
+    public static final String FUNCTION_ENDS_WITH = "endsWith";
+    public static final String FUNCTION_MSG = "msg";
+
 }
