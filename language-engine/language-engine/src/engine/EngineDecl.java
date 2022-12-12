@@ -32,6 +32,7 @@ public class EngineDecl implements IEngineDecl {
 
         switch (type) {
             case Constants.TYPE_STRING:
+                // TODO: Enable assigning function call value to variable
                 String value = ((ASTLiteral) declNode.jjtGetChild(2)).getLitValue();
                 if (value.startsWith("\""))
                     value = value.substring(1, value.length() - 1);

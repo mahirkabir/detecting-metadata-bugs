@@ -15,6 +15,7 @@ import models.ClassItem;
 import models.DataResult;
 import models.FieldItem;
 import models.InvocationItem;
+import models.JItem;
 import models.MethodItem;
 import models.StringItem;
 import models.XMLItem;
@@ -48,7 +49,7 @@ public class EngineFunctions implements IEngineFunctions {
         if (result == null) {
             List<ClassItem> classItems = this.classHelper.getClasses();
             result = new DataResult<List<ClassItem>>(Constants.TYPE_CLASS_LIST, classItems);
-            this.cache.saveClasses(classItems);
+            // this.cache.saveClasses(classItems);
             this.cache.addFunctionCall(functionCall, result);
         }
 
@@ -69,6 +70,36 @@ public class EngineFunctions implements IEngineFunctions {
         }
 
         return result;
+    }
+
+    private DataResult<List<FieldItem>> getFields(ClassItem c) {
+        String functionCall = "getFields()" + "||" + c.getFqn();
+        DataResult<List<FieldItem>> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            result = new DataResult<List<FieldItem>>(Constants.TYPE_FIELD_LIST, this.classHelper.getFields(c.getFqn()));
+            cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
+    }
+
+    private DataResult<List<MethodItem>> getMethods(ClassItem c) {
+        String functionCall = "getMethods()" + "||" + c.getFqn();
+        DataResult<List<MethodItem>> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            result = new DataResult<List<MethodItem>>(Constants.TYPE_METHOD_LIST,
+                    this.classHelper.getMethods(c.getFqn()));
+            cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
+    }
+
+    private DataResult<List<InvocationItem>> getInvocations(ClassItem c) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     private DataResult<StringItem> getArg(ClassItem c, String methodName, int argIdx) {
@@ -112,9 +143,8 @@ public class EngineFunctions implements IEngineFunctions {
         return null;
     }
 
-    private DataResult<StringItem> getName(MethodItem m) {
-        // TODO Auto-generated method stub
-        return null;
+    private DataResult<StringItem> getName(JItem jItem) {
+        return new DataResult<StringItem>(Constants.TYPE_STRING, new StringItem(jItem.getName()));
     }
 
     private DataResult<BooleanItem> pathExists(String path) {
@@ -158,41 +188,6 @@ public class EngineFunctions implements IEngineFunctions {
         return null;
     }
 
-    private DataResult<StringItem> getSN(String className) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private DataResult<List<FieldItem>> getFields(ClassItem c) {
-        String functionCall = "getFields()" + "||" + c.getFqn();
-        DataResult<List<FieldItem>> result = this.cache.fetchFunctionCall(functionCall);
-
-        if (result == null) {
-            result = new DataResult<List<FieldItem>>(Constants.TYPE_FIELD_LIST, this.classHelper.getFields(c.getFqn()));
-            cache.addFunctionCall(functionCall, result);
-        }
-
-        return result;
-    }
-
-    private DataResult<List<MethodItem>> getMethods(ClassItem c) {
-        String functionCall = "getMethods()" + "||" + c.getFqn();
-        DataResult<List<MethodItem>> result = this.cache.fetchFunctionCall(functionCall);
-
-        if (result == null) {
-            result = new DataResult<List<MethodItem>>(Constants.TYPE_METHOD_LIST,
-                    this.classHelper.getMethods(c.getFqn()));
-            cache.addFunctionCall(functionCall, result);
-        }
-
-        return result;
-    }
-
-    private DataResult<List<InvocationItem>> getInvocations(ClassItem c) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -200,7 +195,6 @@ public class EngineFunctions implements IEngineFunctions {
      */
     @Override
     public DataResult callFunction(ASTFunctionOrId funcNode) {
-        IEngineDecl engineDecl = EngineFactory.getEngineDecl();
         DataResult result = null;
         ASTIdentifier name = (ASTIdentifier) funcNode.jjtGetChild(0);
         switch (name.getIdentifier()) {
@@ -216,32 +210,30 @@ public class EngineFunctions implements IEngineFunctions {
             }
                 break;
             case Constants.FUNCTION_GET_FIELDS: {
-                ASTFunctionTail tail = (ASTFunctionTail) funcNode.jjtGetChild(1);
-                ASTParams params = (ASTParams) tail.jjtGetChild(0);
-                ASTSimExp simExp = (ASTSimExp) params.jjtGetChild(0);
-                ASTFunctionOrId id = (ASTFunctionOrId) simExp.jjtGetChild(0);
-                String classVar = ((ASTIdentifier) id.jjtGetChild(0)).getIdentifier();
-                DataResult<ClassItem> classItem = engineDecl.extractVariable(classVar);
-                result = this.getFields(classItem.getResult());
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                ClassItem classItem = (ClassItem) params.get(0).getResult();
+                result = this.getFields(classItem);
             }
                 break;
             case Constants.FUNCTION_GET_METHODS: {
-                ASTFunctionTail tail = (ASTFunctionTail) funcNode.jjtGetChild(1);
-                ASTParams params = (ASTParams) tail.jjtGetChild(0);
-                ASTSimExp simExp = (ASTSimExp) params.jjtGetChild(0);
-                ASTFunctionOrId id = (ASTFunctionOrId) simExp.jjtGetChild(0);
-                String classVar = ((ASTIdentifier) id.jjtGetChild(0)).getIdentifier();
-                DataResult<ClassItem> classItem = engineDecl.extractVariable(classVar);
-                result = this.getMethods(classItem.getResult());
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                ClassItem classItem = (ClassItem) params.get(0).getResult();
+                result = this.getMethods(classItem);
             }
                 break;
 
             case Constants.FUNCTION_GET_FQN: {
                 List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
-                result = this.getFQN((ClassItem) params.get(0).getResult()); // Consistent
+                ClassItem classItem = (ClassItem) params.get(0).getResult();
+                result = this.getFQN(classItem); // Consistent
             }
-
                 break;
+
+            case Constants.FUNCTION_GET_NAME: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                JItem jItem = (JItem) params.get(0).getResult();
+                result = this.getName(jItem);
+            }
         }
         return result;
     }
