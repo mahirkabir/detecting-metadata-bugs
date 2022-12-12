@@ -91,7 +91,13 @@ public class Helper {
                 ASTExpression ifExpr = (ASTExpression) ifStmnt.jjtGetChild(0);
                 IEngineEvaluate evaluator = EngineFactory.getEvaluator();
                 boolean result = evaluator.evalBooleanExpr(ifExpr);
-                System.out.println(result);
+                if (result) {
+                    System.out.println("Start: " + ifStmnt);
+                    int totalChildren = ifStmnt.jjtGetNumChildren();
+                    for (int i = 1; i < totalChildren; ++i)
+                        Helper.process(ifStmnt.jjtGetChild(i));
+                        System.out.println("End: " + ifStmnt);
+                }
                 break;
 
             case Constants.DECL_STMNT:
