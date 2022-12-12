@@ -112,8 +112,8 @@ public class EngineFunctions implements IEngineFunctions {
         return null;
     }
 
-    private DataResult<String> getFQN(ClassItem c) {
-        return new DataResult<String>(Constants.TYPE_STRING, c.getFqn());
+    private DataResult<StringItem> getFQN(ClassItem c) {
+        return new DataResult<StringItem>(Constants.TYPE_STRING, new StringItem(c.getFqn()));
     }
 
     private DataResult<List<String>> getAnnoAttr(ClassItem c, String annotation, String attr) {

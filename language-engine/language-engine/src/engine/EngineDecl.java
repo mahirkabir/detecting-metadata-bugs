@@ -7,6 +7,7 @@ import java.util.Map;
 
 import models.DataResult;
 import models.StackFrame;
+import models.StringItem;
 import parser.ASTDeclStmnt;
 import parser.ASTIdentifier;
 import parser.ASTLiteral;
@@ -36,7 +37,8 @@ public class EngineDecl implements IEngineDecl {
                 String value = ((ASTLiteral) declNode.jjtGetChild(2)).getLitValue();
                 if (value.startsWith("\""))
                     value = value.substring(1, value.length() - 1);
-                this.updateVariableInMap(varName, new DataResult<String>(type, value));
+                this.updateVariableInMap(varName, new DataResult<StringItem>(type,
+                        new StringItem(value)));
                 break;
             // TODO: Other types
         }

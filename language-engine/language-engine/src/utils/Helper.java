@@ -8,10 +8,13 @@ import engine.IEngineFunctions;
 import com.github.javaparser.utils.Pair;
 
 import engine.EngineFactory;
+import models.BooleanItem;
 import models.ClassItem;
 import models.DataResult;
 import models.FieldItem;
+import models.IntegerItem;
 import models.MethodItem;
+import models.StringItem;
 import parser.ASTAssertStmnt;
 import parser.ASTDeclStmnt;
 import parser.ASTExpression;
@@ -32,10 +35,15 @@ public class Helper {
      * @return
      */
     public static boolean isEqual(DataResult firstResult, DataResult secondResult) {
-        if (firstResult.getType().equals("String")) {
-            return firstResult.getResult().equals(secondResult.getResult());
-        } else if (firstResult.getType().equals("bool")) {
-            return firstResult.getResult() == secondResult.getResult();
+        if (firstResult.getType().equals(Constants.TYPE_STRING)) {
+            return ((StringItem) firstResult.getResult())
+                    .equals((StringItem) secondResult.getResult());
+        } else if (firstResult.getType().equals(Constants.TYPE_BOOLEAN)) {
+            return ((BooleanItem) firstResult.getResult())
+                    .equals((BooleanItem) secondResult.getResult());
+        } else if (firstResult.getType().equals(Constants.TYPE_INTEGER)) {
+            return ((IntegerItem) firstResult.getResult())
+                    .equals((IntegerItem) secondResult.getResult());
         }
         // Note: Currently, we do not have equality comparisons for class, method,
         // field, & file type

@@ -15,4 +15,8 @@ public class StringItem {
     public void setValue(String str) {
         this.str = str;
     }
+
+    public boolean equals(StringItem cmp) {
+        return this.str.equals(cmp.str);
+    }
 }

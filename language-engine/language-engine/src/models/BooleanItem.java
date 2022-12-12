@@ -23,4 +23,8 @@ public class BooleanItem {
             return Constants.BOOLEAN_TRUE;
         return Constants.BOOLEAN_FALSE;
     }
+
+    public boolean equals(BooleanItem cmp) {
+        return this.b == cmp.b;
+    }
 }

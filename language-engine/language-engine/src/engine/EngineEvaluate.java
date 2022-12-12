@@ -1,6 +1,8 @@
 package engine;
 
 import models.DataResult;
+import models.IntegerItem;
+import models.StringItem;
 import parser.ASTConditionalAndExp;
 import parser.ASTConditionalEqExp;
 import parser.ASTConditionalOrExp;
@@ -157,12 +159,12 @@ public class EngineEvaluate implements IEngineEvaluate {
             ASTLiteral literal = (ASTLiteral) child;
             switch (literal.getLitType()) {
                 case Constants.TYPE_STRING:
-                    result = new DataResult<String>(literal.getLitType(),
-                            literal.getLitValue());
+                    result = new DataResult<StringItem>(literal.getLitType(),
+                            new StringItem(literal.getLitValue()));
                     break;
                 case Constants.TYPE_INTEGER:
-                    result = new DataResult<Integer>(literal.getLitType(),
-                            Integer.parseInt(literal.getLitValue()));
+                    result = new DataResult<IntegerItem>(literal.getLitType(),
+                            new IntegerItem(Integer.parseInt(literal.getLitValue())));
                     break;
             }
         }
