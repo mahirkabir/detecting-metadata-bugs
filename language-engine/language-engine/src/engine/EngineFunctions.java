@@ -315,6 +315,8 @@ public class EngineFunctions implements IEngineFunctions {
                 ClassItem classItem = (ClassItem) params.get(0).getResult();
                 StringItem anno = (StringItem) params.get(1).getResult();
                 StringItem prop = (StringItem) params.get(2).getResult();
+
+                anno.setValue(anno.getValue().substring(1)); // To remove the @
                 result = this.getAnnoAttr(classItem, anno.getValue(), prop.getValue());
             }
                 break;
