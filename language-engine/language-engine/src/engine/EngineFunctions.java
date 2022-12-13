@@ -253,9 +253,36 @@ public class EngineFunctions implements IEngineFunctions {
         return null;
     }
 
-    private DataResult<List<String>> getAnnotated(String annotation, String entityType) {
-        // TODO Auto-generated method stub
-        return null;
+    private DataResult<List<StringItem>> getAnnotated(String annotation, String entityType) {
+        String functionCall = "getAnnotated()" + "||" + annotation + "||" + entityType;
+        DataResult<List<StringItem>> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            result = new DataResult<List<StringItem>>(
+                    Constants.TYPE_STRING_LIST, new ArrayList<StringItem>());
+            // TODO: Need to search annotation in methods as well
+            if (entityType.equals("*") || entityType.equals(Constants.TYPE_CLASS)) {
+                DataResult<List<ClassItem>> cResult = this.getClasses();
+                for (ClassItem classItem : cResult.getResult()) {
+                    List<AnnotationItem> annotationItems = classItem.getAnnotations();
+                    if (annotationItems == null)
+                        this.classHelper.getAnnotations(classItem.getFqn());
+                    annotationItems = classItem.getAnnotations();
+                    if (annotationItems != null) {
+                        for (AnnotationItem annItem : annotationItems) {
+                            if (annItem.getAnnotationName().equals(annotation)) {
+                                result.getResult().add(new StringItem(classItem.getFqn()));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
     }
 
     private DataResult<List<String>> join(List<String> lists) {
@@ -347,6 +374,17 @@ public class EngineFunctions implements IEngineFunctions {
                 IntegerItem argIdx = (IntegerItem) params.get(2).getResult();
                 result = this.getArg(classItem, invocation.getValue(), argIdx.getValue());
             }
+                break;
+
+            case Constants.FUNCTION_GET_ANNOTATED: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                StringItem annoStr = (StringItem) params.get(0).getResult();
+                StringItem entityType = (StringItem) params.get(1).getResult();
+
+                annoStr.setValue(annoStr.getValue().substring(1));
+                result = this.getAnnotated(annoStr.getValue(), entityType.getValue());
+            }
+
                 break;
         }
         return result;
