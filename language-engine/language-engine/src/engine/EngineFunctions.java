@@ -10,14 +10,13 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import com.github.javaparser.resolution.declarations.ResolvedInterfaceDeclaration;
-
 import models.AnnotationAttrItem;
 import models.AnnotationItem;
 import models.BooleanItem;
 import models.ClassItem;
 import models.DataResult;
 import models.FieldItem;
+import models.IntegerItem;
 import models.InvocationItem;
 import models.JItem;
 import models.MethodItem;
@@ -108,14 +107,34 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
-    private DataResult<List<InvocationItem>> getInvocations(ClassItem c) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     private DataResult<StringItem> getArg(ClassItem c, String methodName, int argIdx) {
-        // TODO Auto-generated method stub
-        return null;
+        String functionCall = "getArg()" + "||" + c.getFqn() + "||" + methodName + "||" + argIdx;
+        DataResult<StringItem> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            result = new DataResult<StringItem>(Constants.TYPE_STRING, new StringItem(""));
+            List<InvocationItem> invocationItems = c.getInvocations();
+            if (invocationItems == null) {
+                DataResult<List<InvocationItem>> invocationResult = new DataResult<List<InvocationItem>>(
+                        Constants.TYPE_INVOCATION_LIST,
+                        this.classHelper.getInvocations(c.getFqn()));
+                invocationItems = invocationResult.getResult();
+            }
+
+            for (InvocationItem invocationItem : invocationItems) {
+                if (invocationItem.getInvocationLine().strip().startsWith(methodName + "(")) {
+                    String arg = invocationItem.getArguments().get(argIdx);
+                    if (arg.startsWith("\""))
+                        arg = arg.substring(1, arg.length() - 1);
+                    result.setResult(new StringItem(arg));
+                    break;
+                }
+            }
+
+            cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
     }
 
     private DataResult<BooleanItem> callExists(ClassItem c, String invocation) {
@@ -318,6 +337,15 @@ public class EngineFunctions implements IEngineFunctions {
 
                 anno.setValue(anno.getValue().substring(1)); // To remove the @
                 result = this.getAnnoAttr(classItem, anno.getValue(), prop.getValue());
+            }
+                break;
+
+            case Constants.FUNCTION_GET_ARG: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                ClassItem classItem = (ClassItem) params.get(0).getResult();
+                StringItem invocation = (StringItem) params.get(1).getResult();
+                IntegerItem argIdx = (IntegerItem) params.get(2).getResult();
+                result = this.getArg(classItem, invocation.getValue(), argIdx.getValue());
             }
                 break;
         }
