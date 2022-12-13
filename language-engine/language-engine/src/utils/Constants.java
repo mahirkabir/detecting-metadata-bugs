@@ -24,6 +24,8 @@ public class Constants {
     public static final String TYPE_FIELD = "field";
     public static final String TYPE_METHOD_LIST = "method-list";
     public static final String TYPE_METHOD = "method";
+    public static final String TYPE_INVOCATION_LIST = "invocation-list";
+    public static final String TYPE_INVOCATION = "invocation";
     public static final String EXPRESSION_NOT = "Not";
     public static final String EMPTY_STRING = "";
     public static final String NODE_TYPE_ROOT = "root";

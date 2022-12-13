@@ -7,6 +7,7 @@ public class InvocationItem {
 	private String callee;
 	private String invocationStmnt;
 	private List<String> arguments;
+	private String className;
 
 	public String getInvocationLine() {
 		return invocationStmnt;
@@ -38,5 +39,18 @@ public class InvocationItem {
 
 	public void setCallee(String callee) {
 		this.callee = callee;
+	}
+
+	/**
+	 * Get the class name that the invocation resides in
+	 * 
+	 * @return
+	 */
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
 	}
 }

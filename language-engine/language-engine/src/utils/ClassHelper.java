@@ -20,6 +20,7 @@ import com.github.javaparser.utils.SourceRoot;
 
 import models.ClassItem;
 import models.FieldItem;
+import models.InvocationItem;
 import models.MethodItem;
 
 public class ClassHelper {
@@ -230,5 +231,48 @@ public class ClassHelper {
 		}
 
 		return classItem.getMethods();
+	}
+
+	/**
+	 * Get all method invocations for class with cFqn as fully qualified name
+	 * 
+	 * @param cFqn
+	 * @return
+	 */
+	public List<InvocationItem> getInvocations(String cFqn) {
+		if (!this.dictClass.containsKey(cFqn))
+			return new ArrayList<InvocationItem>();
+
+		ClassItem classItem = this.dictClass.get(cFqn);
+		if (classItem.getInvocations() != null)
+			// If already loaded before, return the memoized result
+			return classItem.getInvocations();
+
+		String javaFilePath = classItem.getFilePath();
+		List<InvocationItem> invocations = new InvocationHelper(javaFilePath).GetInvocations();
+
+		Map<String, String> dictRelevantClasses = new HashMap<String, String>();
+		for (Map.Entry<String, ClassItem> entry : this.dictClass.entrySet()) {
+			// Collecting all classes in the javaFilePath
+			// Because, InvocationHelper will get all invocations from javaFilePath
+			// We need to assign each method to the corresponding class using the class SN
+			// Note: This will not be an extra O(N) operation as for each java file, it will
+			// be done only once. For the later times, memoized values will be returned
+			ClassItem elm = entry.getValue();
+			if (elm.getFilePath().equals(javaFilePath))
+				dictRelevantClasses.put(elm.getName(), elm.getFqn());
+		}
+
+		for (InvocationItem invocation : invocations) {
+			String classSN = invocation.getClassName();
+			if (dictRelevantClasses.containsKey(classSN)) {
+				String classFQN = dictRelevantClasses.get(classSN);
+				if (this.dictClass.containsKey(classFQN)) {
+					this.dictClass.get(classFQN).addInvocation(invocation);
+				}
+			}
+		}
+
+		return classItem.getInvocations();
 	}
 }

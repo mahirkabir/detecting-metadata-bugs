@@ -107,9 +107,33 @@ public class EngineFunctions implements IEngineFunctions {
         return null;
     }
 
-    private DataResult<BooleanItem> callExists(ClassItem c, String methodName) {
-        // TODO Auto-generated method stub
-        return null;
+    private DataResult<BooleanItem> callExists(ClassItem c, String invocation) {
+        String basicFunction = "callExists()" + "||" + c.getFqn();
+        String functionCall = basicFunction + "||" + invocation;
+        DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            result = new DataResult<BooleanItem>(
+                    Constants.TYPE_BOOLEAN, new BooleanItem(false));
+            DataResult<BooleanItem> trueRes = new DataResult<BooleanItem>(
+                    Constants.TYPE_BOOLEAN, new BooleanItem(true));
+
+            DataResult<List<InvocationItem>> invocationResult = new DataResult<List<InvocationItem>>(
+                    Constants.TYPE_INVOCATION_LIST,
+                    this.classHelper.getInvocations(c.getFqn()));
+
+            for (InvocationItem invocationItem : invocationResult.getResult()) {
+                String invStmnt = invocationItem.getInvocationLine();
+                String invMethod = invStmnt.split("(\\()")[0];
+                if (invMethod.strip().equals(invocation))
+                    result = trueRes;
+                cache.addFunctionCall(basicFunction + "||" + invMethod, trueRes);
+            }
+
+            cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
     }
 
     private DataResult<StringItem> getFQN(ClassItem c) {
@@ -234,6 +258,15 @@ public class EngineFunctions implements IEngineFunctions {
                 JItem jItem = (JItem) params.get(0).getResult();
                 result = this.getName(jItem);
             }
+                break;
+
+            case Constants.FUNCTION_CALL_EXISTS: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                ClassItem classItem = (ClassItem) params.get(0).getResult();
+                StringItem invocation = (StringItem) params.get(1).getResult();
+                result = this.callExists(classItem, invocation.getValue());
+            }
+                break;
         }
         return result;
     }

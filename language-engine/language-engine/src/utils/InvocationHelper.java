@@ -73,7 +73,8 @@ public class InvocationHelper {
 
             InvocationItem invocationItem = new InvocationItem();
             invocationItem.setCallee(callee);
-            invocationItem.setCaller(className);
+            invocationItem.setCaller(className); // TODO: See if we need to change it to caller method
+            invocationItem.setClassName(className);
             invocationItem.setInvocationStmnt(invocationStmnt);
             invocationItem.setArguments(arguments);
             invocations.add(invocationItem);

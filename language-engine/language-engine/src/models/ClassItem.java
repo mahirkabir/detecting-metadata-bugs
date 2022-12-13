@@ -58,11 +58,23 @@ public class ClassItem extends JItem {
 		this.annotations = annotations;
 	}
 
+	public void addAnnotation(AnnotationItem annotation) {
+		if (this.annotations == null)
+			this.annotations = new ArrayList<AnnotationItem>();
+		this.annotations.add(annotation);
+	}
+
 	public List<InvocationItem> getInvocations() {
 		return invocations;
 	}
 
 	public void setInvocations(List<InvocationItem> invocations) {
 		this.invocations = invocations;
+	}
+
+	public void addInvocation(InvocationItem invocation) {
+		if (this.invocations == null)
+			this.invocations = new ArrayList<InvocationItem>();
+		this.invocations.add(invocation);
 	}
 }
