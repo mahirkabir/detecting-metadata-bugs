@@ -10,6 +10,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.github.javaparser.resolution.declarations.ResolvedInterfaceDeclaration;
+
+import models.AnnotationAttrItem;
+import models.AnnotationItem;
 import models.BooleanItem;
 import models.ClassItem;
 import models.DataResult;
@@ -97,6 +101,13 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
+    private DataResult<List<AnnotationItem>> getAnnotations(ClassItem c) {
+        DataResult<List<AnnotationItem>> result = new DataResult<List<AnnotationItem>>(
+                Constants.TYPE_ANNOTATION_LIST,
+                this.classHelper.getAnnotations(c.getFqn()));
+        return result;
+    }
+
     private DataResult<List<InvocationItem>> getInvocations(ClassItem c) {
         // TODO Auto-generated method stub
         return null;
@@ -140,9 +151,40 @@ public class EngineFunctions implements IEngineFunctions {
         return new DataResult<StringItem>(Constants.TYPE_STRING, new StringItem(c.getFqn()));
     }
 
-    private DataResult<List<String>> getAnnoAttr(ClassItem c, String annotation, String attr) {
-        // TODO Auto-generated method stub
-        return null;
+    private DataResult<List<StringItem>> getAnnoAttr(ClassItem c, String annotation, String attr) {
+        String functionCall = "getAnnoAttr()" + "||" + c.getFqn() + "||" + annotation + "||" + attr;
+        DataResult<List<StringItem>> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            result = new DataResult<List<StringItem>>(
+                    Constants.TYPE_STRING_LIST, new ArrayList<StringItem>());
+            DataResult<List<AnnotationItem>> annRes = this.getAnnotations(c);
+
+            for (AnnotationItem annItem : annRes.getResult()) {
+                List<AnnotationAttrItem> annAttrs = annItem.getAnnotationAttrs();
+                for (AnnotationAttrItem annAttrItem : annAttrs) {
+                    String functionCurr = "getAnnoAttr()" + "||" + c.getFqn() + "||"
+                            + annItem.getAnnotationName() + "||" + annAttrItem.getAnnotationAttrName();
+                    DataResult<List<StringItem>> currRes = this.cache.fetchFunctionCall(functionCurr);
+                    if (currRes == null)
+                        currRes = new DataResult<List<StringItem>>(
+                                Constants.TYPE_STRING_LIST, new ArrayList<StringItem>());
+
+                    String annVal = annAttrItem.getAnnotationAttrValue();
+                    if (annVal.startsWith("\"") && annVal.endsWith("\""))
+                        annVal = annVal.substring(1, annVal.length() - 1);
+                    currRes.getResult().add(new StringItem(annVal));
+                    cache.addFunctionCall(functionCurr, currRes);
+                    if (annItem.getAnnotationName().equals(annotation)
+                            && annAttrItem.getAnnotationAttrName().equals(attr))
+                        result = currRes;
+                }
+            }
+
+            cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
     }
 
     private DataResult<List<XMLItem>> getElms(XMLItem xml, String selector) {
@@ -265,6 +307,15 @@ public class EngineFunctions implements IEngineFunctions {
                 ClassItem classItem = (ClassItem) params.get(0).getResult();
                 StringItem invocation = (StringItem) params.get(1).getResult();
                 result = this.callExists(classItem, invocation.getValue());
+            }
+                break;
+
+            case Constants.FUNCTION_GET_ANNO_ATTR: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                ClassItem classItem = (ClassItem) params.get(0).getResult();
+                StringItem anno = (StringItem) params.get(1).getResult();
+                StringItem prop = (StringItem) params.get(2).getResult();
+                result = this.getAnnoAttr(classItem, anno.getValue(), prop.getValue());
             }
                 break;
         }

@@ -14,6 +14,7 @@ public class Constants {
     public static final String BOOLEAN_TRUE = "true";
     public static final String BOOLEAN_FALSE = "false";
     public static final String TYPE_STRING = "String";
+    public static final String TYPE_STRING_LIST = "String-list";
     public static final String TYPE_INTEGER = "Integer";
     public static final String TYPE_BOOLEAN = "bool";
     public static final String TYPE_CLASS = "class";
@@ -26,6 +27,8 @@ public class Constants {
     public static final String TYPE_METHOD = "method";
     public static final String TYPE_INVOCATION_LIST = "invocation-list";
     public static final String TYPE_INVOCATION = "invocation";
+    public static final String TYPE_ANNOTATION_LIST = "annotation-list";
+    public static final String TYPE_ANNOTATION = "annotation";
     public static final String EXPRESSION_NOT = "Not";
     public static final String EMPTY_STRING = "";
     public static final String NODE_TYPE_ROOT = "root";
