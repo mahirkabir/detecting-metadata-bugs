@@ -213,12 +213,13 @@ public class EngineFunctions implements IEngineFunctions {
     }
 
     private DataResult<StringItem> getAttr(XMLItem node, String attrName) {
-        return new DataResult<StringItem>(Constants.TYPE_STRING, node.getAttr(attrName));
+        return new DataResult<StringItem>(Constants.TYPE_STRING,
+                new StringItem(node.getAttr(attrName)));
     }
 
     private DataResult<BooleanItem> elementExists(XMLItem xml, String selector) {
-        // TODO Auto-generated method stub
-        return null;
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN,
+                new BooleanItem(xml.getMapChildTags().containsKey(selector)));
     }
 
     private DataResult<StringItem> getName(JItem jItem) {
@@ -392,6 +393,17 @@ public class EngineFunctions implements IEngineFunctions {
                 XMLItem parentElm = (XMLItem) params.get(0).getResult();
                 StringItem attr = (StringItem) params.get(1).getResult();
                 result = this.getAttr(parentElm, attr.getValue());
+            }
+                break;
+
+            case Constants.FUNCTION_ELEMENT_EXISTS: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                XMLItem parentElm = (XMLItem) params.get(0).getResult();
+                StringItem selector = (StringItem) params.get(1).getResult();
+
+                selector.setValue(selector.getValue().substring(1,
+                        selector.getValue().length() - 1));
+                result = this.elementExists(parentElm, selector.getValue());
             }
                 break;
         }

@@ -62,10 +62,10 @@ public class XMLItem {
         this.mapAttr.put(attr, attr);
     }
 
-    public StringItem getAttr(String attr) {
+    public String getAttr(String attr) {
         if (this.mapAttr.containsKey(attr))
-            return new StringItem(this.mapAttr.get(attr));
-        return new StringItem(Constants.EMPTY_STRING);
+            return this.mapAttr.get(attr);
+        return Constants.EMPTY_STRING;
     }
 
     public Map<String, Boolean> getMapChildTags() {

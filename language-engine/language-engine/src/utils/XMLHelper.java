@@ -135,9 +135,9 @@ public class XMLHelper {
         xmlItem.setItemType(tagName);
         xmlItem.setMapAttr(this.getAttrFromNode(node));
 
-        String idSuffix = xmlItem.getAttr(Constants.ATTR_ID).getValue();
+        String idSuffix = xmlItem.getAttr(Constants.ATTR_ID);
         if (idSuffix.equals(""))
-            idSuffix = xmlItem.getAttr(Constants.ATTR_NAME).getValue();
+            idSuffix = xmlItem.getAttr(Constants.ATTR_NAME);
         xmlItem.setId(xmlItem.getId() + "-" + idSuffix);
 
         xmlItem.setDomNode(node);
