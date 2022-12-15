@@ -233,18 +233,18 @@ public class EngineFunctions implements IEngineFunctions {
     }
 
     private DataResult<StringItem> subString(String str, int st) {
-        // TODO Auto-generated method stub
-        return null;
+        return new DataResult<StringItem>(Constants.TYPE_STRING,
+                new StringItem(str.substring(st)));
     }
 
     private DataResult<StringItem> subString(String str, int st, int en) {
-        // TODO Auto-generated method stub
-        return null;
+        return new DataResult<StringItem>(Constants.TYPE_STRING,
+                new StringItem(str.substring(st, en)));
     }
 
     private DataResult<StringItem> upperCase(String str) {
-        // TODO Auto-generated method stub
-        return null;
+        return new DataResult<StringItem>(Constants.TYPE_STRING,
+                new StringItem(str.toUpperCase()));
     }
 
     private DataResult<List<StringItem>> getAnnotated(String annotation, String entityType) {
@@ -404,6 +404,26 @@ public class EngineFunctions implements IEngineFunctions {
                 selector.setValue(selector.getValue().substring(1,
                         selector.getValue().length() - 1));
                 result = this.elementExists(parentElm, selector.getValue());
+            }
+                break;
+
+            case Constants.FUNCTION_SUBSTRING: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                StringItem str = (StringItem) params.get(0).getResult();
+                IntegerItem st = (IntegerItem) params.get(1).getResult();
+                if (params.size() == 3) {
+                    IntegerItem en = (IntegerItem) params.get(2).getResult();
+                    result = this.subString(str.getValue(), st.getValue(), en.getValue());
+                } else {
+                    result = this.subString(str.getValue(), st.getValue());
+                }
+            }
+                break;
+
+            case Constants.FUNCTION_UPPERCASE: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                StringItem str = (StringItem) params.get(0).getResult();
+                result = this.upperCase(str.getValue());
             }
                 break;
         }
