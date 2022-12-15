@@ -1,8 +1,5 @@
 package engine;
 
-import java.util.List;
-
-import models.ClassItem;
 import models.DataResult;
 
 public interface IEngineCache {
@@ -21,32 +18,4 @@ public interface IEngineCache {
      * @return
      */
     DataResult fetchFunctionCall(String functionCall);
-
-    /**
-     * Save classes in cache
-     */
-    void saveClasses(List<ClassItem> classItems);
-
-    /**
-     * Edit info of class in cache
-     * 
-     * @param classFQN
-     * @param classItem
-     */
-    void editClass(String classFQN, ClassItem classItem);
-
-    /**
-     * Get all classes from cache
-     * 
-     * @return
-     */
-    DataResult<List<ClassItem>> getClasses();
-
-    /**
-     * Get class info from cache
-     * 
-     * @param classFQN
-     * @return
-     */
-    DataResult<ClassItem> getClass(String classFQN);
 }
