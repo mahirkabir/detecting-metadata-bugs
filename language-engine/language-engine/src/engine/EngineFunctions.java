@@ -206,24 +206,14 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
-    private DataResult<List<XMLItem>> getElms(XMLItem xml, StringItem selector) {
-        String functionCall = "getElms()" + "||" + xml.getId() + "||" + selector.getValue();
-        DataResult<List<XMLItem>> result = this.cache.fetchFunctionCall(functionCall);
-
-        if (result == null) {
-            String selectorType = selector.getValue();
-            selectorType = selectorType.substring(1, selectorType.length() - 1);
-            result = new DataResult<List<XMLItem>>(Constants.TYPE_XML_LIST,
-                    this.xmlHelper.getElms(xml, selectorType));
-            cache.addFunctionCall(functionCall, result);
-        }
-
+    private DataResult<List<XMLItem>> getElms(XMLItem xml, String selector) {
+        DataResult<List<XMLItem>> result = new DataResult<List<XMLItem>>(Constants.TYPE_XML_LIST,
+                this.xmlHelper.getElms(xml, selector));
         return result;
     }
 
     private DataResult<StringItem> getAttr(XMLItem node, String attrName) {
-        // TODO Auto-generated method stub
-        return null;
+        return new DataResult<StringItem>(Constants.TYPE_STRING, node.getAttr(attrName));
     }
 
     private DataResult<BooleanItem> elementExists(XMLItem xml, String selector) {
@@ -393,7 +383,15 @@ public class EngineFunctions implements IEngineFunctions {
                 List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                 XMLItem parentElm = (XMLItem) params.get(0).getResult();
                 StringItem selector = (StringItem) params.get(1).getResult();
-                result = this.getElms(parentElm, selector);
+                result = this.getElms(parentElm, selector.getValue());
+            }
+                break;
+
+            case Constants.FUNCTION_GET_ATTR: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                XMLItem parentElm = (XMLItem) params.get(0).getResult();
+                StringItem attr = (StringItem) params.get(1).getResult();
+                result = this.getAttr(parentElm, attr.getValue());
             }
                 break;
         }

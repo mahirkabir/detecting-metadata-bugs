@@ -71,7 +71,7 @@ public class XMLHelper {
             XMLItem xmlItem = this.readXML(xmlFilePath);
             xmlItems.add(xmlItem);
         }
-        
+
         return xmlItems;
     }
 
@@ -135,9 +135,9 @@ public class XMLHelper {
         xmlItem.setItemType(tagName);
         xmlItem.setMapAttr(this.getAttrFromNode(node));
 
-        String idSuffix = xmlItem.getAttr(Constants.ATTR_ID);
+        String idSuffix = xmlItem.getAttr(Constants.ATTR_ID).getValue();
         if (idSuffix.equals(""))
-            idSuffix = xmlItem.getAttr(Constants.ATTR_NAME);
+            idSuffix = xmlItem.getAttr(Constants.ATTR_NAME).getValue();
         xmlItem.setId(xmlItem.getId() + "-" + idSuffix);
 
         xmlItem.setDomNode(node);
