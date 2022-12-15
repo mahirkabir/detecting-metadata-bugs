@@ -206,12 +206,15 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
-    private DataResult<List<XMLItem>> getElms(XMLItem xml, String selector) {
-        String functionCall = "getElms()" + "||" + xml.getId() + "||" + selector;
+    private DataResult<List<XMLItem>> getElms(XMLItem xml, StringItem selector) {
+        String functionCall = "getElms()" + "||" + xml.getId() + "||" + selector.getValue();
         DataResult<List<XMLItem>> result = this.cache.fetchFunctionCall(functionCall);
 
         if (result == null) {
-            result = new DataResult<List<XMLItem>>(Constants.TYPE_XML_LIST, this.xmlHelper.getElms(xml, selector));
+            String selectorType = selector.getValue();
+            selectorType = selectorType.substring(1, selectorType.length() - 1);
+            result = new DataResult<List<XMLItem>>(Constants.TYPE_XML_LIST,
+                    this.xmlHelper.getElms(xml, selectorType));
             cache.addFunctionCall(functionCall, result);
         }
 
@@ -384,7 +387,14 @@ public class EngineFunctions implements IEngineFunctions {
                 annoStr.setValue(annoStr.getValue().substring(1));
                 result = this.getAnnotated(annoStr.getValue(), entityType.getValue());
             }
+                break;
 
+            case Constants.FUNCTION_GET_ELMS: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                XMLItem parentElm = (XMLItem) params.get(0).getResult();
+                StringItem selector = (StringItem) params.get(1).getResult();
+                result = this.getElms(parentElm, selector);
+            }
                 break;
         }
         return result;

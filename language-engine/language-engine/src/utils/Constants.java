@@ -29,6 +29,7 @@ public class Constants {
     public static final String TYPE_INVOCATION = "invocation";
     public static final String TYPE_ANNOTATION_LIST = "annotation-list";
     public static final String TYPE_ANNOTATION = "annotation";
+    public static final String TYPE_FILE = "file";
     public static final String EXPRESSION_NOT = "Not";
     public static final String EMPTY_STRING = "";
     public static final String NODE_TYPE_ROOT = "root";

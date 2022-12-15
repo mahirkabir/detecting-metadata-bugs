@@ -1,13 +1,12 @@
 package utils;
 
-import engine.IEngineEvaluate;
-import engine.IEngineDecl;
-import engine.IEngineFor;
-import engine.IEngineFunctions;
-
 import com.github.javaparser.utils.Pair;
 
 import engine.EngineFactory;
+import engine.IEngineDecl;
+import engine.IEngineEvaluate;
+import engine.IEngineFor;
+import engine.IEngineFunctions;
 import models.BooleanItem;
 import models.ClassItem;
 import models.DataResult;
@@ -15,6 +14,7 @@ import models.FieldItem;
 import models.IntegerItem;
 import models.MethodItem;
 import models.StringItem;
+import models.XMLItem;
 import parser.ASTAssertStmnt;
 import parser.ASTDeclStmnt;
 import parser.ASTExpression;
@@ -74,6 +74,11 @@ public class Helper {
                 MethodItem convertedMethodItem = (MethodItem) element;
                 result = new DataResult<MethodItem>(Constants.TYPE_METHOD, convertedMethodItem);
                 break;
+
+            case Constants.TYPE_FILE:
+                XMLItem convertedXmlItem = (XMLItem) element;
+                result = new DataResult<XMLItem>(Constants.TYPE_XML, convertedXmlItem);
+                break;
         }
 
         return result;
@@ -96,7 +101,7 @@ public class Helper {
                     int totalChildren = ifStmnt.jjtGetNumChildren();
                     for (int i = 1; i < totalChildren; ++i)
                         Helper.process(ifStmnt.jjtGetChild(i));
-                        System.out.println("End: " + ifStmnt);
+                    System.out.println("End: " + ifStmnt);
                 }
                 break;
 
