@@ -30,6 +30,7 @@ public class Constants {
     public static final String TYPE_ANNOTATION_LIST = "annotation-list";
     public static final String TYPE_ANNOTATION = "annotation";
     public static final String TYPE_FILE = "file";
+    public static final String TYPE_LIST = "list";
     public static final String EXPRESSION_NOT = "Not";
     public static final String EMPTY_STRING = "";
     public static final String NODE_TYPE_ROOT = "root";
@@ -59,5 +60,7 @@ public class Constants {
     public static final String FUNCTION_UPPERCASE = "upperCase";
     public static final String FUNCTION_ENDS_WITH = "endsWith";
     public static final String FUNCTION_MSG = "msg";
-
+    public static final String FUNCTION_IS_EMPTY = "isEmpty";
+    public static final String FUNCTION_JOIN = "join";
+    public static final String FUNCTION_INDEX_OF = "indexOf";
 }

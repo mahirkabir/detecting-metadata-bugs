@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -279,19 +282,32 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
-    private DataResult<List<String>> join(List<String> lists) {
-        // TODO Auto-generated method stub
-        return null;
+    private DataResult<List> join(List<List> lists) {
+        List ret = new ArrayList();
+        for (List list : lists) {
+            ret = (List) concatList(ret, list);
+        }
+        return new DataResult<List>(Constants.TYPE_LIST, ret);
     }
 
-    private DataResult<BooleanItem> isEmpty(List<String> list) {
-        // TODO Auto-generated method stub
-        return null;
+    private Object concatList(List ret, List list) {
+        return Stream.of(ret, list)
+                .flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    private DataResult<BooleanItem> isEmpty(List list) {
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN,
+                new BooleanItem(list.size() != 0));
     }
 
     private DataResult<BooleanItem> endsWith(String str, String suffix) {
-        // TODO Auto-generated method stub
-        return null;
+        boolean endsWith = str.endsWith(suffix);
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(endsWith));
+    }
+
+    private DataResult<IntegerItem> indexOf(String str, String search) {
+        return new DataResult<IntegerItem>(Constants.TYPE_INTEGER, new IntegerItem(
+                str.indexOf(search)));
     }
 
     /*
@@ -426,7 +442,42 @@ public class EngineFunctions implements IEngineFunctions {
                 result = this.upperCase(str.getValue());
             }
                 break;
+
+            case Constants.FUNCTION_ENDS_WITH: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                StringItem str = (StringItem) params.get(0).getResult();
+                StringItem suffix = (StringItem) params.get(1).getResult();
+
+                result = this.endsWith(str.getValue(), suffix.getValue());
+            }
+                break;
+
+            case Constants.FUNCTION_IS_EMPTY: {
+                // TODO: Need to introduce list variable
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                List list = (List) params.get(0).getResult();
+                result = this.isEmpty(list);
+            }
+                break;
+
+            case Constants.FUNCTION_JOIN: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                List list = new ArrayList<>();
+                for (DataResult param : params)
+                    list.add((List) param.getResult());
+
+                result = this.join(list);
+            }
+                break;
+
+            case Constants.FUNCTION_INDEX_OF: {
+                List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                StringItem str = (StringItem) params.get(0).getResult();
+                StringItem search = (StringItem) params.get(1).getResult();
+                result = this.indexOf(str.getValue(), search.getValue());
+            }
         }
+
         return result;
     }
 
