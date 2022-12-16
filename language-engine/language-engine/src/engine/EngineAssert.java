@@ -78,6 +78,11 @@ public class EngineAssert implements IEngineAssert {
 
         } else {
             System.out.println("TODO: Need to implement for assert(conditional expression)");
+            boolean assertPass = this.evaluator.evalBooleanExpr(assertExp);
+            if (!assertPass) {
+                ASTMsgStmnt msgStmnt = (ASTMsgStmnt) assertStmnt.jjtGetChild(1);
+                this.printMsg(msgStmnt);
+            }
         }
 
         this.engineDecl.removeFrame();
@@ -90,7 +95,7 @@ public class EngineAssert implements IEngineAssert {
      */
     private void printMsg(ASTMsgStmnt msgStmnt) {
         Node msgNode = msgStmnt.jjtGetChild(0);
-        String message = msgNode.toString(); // This string might have %s. in it
+        String message = ((ASTLiteral) msgNode).getLitValue(); // This string might have %s. in it
         if (msgStmnt.jjtGetNumChildren() > 1) {
             List<String> formatValues = new ArrayList<String>();
             ASTMsgSuffix msgSuffix = (ASTMsgSuffix) msgStmnt.jjtGetChild(1);
@@ -129,9 +134,9 @@ public class EngineAssert implements IEngineAssert {
                     message += formatValues.get(fit++) + messageParts[it];
                 }
             }
-
-            utils.Logger.output(message);
         }
+
+        utils.Logger.output(message);
     }
 
 }
