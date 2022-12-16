@@ -1,14 +1,19 @@
 package engine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.github.javaparser.utils.Pair;
 
 import models.DataResult;
+import models.StringItem;
 import parser.ASTAssertStmnt;
 import parser.ASTExpression;
 import parser.ASTFunctionOrId;
 import parser.ASTIdentifier;
+import parser.ASTLiteral;
+import parser.ASTMsgStmnt;
+import parser.ASTMsgSuffix;
 import parser.ASTSimExp;
 import parser.ASTType;
 import parser.Node;
@@ -30,7 +35,7 @@ public class EngineAssert implements IEngineAssert {
 
     @Override
     public void process(ASTAssertStmnt assertStmnt) {
-        engineDecl.createFrame();
+        this.engineDecl.createFrame();
         ASTExpression assertExp = (ASTExpression) assertStmnt.jjtGetChild(0);
         Node assertExpChild = assertExp.jjtGetChild(0);
         if (assertExpChild.toString().equals(Constants.SIMPLE_EXP)) {
@@ -49,13 +54,15 @@ public class EngineAssert implements IEngineAssert {
                 boolean assertPass = false;
                 for (Object element : containerList) {
                     DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
-                    engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
+                    this.engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
                     ASTExpression booleanExp = (ASTExpression) assertSimExp.jjtGetChild(3);
                     assertPass |= this.evaluator.evalBooleanExpr(booleanExp);
+                    this.engineDecl.resetFrame();
                 }
 
                 if (!assertPass) {
-                    System.out.println("Assert Failed");
+                    ASTMsgStmnt msgStmnt = (ASTMsgStmnt) assertStmnt.jjtGetChild(1);
+                    this.printMsg(msgStmnt);
                 }
             } else {
                 ASTFunctionOrId functionOrId = (ASTFunctionOrId) firstChild;
@@ -73,7 +80,58 @@ public class EngineAssert implements IEngineAssert {
             System.out.println("TODO: Need to implement for assert(conditional expression)");
         }
 
-        engineDecl.removeFrame();
+        this.engineDecl.removeFrame();
+    }
+
+    /**
+     * Print the assert message
+     * 
+     * @param msgStmnt
+     */
+    private void printMsg(ASTMsgStmnt msgStmnt) {
+        Node msgNode = msgStmnt.jjtGetChild(0);
+        String message = msgNode.toString(); // This string might have %s. in it
+        if (msgStmnt.jjtGetNumChildren() > 1) {
+            List<String> formatValues = new ArrayList<String>();
+            ASTMsgSuffix msgSuffix = (ASTMsgSuffix) msgStmnt.jjtGetChild(1);
+            int numOfMsgSuffix = msgSuffix.jjtGetNumChildren();
+            for (int i = 0; i < numOfMsgSuffix; ++i) {
+                ASTSimExp suffixExp = (ASTSimExp) msgSuffix.jjtGetChild(i);
+                Node child = suffixExp.jjtGetChild(0);
+                if (child.toString().equals(Constants.FUNCTION_OR_ID)) {
+                    ASTFunctionOrId functionOrId = (ASTFunctionOrId) child;
+                    int totalChildren = functionOrId.jjtGetNumChildren();
+                    String varName;
+                    if (totalChildren == 1) { // Id
+                        ASTIdentifier identifier = (ASTIdentifier) functionOrId.jjtGetChild(0);
+                        String idenString = identifier.getIdentifier();
+                        StringItem varItem = (StringItem) engineDecl.extractVariable(idenString).getResult();
+                        varName = varItem.getValue();
+
+                    } else { // Function
+                        StringItem varItem = (StringItem) this.engineFunctions.callFunction(functionOrId).getResult();
+                        varName = varItem.getValue();
+                    }
+
+                    if (varName.startsWith("\"") && varName.endsWith("\""))
+                        varName = varName.substring(1, varName.length() - 1);
+                    formatValues.add(varName);
+                } else {
+                    formatValues.add(((ASTLiteral) child).getLitValue());
+                }
+            }
+
+            if (formatValues.size() > 0) {
+                String[] messageParts = message.split("%s");
+                int n = messageParts.length, fit = 0;
+                message = messageParts[0];
+                for (int it = 1; it < n; ++it) {
+                    message += formatValues.get(fit++) + messageParts[it];
+                }
+            }
+
+            utils.Logger.output(message);
+        }
     }
 
 }
