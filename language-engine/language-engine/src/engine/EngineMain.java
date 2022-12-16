@@ -11,12 +11,12 @@ public class EngineMain {
      * These engines will be accessed everywhere in the project through the factory
      */
     private static void bindEngines() {
-        EngineFactory.setEngineAssert(new EngineAssert());
-        EngineFactory.setEngineCache(new EngineCache());
         EngineFactory.setEngineDecl(new EngineDecl());
+        EngineFactory.setEngineCache(new EngineCache());
         EngineFactory.setEvaluator(new EngineEvaluate());
-        EngineFactory.setEngineFor(new EngineFor());
         EngineFactory.setEngineFunctions(new EngineFunctions());
+        EngineFactory.setEngineFor(new EngineFor());
+        EngineFactory.setEngineAssert(new EngineAssert());
     }
 
     private static IEngineDecl engineDecl;

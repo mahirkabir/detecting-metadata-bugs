@@ -3,6 +3,7 @@ package utils;
 import com.github.javaparser.utils.Pair;
 
 import engine.EngineFactory;
+import engine.IEngineAssert;
 import engine.IEngineDecl;
 import engine.IEngineEvaluate;
 import engine.IEngineFor;
@@ -122,7 +123,8 @@ public class Helper {
             case Constants.ASSERT_STMNT:
                 ASTAssertStmnt assertStmnt = (ASTAssertStmnt) node;
                 System.out.println("Start: " + assertStmnt);
-                // processAssert(assertStmnt);
+                IEngineAssert engineAssert = EngineFactory.getEngineAssert();
+                engineAssert.process(assertStmnt);
                 System.out.println("End: " + assertStmnt);
                 break;
 
