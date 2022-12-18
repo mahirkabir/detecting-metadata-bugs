@@ -80,6 +80,10 @@ public class Helper {
                 XMLItem convertedXmlItem = (XMLItem) element;
                 result = new DataResult<XMLItem>(Constants.TYPE_XML, convertedXmlItem);
                 break;
+
+            case Constants.TYPE_STRING:
+                StringItem convertedStringItem = (StringItem) element;
+                result = new DataResult<StringItem>(Constants.TYPE_STRING, convertedStringItem);
         }
 
         return result;

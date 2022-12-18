@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.javaparser.utils.Pair;
 
+import models.BooleanItem;
 import models.DataResult;
 import models.StringItem;
 import parser.ASTAssertStmnt;
@@ -69,8 +70,11 @@ public class EngineAssert implements IEngineAssert {
                 if (functionOrId.jjtGetNumChildren() > 1) {
                     DataResult assertResult = engineFunctions.callFunction(functionOrId);
                     if (assertResult.getType().equals(Constants.TYPE_BOOLEAN)) {
-                        if (!(Boolean) assertResult.getResult()) {
-                            System.out.println("TODO: Assert failed");
+                        BooleanItem assertResultItem = (BooleanItem) assertResult.getResult();
+                        boolean assertPass = assertResultItem.getValue();
+                        if (!assertPass) {
+                            ASTMsgStmnt msgStmnt = (ASTMsgStmnt) assertStmnt.jjtGetChild(1);
+                            this.printMsg(msgStmnt);
                         }
                     }
                 }

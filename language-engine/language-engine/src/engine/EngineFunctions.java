@@ -230,7 +230,8 @@ public class EngineFunctions implements IEngineFunctions {
     }
 
     private DataResult<BooleanItem> pathExists(String path) {
-        path = path.substring(1, path.length() - 1);
+        if (path.startsWith("\"") && path.endsWith("\""))
+            path = path.substring(1, path.length() - 1);
         BooleanItem booleanItem = new BooleanItem(Files.exists(Paths.get(path)));
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, booleanItem);
     }
@@ -328,7 +329,8 @@ public class EngineFunctions implements IEngineFunctions {
                 break;
             case Constants.FUNCTION_PATH_EXISTS: {
                 List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
-                result = this.pathExists((String) params.get(0).getResult());
+                StringItem pathItem = (StringItem) params.get(0).getResult();
+                result = this.pathExists((String) pathItem.getValue());
             }
                 break;
             case Constants.FUNCTION_GET_FIELDS: {
