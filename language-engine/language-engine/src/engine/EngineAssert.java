@@ -81,7 +81,6 @@ public class EngineAssert implements IEngineAssert {
             }
 
         } else {
-            System.out.println("TODO: Need to implement for assert(conditional expression)");
             boolean assertPass = this.evaluator.evalBooleanExpr(assertExp);
             if (!assertPass) {
                 ASTMsgStmnt msgStmnt = (ASTMsgStmnt) assertStmnt.jjtGetChild(1);
@@ -134,8 +133,13 @@ public class EngineAssert implements IEngineAssert {
                 String[] messageParts = message.split("%s");
                 int n = messageParts.length, fit = 0;
                 message = messageParts[0];
-                for (int it = 1; it < n; ++it) {
-                    message += formatValues.get(fit++) + messageParts[it];
+
+                if (n == 1) {
+                    message += formatValues.get(fit++);
+                } else {
+                    for (int it = 1; it < n; ++it) {
+                        message += formatValues.get(fit++) + messageParts[it];
+                    }
                 }
             }
         }

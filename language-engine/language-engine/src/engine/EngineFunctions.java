@@ -110,12 +110,12 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
-    private DataResult<StringItem> getArg(ClassItem c, String methodName, int argIdx) {
+    private DataResult<List<StringItem>> getArg(ClassItem c, String methodName, int argIdx) {
         String functionCall = "getArg()" + "||" + c.getFqn() + "||" + methodName + "||" + argIdx;
-        DataResult<StringItem> result = this.cache.fetchFunctionCall(functionCall);
+        DataResult<List<StringItem>> result = this.cache.fetchFunctionCall(functionCall);
 
         if (result == null) {
-            result = new DataResult<StringItem>(Constants.TYPE_STRING, new StringItem(""));
+            result = new DataResult<List<StringItem>>(Constants.TYPE_STRING_LIST, new ArrayList<StringItem>());
             List<InvocationItem> invocationItems = c.getInvocations();
             if (invocationItems == null) {
                 DataResult<List<InvocationItem>> invocationResult = new DataResult<List<InvocationItem>>(
@@ -129,8 +129,7 @@ public class EngineFunctions implements IEngineFunctions {
                     String arg = invocationItem.getArguments().get(argIdx);
                     if (arg.startsWith("\""))
                         arg = arg.substring(1, arg.length() - 1);
-                    result.setResult(new StringItem(arg));
-                    break;
+                    result.getResult().add(new StringItem(arg));
                 }
             }
 

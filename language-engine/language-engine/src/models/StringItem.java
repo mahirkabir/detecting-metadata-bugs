@@ -3,6 +3,11 @@ package models;
 public class StringItem {
     private String str;
 
+    public StringItem() {
+        super();
+        this.str = "";
+    }
+
     public StringItem(String str) {
         super();
         this.str = str;

@@ -4,8 +4,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.CompilationUnit;
@@ -45,14 +43,12 @@ public class InvocationHelper {
                         .resolve(folder));
         CompilationUnit cu = sourceRoot.parse("", filename);
 
-        Map<String, MethodCallExpr> declInvocations = cu
+        List<MethodCallExpr> declInvocations = cu
                 .findAll(MethodCallExpr.class)
                 .stream()
-                .collect(Collectors.toMap(NodeWithSimpleName::getNameAsString, Function.identity()));
+                .collect(Collectors.toList());
 
-        for (Map.Entry<String, MethodCallExpr> mapElm : declInvocations.entrySet()) {
-            MethodCallExpr decl = mapElm.getValue();
-
+        for (MethodCallExpr decl : declInvocations) {
             System.out.println("========");
 
             Node classNode = decl
