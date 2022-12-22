@@ -2,6 +2,7 @@ package engine;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -231,7 +232,14 @@ public class EngineFunctions implements IEngineFunctions {
     private DataResult<BooleanItem> pathExists(String path) {
         if (path.startsWith("\"") && path.endsWith("\""))
             path = path.substring(1, path.length() - 1);
-        BooleanItem booleanItem = new BooleanItem(Files.exists(Paths.get(path)));
+
+        boolean pathExists = Files.exists(Paths.get(path));
+        if (!pathExists) {
+            Path relativePath = Paths.get(EngineFactory.getProjectPath(), path);
+            pathExists = Files.exists(relativePath);
+        }
+        
+        BooleanItem booleanItem = new BooleanItem(pathExists);
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, booleanItem);
     }
 
