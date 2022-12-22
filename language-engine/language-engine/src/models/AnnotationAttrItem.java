@@ -4,6 +4,16 @@ public class AnnotationAttrItem {
     private String annotationAttrName;
     private String annotationAttrValue;
 
+    public AnnotationAttrItem() {
+        super();
+    }
+
+    public AnnotationAttrItem(String annKey, String annVal) {
+        super();
+        this.annotationAttrName = annKey;
+        this.annotationAttrValue = annVal;
+    }
+
     public String getAnnotationAttrName() {
         return this.annotationAttrName;
     }

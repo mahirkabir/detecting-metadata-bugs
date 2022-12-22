@@ -4,21 +4,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.MemberValuePair;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
 import com.github.javaparser.utils.SourceRoot;
 
+import models.AnnotationAttrItem;
+import models.AnnotationItem;
 import models.MethodItem;
 
 public class MethodHelper {
@@ -57,6 +58,7 @@ public class MethodHelper {
                     methodItem.setName(decl.getNameAsString());
                     methodItem.setType(decl.getTypeAsString());
                     methodItem.setClassName(className);
+                    methodItem.setAnnotations(this.getMethodAnnotations(decl));
 
                     List<String> modifiers = new ArrayList<String>();
                     decl.getModifiers().forEach(item -> {
@@ -73,5 +75,37 @@ public class MethodHelper {
                 .collect(Collectors.toList());
 
         return methods;
+    }
+
+    /**
+     * Get all annotations for the method
+     * 
+     * @param decl
+     * @return
+     */
+    private List<AnnotationItem> getMethodAnnotations(MethodDeclaration decl) {
+        List<AnnotationItem> annotationItems = new ArrayList<>();
+
+        List<AnnotationExpr> annotations = decl.getAnnotations();
+        for (AnnotationExpr annotation : annotations) {
+            AnnotationItem annItem = new AnnotationItem();
+            annItem.setParentEntity(decl.getNameAsString());
+            annItem.setAnnotationName(annotation.getNameAsString());
+            annItem.setAnnotationType(Constants.ANNOTATION_METHOD);
+
+            NormalAnnotationExpr annExpr = (NormalAnnotationExpr) annotation;
+            List<MemberValuePair> annKeyValuePairs = annExpr.getPairs();
+            for (MemberValuePair pair : annKeyValuePairs) {
+                String annKey = pair.getNameAsString();
+                String annVal = pair.getValue().toString();
+                if (annVal.startsWith("\"") && annVal.endsWith("\""))
+                    annVal = annVal.substring(1, annVal.length() - 1);
+                annItem.addAnnotationAttr(new AnnotationAttrItem(annKey, annVal));
+            }
+
+            annotationItems.add(annItem);
+        }
+
+        return annotationItems;
     }
 }

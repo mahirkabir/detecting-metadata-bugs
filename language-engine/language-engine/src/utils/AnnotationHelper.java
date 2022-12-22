@@ -57,8 +57,9 @@ public class AnnotationHelper {
             String className = decl.getNameAsString();
             decl.getAnnotations().forEach(item -> {
                 AnnotationItem annotationItem = new AnnotationItem();
-                annotationItem.setClassName(className);
+                annotationItem.setParentEntity(className);
                 annotationItem.setAnnotationName(item.getNameAsString());
+                annotationItem.setAnnotationType(Constants.ANNOTATION_CLASS);
                 List<AnnotationAttrItem> attrs = new ArrayList<AnnotationAttrItem>();
 
                 item.getChildNodes().forEach(paramItem -> {

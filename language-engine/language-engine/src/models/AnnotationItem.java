@@ -4,8 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnnotationItem {
-    private String className;
+    private String parentEntity;
     private String annotationName;
+    private String annotationType;
+
+    /**
+     * Check if annotation is on method or class
+     * 
+     * @return
+     */
+    public String getAnnotationType() {
+        return annotationType;
+    }
+
+    /**
+     * Set if annotation is method annotation or class annotation
+     * 
+     * @param annotationType
+     */
+    public void setAnnotationType(String annotationType) {
+        this.annotationType = annotationType;
+    }
+
     private List<AnnotationAttrItem> annotationAttrs;
 
     public AnnotationItem() {
@@ -13,12 +33,12 @@ public class AnnotationItem {
         this.annotationAttrs = new ArrayList<AnnotationAttrItem>();
     }
 
-    public String getClassName() {
-        return className;
+    public String getParentEntity() {
+        return parentEntity;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setParentEntity(String className) {
+        this.parentEntity = className;
     }
 
     public String getAnnotationName() {
@@ -35,5 +55,11 @@ public class AnnotationItem {
 
     public void setAnnotationAttrs(List<AnnotationAttrItem> annotationAttrs) {
         this.annotationAttrs = annotationAttrs;
+    }
+
+    public void addAnnotationAttr(AnnotationAttrItem annotationAttrItem) {
+        if (this.annotationAttrs == null)
+            this.annotationAttrs = new ArrayList<>();
+        this.annotationAttrs.add(annotationAttrItem);
     }
 }

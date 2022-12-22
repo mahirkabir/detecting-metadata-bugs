@@ -309,7 +309,7 @@ public class ClassHelper {
 		}
 
 		for (AnnotationItem annotation : annotations) {
-			String classSN = annotation.getClassName();
+			String classSN = annotation.getParentEntity();
 			if (dictRelevantClasses.containsKey(classSN)) {
 				String classFQN = dictRelevantClasses.get(classSN);
 				if (this.dictClass.containsKey(classFQN)) {
