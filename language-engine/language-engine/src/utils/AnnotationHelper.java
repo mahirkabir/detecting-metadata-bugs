@@ -49,12 +49,17 @@ public class AnnotationHelper {
                 .stream()
                 .collect(Collectors.toMap(NodeWithSimpleName::getNameAsString, Function.identity()));
 
+        if (fields == null)
+            return annotations;
+
         for (Map.Entry<String, ClassOrInterfaceDeclaration> mapElm : fields.entrySet()) {
             ClassOrInterfaceDeclaration decl = mapElm.getValue();
 
             System.out.println("========");
 
             String className = decl.getNameAsString();
+            if (decl.getAnnotations() == null)
+                continue;
             decl.getAnnotations().forEach(item -> {
                 AnnotationItem annotationItem = new AnnotationItem();
                 annotationItem.setParentEntity(className);

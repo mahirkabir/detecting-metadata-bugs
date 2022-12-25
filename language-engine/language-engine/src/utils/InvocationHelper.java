@@ -48,6 +48,9 @@ public class InvocationHelper {
                 .stream()
                 .collect(Collectors.toList());
 
+        if (declInvocations == null)
+            return invocations;
+
         for (MethodCallExpr decl : declInvocations) {
             System.out.println("========");
 
@@ -63,9 +66,12 @@ public class InvocationHelper {
             String invocationStmnt = parentNode.toString();
             String callee = decl.getNameAsString();
             List<String> arguments = new ArrayList<String>();
-            decl.getArguments().forEach(item -> {
-                arguments.add(item.toString());
-            });
+
+            if (arguments != null) {
+                decl.getArguments().forEach(item -> {
+                    arguments.add(item.toString());
+                });
+            }
 
             InvocationItem invocationItem = new InvocationItem();
             invocationItem.setCallee(callee);

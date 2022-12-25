@@ -67,9 +67,12 @@ public class XMLHelper {
         List<XMLItem> xmlItems = new ArrayList<XMLItem>();
 
         this.loadXMLFiles(this.projectPath);
-        for (String xmlFilePath : this.xmlFiles) {
-            XMLItem xmlItem = this.readXML(xmlFilePath);
-            xmlItems.add(xmlItem);
+
+        if (this.xmlFiles != null) {
+            for (String xmlFilePath : this.xmlFiles) {
+                XMLItem xmlItem = this.readXML(xmlFilePath);
+                xmlItems.add(xmlItem);
+            }
         }
 
         return xmlItems;

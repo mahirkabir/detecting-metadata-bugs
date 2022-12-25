@@ -87,6 +87,10 @@ public class MethodHelper {
         List<AnnotationItem> annotationItems = new ArrayList<>();
 
         List<AnnotationExpr> annotations = decl.getAnnotations();
+
+        if (annotations == null)
+            return annotationItems;
+
         for (AnnotationExpr annotation : annotations) {
             AnnotationItem annItem = new AnnotationItem();
             annItem.setParentEntity(decl.getNameAsString());
@@ -95,12 +99,15 @@ public class MethodHelper {
 
             NormalAnnotationExpr annExpr = (NormalAnnotationExpr) annotation;
             List<MemberValuePair> annKeyValuePairs = annExpr.getPairs();
-            for (MemberValuePair pair : annKeyValuePairs) {
-                String annKey = pair.getNameAsString();
-                String annVal = pair.getValue().toString();
-                if (annVal.startsWith("\"") && annVal.endsWith("\""))
-                    annVal = annVal.substring(1, annVal.length() - 1);
-                annItem.addAnnotationAttr(new AnnotationAttrItem(annKey, annVal));
+
+            if (annKeyValuePairs != null) {
+                for (MemberValuePair pair : annKeyValuePairs) {
+                    String annKey = pair.getNameAsString();
+                    String annVal = pair.getValue().toString();
+                    if (annVal.startsWith("\"") && annVal.endsWith("\""))
+                        annVal = annVal.substring(1, annVal.length() - 1);
+                    annItem.addAnnotationAttr(new AnnotationAttrItem(annKey, annVal));
+                }
             }
 
             annotationItems.add(annItem);

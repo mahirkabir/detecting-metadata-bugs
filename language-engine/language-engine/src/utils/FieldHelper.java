@@ -52,18 +52,20 @@ public class FieldHelper {
                 modifiers.add(item.toString());
             });
 
-            decl.getVariables().forEach(item -> {
-                FieldItem fieldItem = new FieldItem();
-                fieldItem.setName(item.getNameAsString());
-                fieldItem.setType(item.getTypeAsString());
-                fieldItem.setClassName(className);
-                if (modifiers.size() >= 1)
-                    fieldItem.setAccessModifier(modifiers.get(0));
-                if (modifiers.size() == 2)
-                    fieldItem.setDeclType(modifiers.get(1));
+            if (decl.getVariables() != null) {
+                decl.getVariables().forEach(item -> {
+                    FieldItem fieldItem = new FieldItem();
+                    fieldItem.setName(item.getNameAsString());
+                    fieldItem.setType(item.getTypeAsString());
+                    fieldItem.setClassName(className);
+                    if (modifiers.size() >= 1)
+                        fieldItem.setAccessModifier(modifiers.get(0));
+                    if (modifiers.size() == 2)
+                        fieldItem.setDeclType(modifiers.get(1));
 
-                fields.add(fieldItem);
-            });
+                    fields.add(fieldItem);
+                });
+            }
         });
 
         return fields;
