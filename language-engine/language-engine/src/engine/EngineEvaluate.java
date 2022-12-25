@@ -1,8 +1,6 @@
 package engine;
 
 import models.DataResult;
-import models.IntegerItem;
-import models.StringItem;
 import parser.ASTConditionalAndExp;
 import parser.ASTConditionalEqExp;
 import parser.ASTConditionalOrExp;
@@ -146,28 +144,10 @@ public class EngineEvaluate implements IEngineEvaluate {
 
         DataResult result = null;
         Node child = simExp.jjtGetChild(0);
-        if (child.toString().equals(Constants.FUNCTION_OR_ID)) {
-            ASTFunctionOrId functionOrIdNode = (ASTFunctionOrId) child;
-            if (child.jjtGetNumChildren() == 1) {
-                // FunctionTail is not there
-                result = evalId((ASTFunctionOrId) functionOrIdNode);
-            } else {
-                // Second child is FunctionTail
-                result = evalFunction((ASTFunctionOrId) functionOrIdNode);
-            }
-        } else {
-            ASTLiteral literal = (ASTLiteral) child;
-            switch (literal.getLitType()) {
-                case Constants.TYPE_STRING:
-                    result = new DataResult<StringItem>(literal.getLitType(),
-                            new StringItem(literal.getLitValue()));
-                    break;
-                case Constants.TYPE_INTEGER:
-                    result = new DataResult<IntegerItem>(literal.getLitType(),
-                            new IntegerItem(Integer.parseInt(literal.getLitValue())));
-                    break;
-            }
-        }
+        if (child.toString().equals(Constants.FUNCTION_OR_ID))
+            result = Helper.getFunctionOrIdValue((ASTFunctionOrId) child);
+        else
+            result = Helper.getLiteralValue((ASTLiteral) child);
 
         if (isNot && result != null && result.getType().equals(Constants.TYPE_BOOLEAN)) {
             if (result.getResult().equals(Constants.BOOLEAN_FALSE))

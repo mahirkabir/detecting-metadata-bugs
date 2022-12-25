@@ -66,16 +66,14 @@ public class EngineAssert implements IEngineAssert {
                     this.printMsg(msgStmnt);
                 }
             } else {
-                ASTFunctionOrId functionOrId = (ASTFunctionOrId) firstChild;
-                if (functionOrId.jjtGetNumChildren() > 1) {
-                    DataResult assertResult = engineFunctions.callFunction(functionOrId);
-                    if (assertResult.getType().equals(Constants.TYPE_BOOLEAN)) {
-                        BooleanItem assertResultItem = (BooleanItem) assertResult.getResult();
-                        boolean assertPass = assertResultItem.getValue();
-                        if (!assertPass) {
-                            ASTMsgStmnt msgStmnt = (ASTMsgStmnt) assertStmnt.jjtGetChild(1);
-                            this.printMsg(msgStmnt);
-                        }
+                DataResult assertResult = Helper.getFunctionOrIdValue(
+                        (ASTFunctionOrId) firstChild);
+                if (assertResult.getType().equals(Constants.TYPE_BOOLEAN)) {
+                    BooleanItem assertResultItem = (BooleanItem) assertResult.getResult();
+                    boolean assertPass = assertResultItem.getValue();
+                    if (!assertPass) {
+                        ASTMsgStmnt msgStmnt = (ASTMsgStmnt) assertStmnt.jjtGetChild(1);
+                        this.printMsg(msgStmnt);
                     }
                 }
             }

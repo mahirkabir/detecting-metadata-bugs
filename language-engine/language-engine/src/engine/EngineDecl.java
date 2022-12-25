@@ -7,12 +7,13 @@ import java.util.Map;
 
 import models.DataResult;
 import models.StackFrame;
-import models.StringItem;
 import parser.ASTDeclStmnt;
+import parser.ASTFunctionOrId;
 import parser.ASTIdentifier;
 import parser.ASTLiteral;
-import parser.ASTType;
+import parser.Node;
 import utils.Constants;
+import utils.Helper;
 import utils.Logger;
 
 public class EngineDecl implements IEngineDecl {
@@ -28,20 +29,15 @@ public class EngineDecl implements IEngineDecl {
     public void declareVariable(ASTDeclStmnt declNode) {
         // TODO: Need to add boolean literals (Not necessary now)
         // TODO: Need to be able to compare with literals (Not necessary now)
-        String type = ((ASTType) declNode.jjtGetChild(0)).getType();
         String varName = ((ASTIdentifier) declNode.jjtGetChild(1)).getIdentifier();
+        DataResult result = null;
+        Node assignedNode = declNode.jjtGetChild(2);
+        if (assignedNode.toString().equals(Constants.FUNCTION_OR_ID))
+            result = Helper.getFunctionOrIdValue((ASTFunctionOrId) assignedNode);
+        else
+            result = Helper.getLiteralValue((ASTLiteral) assignedNode);
 
-        switch (type) {
-            case Constants.TYPE_STRING:
-                // TODO: Enable assigning function call value to variable
-                String value = ((ASTLiteral) declNode.jjtGetChild(2)).getLitValue();
-                if (value.startsWith("\""))
-                    value = value.substring(1, value.length() - 1);
-                this.updateVariableInMap(varName, new DataResult<StringItem>(type,
-                        new StringItem(value)));
-                break;
-            // TODO: Other types
-        }
+        this.updateVariableInMap(varName, result);
     }
 
     @Override

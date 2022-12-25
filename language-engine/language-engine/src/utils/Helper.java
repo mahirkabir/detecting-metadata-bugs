@@ -23,6 +23,7 @@ import parser.ASTForStmnt;
 import parser.ASTFunctionOrId;
 import parser.ASTIdentifier;
 import parser.ASTIfStmnt;
+import parser.ASTLiteral;
 import parser.ASTSimExp;
 import parser.ASTType;
 import parser.Node;
@@ -173,5 +174,53 @@ public class Helper {
         ASTType iteratorType = (ASTType) iteratorSimExp.jjtGetChild(0);
         ASTIdentifier iteratorId = (ASTIdentifier) iteratorSimExp.jjtGetChild(1);
         return new Pair<ASTType, ASTIdentifier>(iteratorType, iteratorId);
+    }
+
+    /**
+     * Evaluate and return function or variable value
+     * 
+     * @param node
+     * @return
+     */
+    public static DataResult getFunctionOrIdValue(ASTFunctionOrId node) {
+        DataResult result = null;
+        IEngineEvaluate evaluator = EngineFactory.getEvaluator();
+        if (node.jjtGetNumChildren() == 1)
+            // FunctionTail is not there
+            result = evaluator.evalId(node);
+        else
+            // Second child is FunctionTail
+            result = evaluator.evalFunction(node);
+        return result;
+    }
+
+    /**
+     * Return literal value
+     * 
+     * @param node
+     * @return
+     */
+    public static DataResult getLiteralValue(ASTLiteral node) {
+        DataResult result = null;
+        String value = node.getLitValue();
+        if (value.startsWith("\"") && value.endsWith("\""))
+            value = value.substring(1, value.length() - 1);
+        node.setLitValue(value);
+
+        switch (node.getLitType()) {
+            case Constants.TYPE_STRING:
+                result = new DataResult<StringItem>(Constants.TYPE_STRING,
+                        new StringItem(node.getLitValue()));
+                break;
+            case Constants.TYPE_INTEGER:
+                result = new DataResult<IntegerItem>(Constants.TYPE_INTEGER,
+                        new IntegerItem(Integer.parseInt(node.getLitValue())));
+                break;
+            case Constants.TYPE_BOOLEAN:
+                result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN,
+                        new BooleanItem(node.getLitType().equals(Constants.BOOLEAN_TRUE)));
+                break;
+        }
+        return result;
     }
 }
