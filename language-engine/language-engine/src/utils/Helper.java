@@ -1,7 +1,5 @@
 package utils;
 
-import java.util.ArrayList;
-
 import com.github.javaparser.utils.Pair;
 
 import engine.EngineFactory;
@@ -162,8 +160,6 @@ public class Helper {
             containerValue = engineFunctions.callFunction(containerFunctionOrId);
         }
 
-        if (containerValue.getResult() == null)
-            containerValue.setResult(new ArrayList());
         return containerValue;
     }
 

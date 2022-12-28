@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
@@ -72,8 +73,11 @@ public class AnnotationHelper {
                         AnnotationAttrItem attr = new AnnotationAttrItem();
                         attr.setAnnotationAttrName(paramItem.toString().split("=")[0].strip());
 
-                        String paramValue = paramItem.getChildNodes().get(1).toString();
-                        attr.setAnnotationAttrValue(paramValue);
+                        List<Node> childNodes = paramItem.getChildNodes();
+                        if (childNodes.size() > 1) {
+                            String paramValue = childNodes.get(1).toString();
+                            attr.setAnnotationAttrValue(paramValue);
+                        }
 
                         attrs.add(attr);
                     }
