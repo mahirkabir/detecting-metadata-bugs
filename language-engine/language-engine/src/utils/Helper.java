@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.List;
+
 import com.github.javaparser.utils.Pair;
 
 import engine.EngineFactory;
@@ -222,5 +224,29 @@ public class Helper {
                 break;
         }
         return result;
+    }
+
+    /**
+     * Format string and replace %s with format values
+     * 
+     * @param message
+     * @param formatValues
+     * @return
+     */
+    public static String formatStr(String message, List<String> formatValues) {
+        if (formatValues.size() == 0)
+            return message;
+
+        StringBuilder sBuilder = new StringBuilder();
+        int n = message.length(), fit = 0;
+        for (int i = 0; i < n; ++i) {
+            if (message.charAt(i) == '%' && i + 1 < n && message.charAt(i + 1) == 's') {
+                sBuilder.append(formatValues.get(fit++));
+                ++i;
+            } else
+                sBuilder.append(message.charAt(i));
+        }
+
+        return sBuilder.toString();
     }
 }

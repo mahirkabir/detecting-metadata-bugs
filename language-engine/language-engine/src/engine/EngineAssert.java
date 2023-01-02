@@ -127,19 +127,7 @@ public class EngineAssert implements IEngineAssert {
                 }
             }
 
-            if (formatValues.size() > 0) {
-                String[] messageParts = message.split("%s");
-                int n = messageParts.length, fit = 0;
-                message = messageParts[0];
-
-                if (n == 1) {
-                    message += formatValues.get(fit++);
-                } else {
-                    for (int it = 1; it < n; ++it) {
-                        message += formatValues.get(fit++) + messageParts[it];
-                    }
-                }
-            }
+            message = Helper.formatStr(message, formatValues);
         }
 
         utils.Logger.output(message);
