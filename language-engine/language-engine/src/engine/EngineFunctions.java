@@ -95,8 +95,11 @@ public class EngineFunctions implements IEngineFunctions {
         DataResult<List<MethodItem>> result = this.cache.fetchFunctionCall(functionCall);
 
         if (result == null) {
+            List<MethodItem> methodItems = this.classHelper.getMethods(c.getFqn());
+            if (methodItems == null)
+                methodItems = new ArrayList<MethodItem>();
             result = new DataResult<List<MethodItem>>(Constants.TYPE_METHOD_LIST,
-                    this.classHelper.getMethods(c.getFqn()));
+                    methodItems);
             cache.addFunctionCall(functionCall, result);
         }
 
@@ -107,6 +110,54 @@ public class EngineFunctions implements IEngineFunctions {
         DataResult<List<AnnotationItem>> result = new DataResult<List<AnnotationItem>>(
                 Constants.TYPE_ANNOTATION_LIST,
                 this.classHelper.getAnnotations(c.getFqn()));
+        return result;
+    }
+
+    private DataResult<BooleanItem> hasAnnotation(ClassItem c, String annotation) {
+        List<AnnotationItem> annotationItems = this.classHelper.getAnnotations(c.getFqn());
+        annotation = annotation.replace("@", "");
+        boolean hasAnnotation = false;
+        if (annotationItems != null) {
+            for (AnnotationItem annItem : annotationItems) {
+                if (annItem.getAnnotationName().equals(annotation)) {
+                    hasAnnotation = true;
+                    break;
+                }
+            }
+        }
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(hasAnnotation));
+    }
+
+    private DataResult<BooleanItem> hasAnnotation(ClassItem c, MethodItem m, String annotation) {
+        annotation = annotation.replace("@", "");
+        String basicFunction = "hasAnnotation()" + "||" + c.getFqn();
+        String functionCall = basicFunction + "||" + m.getName() + "||" + annotation;
+        DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(false));
+            List<MethodItem> methods = this.getMethods(c).getResult();
+            if (methods != null) {
+                for (MethodItem method : methods) {
+                    List<AnnotationItem> aItems = method.getAnnotations();
+                    if (aItems != null) {
+                        functionCall = basicFunction + "||" + method.getName();
+                        for (AnnotationItem aItem : aItems) {
+                            String functionCallAttr = functionCall + "||" + aItem.getAnnotationName();
+                            DataResult<BooleanItem> currRes = new DataResult<BooleanItem>(
+                                    Constants.TYPE_BOOLEAN, new BooleanItem(true));
+                            cache.addFunctionCall(functionCallAttr, currRes);
+
+                            if (method.getName().equals(m.getName())
+                                    && aItem.getAnnotationName().equals(annotation)) {
+                                result = currRes;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         return result;
     }
 
@@ -500,6 +551,21 @@ public class EngineFunctions implements IEngineFunctions {
                     StringItem search = (StringItem) params.get(1).getResult();
                     result = this.indexOf(str.getValue(), search.getValue());
                 }
+                    break;
+
+                case Constants.FUNCTION_HAS_ANNOTATION: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    ClassItem classItem = (ClassItem) params.get(0).getResult();
+                    if (params.size() == 3) {
+                        MethodItem methodItem = (MethodItem) params.get(1).getResult();
+                        StringItem annotation = (StringItem) params.get(2).getResult();
+                        result = this.hasAnnotation(classItem, methodItem, annotation.getValue());
+                    } else {
+                        StringItem annotation = (StringItem) params.get(1).getResult();
+                        result = this.hasAnnotation(classItem, annotation.getValue());
+                    }
+                }
+                    break;
             }
         } catch (Exception ex) {
             utils.Logger.log(ex.getMessage());

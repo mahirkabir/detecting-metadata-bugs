@@ -63,6 +63,7 @@ public class Constants {
     public static final String FUNCTION_IS_EMPTY = "isEmpty";
     public static final String FUNCTION_JOIN = "join";
     public static final String FUNCTION_INDEX_OF = "indexOf";
+    public static final String FUNCTION_HAS_ANNOTATION = "hasAnnotation";
     public static final String ANNOTATION_METHOD = "method-annotation";
     public static final String ANNOTATION_CLASS = "class-annotation";
 }
