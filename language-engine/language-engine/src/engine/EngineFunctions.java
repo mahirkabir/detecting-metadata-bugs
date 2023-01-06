@@ -593,6 +593,20 @@ public class EngineFunctions implements IEngineFunctions {
                     result = this.isIterable(dataType);
                 }
                     break;
+
+                case Constants.FUNCTION_HAS_ANNO_ATTR: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    ClassItem classItem = (ClassItem) params.get(0).getResult();
+                    StringItem anno = (StringItem) params.get(1).getResult();
+                    StringItem prop = (StringItem) params.get(2).getResult();
+
+                    anno.setValue(anno.getValue().substring(1)); // To remove the @
+                    List<StringItem> annoAttrs = this.getAnnoAttr(classItem, anno.getValue(), prop.getValue())
+                            .getResult();
+                    boolean annoExists = annoAttrs.size() > 0;
+                    result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(annoExists));
+                }
+                    break;
             }
         } catch (Exception ex) {
             utils.Logger.log(ex.getMessage());

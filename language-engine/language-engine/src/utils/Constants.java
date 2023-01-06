@@ -78,6 +78,7 @@ public class Constants {
     public static final String FUNCTION_HAS_ANNOTATION = "hasAnnotation";
     public static final String FUNCTION_GET_RETURN_TYPE = "getReturnType";
     public static final String FUNCTION_IS_ITERABLE = "isIterable";
+    public static final String FUNCTION_HAS_ANNO_ATTR = "hasAnnoAttr";
     public static final String ANNOTATION_METHOD = "method-annotation";
     public static final String ANNOTATION_CLASS = "class-annotation";
 }
