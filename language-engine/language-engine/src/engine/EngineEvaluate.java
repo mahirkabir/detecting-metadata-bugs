@@ -1,5 +1,6 @@
 package engine;
 
+import models.BooleanItem;
 import models.DataResult;
 import parser.ASTConditionalAndExp;
 import parser.ASTConditionalEqExp;
@@ -150,10 +151,9 @@ public class EngineEvaluate implements IEngineEvaluate {
             result = Helper.getLiteralValue((ASTLiteral) child);
 
         if (isNot && result != null && result.getType().equals(Constants.TYPE_BOOLEAN)) {
-            if (result.getResult().equals(Constants.BOOLEAN_FALSE))
-                result.setResult(Constants.BOOLEAN_TRUE);
-            else
-                result.setResult(Constants.BOOLEAN_FALSE);
+            BooleanItem currRes = (BooleanItem) result.getResult();
+            currRes.setValue(!currRes.getValue());
+            result.setResult(currRes);
         }
 
         return result;

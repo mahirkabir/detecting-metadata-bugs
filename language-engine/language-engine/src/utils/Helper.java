@@ -249,4 +249,30 @@ public class Helper {
 
         return sBuilder.toString();
     }
+
+    /**
+     * 
+     * @param dataType
+     * @return
+     */
+    public static boolean isIterable(String dataType) {
+        boolean isIterable = false;
+        switch (dataType) {
+            case Constants.ITERABLE_TYPE_ARRAY_LIST:
+            case Constants.ITERABLE_TYPE_COLLECTION:
+            case Constants.ITERABLE_TYPE_DEQUE:
+            case Constants.ITERABLE_TYPE_HASH_SET:
+            case Constants.ITERABLE_TYPE_LINKED_HASH_SET:
+            case Constants.ITERABLE_TYPE_LINKED_LIST:
+            case Constants.ITERABLE_TYPE_LIST:
+            case Constants.ITERABLE_TYPE_PRIORITY_QUEUE:
+            case Constants.ITERABLE_TYPE_QUEUE:
+            case Constants.ITERABLE_TYPE_SET:
+            case Constants.ITERABLE_TYPE_TREE_SET:
+            case Constants.ITERABLE_TYPE_VECTOR:
+                isIterable = true;
+                break;
+        }
+        return isIterable;
+    }
 }

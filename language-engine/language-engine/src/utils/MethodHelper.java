@@ -11,8 +11,10 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
@@ -97,17 +99,28 @@ public class MethodHelper {
             annItem.setAnnotationName(annotation.getNameAsString());
             annItem.setAnnotationType(Constants.ANNOTATION_METHOD);
 
-            NormalAnnotationExpr annExpr = (NormalAnnotationExpr) annotation;
-            List<MemberValuePair> annKeyValuePairs = annExpr.getPairs();
+            if (annotation instanceof NormalAnnotationExpr) {
+                NormalAnnotationExpr annExpr = (NormalAnnotationExpr) annotation;
 
-            if (annKeyValuePairs != null) {
-                for (MemberValuePair pair : annKeyValuePairs) {
-                    String annKey = pair.getNameAsString();
-                    String annVal = pair.getValue().toString();
-                    if (annVal.startsWith("\"") && annVal.endsWith("\""))
-                        annVal = annVal.substring(1, annVal.length() - 1);
-                    annItem.addAnnotationAttr(new AnnotationAttrItem(annKey, annVal));
+                List<MemberValuePair> annKeyValuePairs = annExpr.getPairs();
+
+                if (annKeyValuePairs != null) {
+                    for (MemberValuePair pair : annKeyValuePairs) {
+                        String annKey = pair.getNameAsString();
+                        String annVal = pair.getValue().toString();
+                        if (annVal.startsWith("\"") && annVal.endsWith("\""))
+                            annVal = annVal.substring(1, annVal.length() - 1);
+                        annItem.addAnnotationAttr(new AnnotationAttrItem(annKey, annVal));
+                    }
                 }
+            } else if (annotation instanceof MarkerAnnotationExpr) {
+                // No attribute for MarkerAnnotatiionExpr
+                // No need to do anything about it
+                MarkerAnnotationExpr annoExpr = (MarkerAnnotationExpr) annotation;
+            } else if (annotation instanceof SingleMemberAnnotationExpr) {
+                // Single parameter w/o values for SingleMemberAnnotationExpr
+                // Need to collect the single parameter
+                SingleMemberAnnotationExpr annoExpr = (SingleMemberAnnotationExpr) annotation;
             }
 
             annotationItems.add(annItem);

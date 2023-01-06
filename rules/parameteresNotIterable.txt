@@ -1,0 +1,13 @@
+Rule parameters-not-iterable {
+	for (class c in getClasses()) {
+		if (hasAnnotation(c, "@RunWith")) {
+			for (method m in getMethods(c)) {
+				if (hasAnnotation(c, m, "@Parameters")) {
+					assert(isIterable(getReturnType(m))) {
+						msg("Class: %s, Method: %s has @Parameters but return type is not iterable", getFQN(c), getName(m));
+					}
+				}
+			}
+		}
+	}
+}

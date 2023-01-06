@@ -33,6 +33,7 @@ import parser.ASTParams;
 import parser.ASTSimExp;
 import utils.ClassHelper;
 import utils.Constants;
+import utils.Helper;
 import utils.XMLHelper;
 
 public class EngineFunctions implements IEngineFunctions {
@@ -382,6 +383,18 @@ public class EngineFunctions implements IEngineFunctions {
                 str.indexOf(search)));
     }
 
+    private DataResult<StringItem> getReturnType(MethodItem methodItem) {
+        return new DataResult<StringItem>(Constants.TYPE_STRING, new StringItem(methodItem.getType()));
+    }
+
+    private DataResult isIterable(StringItem returnType) {
+        String ret = returnType.getValue();
+        if (ret.contains("<"))
+            ret = ret.substring(0, ret.indexOf("<")).strip();
+        boolean isIterable = Helper.isIterable(ret);
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(isIterable));
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -564,6 +577,20 @@ public class EngineFunctions implements IEngineFunctions {
                         StringItem annotation = (StringItem) params.get(1).getResult();
                         result = this.hasAnnotation(classItem, annotation.getValue());
                     }
+                }
+                    break;
+
+                case Constants.FUNCTION_GET_RETURN_TYPE: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    MethodItem methodItem = (MethodItem) params.get(0).getResult();
+                    result = this.getReturnType(methodItem);
+                }
+                    break;
+
+                case Constants.FUNCTION_IS_ITERABLE: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    StringItem dataType = (StringItem) params.get(0).getResult();
+                    result = this.isIterable(dataType);
                 }
                     break;
             }

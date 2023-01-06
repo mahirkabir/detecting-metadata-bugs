@@ -31,6 +31,18 @@ public class Constants {
     public static final String TYPE_ANNOTATION = "annotation";
     public static final String TYPE_FILE = "file";
     public static final String TYPE_LIST = "list";
+    public static final String ITERABLE_TYPE_COLLECTION = "Collection";
+    public static final String ITERABLE_TYPE_LIST = "List";
+    public static final String ITERABLE_TYPE_SET = "Set";
+    public static final String ITERABLE_TYPE_DEQUE = "Deque";
+    public static final String ITERABLE_TYPE_QUEUE = "Queue";
+    public static final String ITERABLE_TYPE_ARRAY_LIST = "ArrayList";
+    public static final String ITERABLE_TYPE_VECTOR = "Vector";
+    public static final String ITERABLE_TYPE_LINKED_LIST = "LinkedList";
+    public static final String ITERABLE_TYPE_PRIORITY_QUEUE = "PriorityQueue";
+    public static final String ITERABLE_TYPE_HASH_SET = "HashSet";
+    public static final String ITERABLE_TYPE_LINKED_HASH_SET = "LinkedHashSet";
+    public static final String ITERABLE_TYPE_TREE_SET = "TreeSet";
     public static final String EXPRESSION_NOT = "Not";
     public static final String EMPTY_STRING = "";
     public static final String NODE_TYPE_ROOT = "root";
@@ -64,6 +76,8 @@ public class Constants {
     public static final String FUNCTION_JOIN = "join";
     public static final String FUNCTION_INDEX_OF = "indexOf";
     public static final String FUNCTION_HAS_ANNOTATION = "hasAnnotation";
+    public static final String FUNCTION_GET_RETURN_TYPE = "getReturnType";
+    public static final String FUNCTION_IS_ITERABLE = "isIterable";
     public static final String ANNOTATION_METHOD = "method-annotation";
     public static final String ANNOTATION_CLASS = "class-annotation";
 }

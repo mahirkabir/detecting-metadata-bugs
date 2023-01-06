@@ -66,8 +66,7 @@ public class EngineAssert implements IEngineAssert {
                     this.printMsg(msgStmnt);
                 }
             } else {
-                DataResult assertResult = Helper.getFunctionOrIdValue(
-                        (ASTFunctionOrId) firstChild);
+                DataResult assertResult = evaluator.evalSimExp(assertSimExp);
                 if (assertResult.getType().equals(Constants.TYPE_BOOLEAN)) {
                     BooleanItem assertResultItem = (BooleanItem) assertResult.getResult();
                     boolean assertPass = assertResultItem.getValue();
