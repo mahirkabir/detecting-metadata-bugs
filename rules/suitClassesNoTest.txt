@@ -1,9 +1,0 @@
-Rule suitclasses-no-test {
-	for (class c in getClasses()) {
-		if (hasAnnotation(c, "@SuiteClasses")) {
-			assert(exists(method m in getMethods(c))(hasAnnotation(c, m, "@Test"))) {
-				msg("Class: %s has @SuiteClasses but no method with @Test", getFQN(c));
-			}
-		}
-	}
-}
