@@ -1,4 +1,4 @@
-Rule parameters-not-iterable {
+Rule testParams-not-iterable {
 	for (class c in getClasses()) {
 		if (hasAnnotation(c, "@RunWith")) {
 			for (method m in getMethods(c)) {
