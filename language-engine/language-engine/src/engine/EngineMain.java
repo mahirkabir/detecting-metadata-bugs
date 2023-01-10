@@ -1,5 +1,13 @@
 package engine;
 
+import java.io.FileReader;
+import java.nio.file.Paths;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import models.Config;
 import parser.ASTStart;
 import parser.Eg12;
 import parser.Node;
@@ -26,32 +34,65 @@ public class EngineMain {
         bindEngines();
         engineDecl = EngineFactory.getEngineDecl();
 
-        Eg12 t;
-        System.out.println("Reading from standard input...");
-        try {
-            t = new Eg12(new java.io.FileInputStream(args[0]));
-        } catch (java.io.FileNotFoundException e) {
-            System.out.println("Java Parser Version 1.0.2:  File " + args[0] + " not found.");
-            return;
-        }
+        Config config = loadConfig(args[0]);
 
-        try {
-            ASTStart n = t.Start();
-            engineDecl.createFrame();
+        for (String rule : config.rules.run) {
+            String ruleLoc = Paths.get(config.rules.dir, rule + ".txt").toString();
+            System.out.println("Reading from standard input: " + ruleLoc);
 
-            int totalChildren = n.jjtGetNumChildren();
-            for (int i = 0; i < totalChildren; ++i) {
-                Node stmnt = n.jjtGetChild(i);
-                Helper.process(stmnt);
+            Eg12 t;
+            try {
+                t = new Eg12(new java.io.FileInputStream(ruleLoc));
+            } catch (java.io.FileNotFoundException e) {
+                System.out.println("Java Parser Version 1.0.2:  File " + ruleLoc + " not found.");
+                return;
             }
 
-            engineDecl.removeFrame();
-            System.out.println("Thank you.");
+            try {
+                ASTStart n = t.Start();
+                engineDecl.createFrame();
 
-        } catch (Exception e) {
-            System.out.println("Oops.");
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+                int totalChildren = n.jjtGetNumChildren();
+                for (int i = 0; i < totalChildren; ++i) {
+                    Node stmnt = n.jjtGetChild(i);
+                    Helper.process(stmnt);
+                }
+
+                engineDecl.removeFrame();
+                System.out.println("Thank you.");
+
+            } catch (Exception e) {
+                System.out.println("Oops. Error running: " + rule);
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
         }
+    }
+
+    /**
+     * Load startup config
+     * 
+     * @param filepath
+     * @return
+     */
+    private static Config loadConfig(String filepath) {
+        Config config = Config.getInstance();
+
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject root = (JSONObject) parser.parse(new FileReader(filepath));
+            JSONObject rules = (JSONObject) root.get("rules");
+            config.rules.dir = (String) rules.get("dir");
+            JSONArray rulesToRun = (JSONArray) rules.get("run");
+            for (Object elm : rulesToRun) {
+                String rule = (String) elm;
+                config.rules.run.add(rule);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return config;
     }
 }
