@@ -36,56 +36,37 @@ public class EngineAssert implements IEngineAssert {
 
     @Override
     public void process(ASTAssertStmnt assertStmnt) {
-        this.engineDecl.createFrame();
         ASTExpression assertExp = (ASTExpression) assertStmnt.jjtGetChild(0);
-        Node assertExpChild = assertExp.jjtGetChild(0);
-        if (assertExpChild.toString().equals(Constants.SIMPLE_EXP)) {
-            ASTSimExp assertSimExp = (ASTSimExp) assertExpChild;
-            Node firstChild = assertSimExp.jjtGetChild(0);
-            if (firstChild.toString().equals(Constants.EXISTS)) {
-                ASTExpression iterationExp = (ASTExpression) assertSimExp.jjtGetChild(1);
-                Pair<ASTType, ASTIdentifier> pIterator = Helper.getIterator(iterationExp);
-                ASTExpression containerExp = (ASTExpression) assertSimExp.jjtGetChild(2);
-                DataResult containerValue = Helper.getContainer(containerExp);
-
-                String iteratorType = pIterator.a.getType();
-                String iteratorVar = pIterator.b.getIdentifier();
-                ArrayList containerList = (ArrayList) containerValue.getResult();
-
-                boolean assertPass = false;
-                for (Object element : containerList) {
-                    DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
-                    this.engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
-                    ASTExpression booleanExp = (ASTExpression) assertSimExp.jjtGetChild(3);
-                    assertPass |= this.evaluator.evalBooleanExpr(booleanExp);
-                    this.engineDecl.resetFrame();
-                }
-
-                if (!assertPass) {
-                    ASTMsgStmnt msgStmnt = (ASTMsgStmnt) assertStmnt.jjtGetChild(1);
-                    this.printMsg(msgStmnt);
-                }
-            } else {
-                DataResult assertResult = evaluator.evalSimExp(assertSimExp);
-                if (assertResult.getType().equals(Constants.TYPE_BOOLEAN)) {
-                    BooleanItem assertResultItem = (BooleanItem) assertResult.getResult();
-                    boolean assertPass = assertResultItem.getValue();
-                    if (!assertPass) {
-                        ASTMsgStmnt msgStmnt = (ASTMsgStmnt) assertStmnt.jjtGetChild(1);
-                        this.printMsg(msgStmnt);
-                    }
-                }
-            }
-
-        } else {
-            boolean assertPass = this.evaluator.evalBooleanExpr(assertExp);
-            if (!assertPass) {
-                ASTMsgStmnt msgStmnt = (ASTMsgStmnt) assertStmnt.jjtGetChild(1);
-                this.printMsg(msgStmnt);
-            }
+        boolean assertPass = this.evaluator.evalBooleanExpr(assertExp);
+        if (!assertPass) {
+            ASTMsgStmnt msgStmnt = (ASTMsgStmnt) assertStmnt.jjtGetChild(1);
+            this.printMsg(msgStmnt);
         }
+    }
 
+    @Override
+    public DataResult getExistsValue(ASTSimExp assertSimExp) {
+        this.engineDecl.createFrame();
+        ASTExpression iterationExp = (ASTExpression) assertSimExp.jjtGetChild(1);
+        Pair<ASTType, ASTIdentifier> pIterator = Helper.getIterator(iterationExp);
+        ASTExpression containerExp = (ASTExpression) assertSimExp.jjtGetChild(2);
+        DataResult containerValue = Helper.getContainer(containerExp);
+
+        String iteratorType = pIterator.a.getType();
+        String iteratorVar = pIterator.b.getIdentifier();
+        ArrayList containerList = (ArrayList) containerValue.getResult();
+
+        boolean assertPass = false;
+        for (Object element : containerList) {
+            DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
+            this.engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
+            ASTExpression booleanExp = (ASTExpression) assertSimExp.jjtGetChild(3);
+            assertPass |= this.evaluator.evalBooleanExpr(booleanExp);
+            this.engineDecl.resetFrame();
+        }
         this.engineDecl.removeFrame();
+
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(assertPass));
     }
 
     /**
@@ -131,5 +112,4 @@ public class EngineAssert implements IEngineAssert {
 
         utils.Logger.output(message);
     }
-
 }

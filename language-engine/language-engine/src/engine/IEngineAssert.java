@@ -1,6 +1,8 @@
 package engine;
 
+import models.DataResult;
 import parser.ASTAssertStmnt;
+import parser.ASTSimExp;
 
 public interface IEngineAssert {
 
@@ -11,4 +13,11 @@ public interface IEngineAssert {
      */
     void process(ASTAssertStmnt assertStmnt);
 
+    /**
+     * Get assert exists pass fail value
+     * 
+     * @param simExp
+     * @return
+     */
+    DataResult getExistsValue(ASTSimExp simExp);
 }

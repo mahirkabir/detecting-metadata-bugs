@@ -5,12 +5,12 @@ Rule bean-exist {
 				for (String s in getArg(c, "ApplicationContext.getBean", 0)) {
 					if (endsWith(s, ".class")){
 						assert(exists(class c1 in join(getAnnotated("@Component", "class"), getAnnotated("@Service", "class"), getAnnotated("@Repository", "class"), getAnnotated("@Controller", "class"), getAnnotated("@RestController","class")))(substring(s, 0, indexOf(s, ".class")) == getName(c1)) OR exists(<bean> bean in getElms(xml, "<bean>"))(substring(s, 0, indexOf(s, ".class")) == getSN(getAttr(bean, "class")))) {
-							msg ("The bean class %s mentioned in ApplicationContext.getBean() is undefined", s);
+							msg ("The bean class %s mentioned in ApplicationContext.getBean() of class: %s is undefined", s, getFQN(c));
 						}
 					}
 					if (NOT endsWith(s, ".class")) {
 						assert(exists(String s2 in getAnnoAttr(c, "@Bean", "name"))(s == s2) OR exists (<bean> bean in getElms(xml, "<bean>"))(s == getAttr(bean, "id"))) {
-							msg ("The bean %s mentioned in ApplicationContext.getBean() is undefined", s);
+							msg ("The bean %s mentioned in ApplicationContext.getBean() of class: %s is undefined", s, getFQN(c));
 						}
 					}
 				}

@@ -95,6 +95,7 @@ public class XMLItem {
     }
 
     public List<XMLItem> getChildNodes(String tag) {
+        tag = tag.replace("<", "").replace(">", "");
         if (!this.mapChildNodes.containsKey(tag))
             return new ArrayList<XMLItem>();
         return this.mapChildNodes.get(tag);

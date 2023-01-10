@@ -42,9 +42,10 @@ public class EngineEvaluate implements IEngineEvaluate {
             case Constants.CONDITIONAL_EQ_EXP:
                 result = evalOperator((ASTConditionalEqExp) operatorOrIdNode);
                 break;
-            case Constants.SIMPLE_EXP:
-                result = evalSimExp((ASTSimExp) operatorOrIdNode).getResult()
-                        .toString().equals(Constants.BOOLEAN_TRUE);
+            case Constants.SIMPLE_EXP: {
+                BooleanItem currRes = (BooleanItem) evalSimExp((ASTSimExp) operatorOrIdNode).getResult();
+                result = currRes.getValue();
+            }
                 break;
         }
         return result;
@@ -69,8 +70,10 @@ public class EngineEvaluate implements IEngineEvaluate {
                 case Constants.CONDITIONAL_EQ_EXP:
                     result |= evalOperator((ASTConditionalEqExp) childNode);
                     break;
-                case Constants.SIMPLE_EXP:
-                    result |= evalSimExp((ASTSimExp) childNode).getResult().equals(Constants.BOOLEAN_TRUE);
+                case Constants.SIMPLE_EXP: {
+                    BooleanItem currRes = (BooleanItem) evalSimExp((ASTSimExp) childNode).getResult();
+                    result |= currRes.getValue();
+                }
                     break;
             }
         }
@@ -94,8 +97,10 @@ public class EngineEvaluate implements IEngineEvaluate {
                 case Constants.CONDITIONAL_EQ_EXP:
                     result &= evalOperator((ASTConditionalEqExp) childNode);
                     break;
-                case Constants.SIMPLE_EXP:
-                    result &= evalSimExp((ASTSimExp) childNode).getResult().equals(Constants.BOOLEAN_TRUE);
+                case Constants.SIMPLE_EXP: {
+                    BooleanItem currRes = (BooleanItem) evalSimExp((ASTSimExp) childNode).getResult();
+                    result &= currRes.getValue();
+                }
                     break;
             }
         }
@@ -147,6 +152,8 @@ public class EngineEvaluate implements IEngineEvaluate {
         Node child = simExp.jjtGetChild(0);
         if (child.toString().equals(Constants.FUNCTION_OR_ID))
             result = Helper.getFunctionOrIdValue((ASTFunctionOrId) child);
+        else if (child.toString().equals(Constants.EXISTS))
+            result = Helper.getExistsValue((ASTSimExp) simExp);
         else
             result = Helper.getLiteralValue((ASTLiteral) child);
 

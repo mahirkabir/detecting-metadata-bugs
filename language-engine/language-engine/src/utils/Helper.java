@@ -39,19 +39,20 @@ public class Helper {
      * @return
      */
     public static boolean isEqual(DataResult firstResult, DataResult secondResult) {
+        boolean isEqual = false;
         if (firstResult.getType().equals(Constants.TYPE_STRING)) {
-            return ((StringItem) firstResult.getResult())
+            isEqual = ((StringItem) firstResult.getResult())
                     .equals((StringItem) secondResult.getResult());
         } else if (firstResult.getType().equals(Constants.TYPE_BOOLEAN)) {
-            return ((BooleanItem) firstResult.getResult())
+            isEqual = ((BooleanItem) firstResult.getResult())
                     .equals((BooleanItem) secondResult.getResult());
         } else if (firstResult.getType().equals(Constants.TYPE_INTEGER)) {
-            return ((IntegerItem) firstResult.getResult())
+            isEqual = ((IntegerItem) firstResult.getResult())
                     .equals((IntegerItem) secondResult.getResult());
         }
         // Note: Currently, we do not have equality comparisons for class, method,
         // field, & file type
-        return false;
+        return isEqual;
     }
 
     /**
@@ -87,6 +88,12 @@ public class Helper {
             case Constants.TYPE_STRING:
                 StringItem convertedStringItem = (StringItem) element;
                 result = new DataResult<StringItem>(Constants.TYPE_STRING, convertedStringItem);
+                break;
+
+            default:
+                XMLItem convertedXMLItem = (XMLItem) element;
+                result = new DataResult<XMLItem>(iteratorType, convertedXMLItem);
+                break;
         }
 
         return result;
@@ -274,5 +281,16 @@ public class Helper {
                 break;
         }
         return isIterable;
+    }
+
+    /**
+     * Get assert exists pass fail value
+     * 
+     * @param simExp
+     * @return
+     */
+    public static DataResult getExistsValue(ASTSimExp simExp) {
+        IEngineAssert engineAssert = EngineFactory.getEngineAssert();
+        return engineAssert.getExistsValue(simExp);
     }
 }
