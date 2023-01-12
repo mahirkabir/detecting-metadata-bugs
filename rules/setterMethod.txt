@@ -4,7 +4,7 @@ Rule property-setter-map {
 			for (<bean> bean in getElms(xml, "<bean>")) {
 				if (getAttr(bean, "class") == getFQN(c)) {
 					for (<property> property in getElms(bean, "<property>")) {
-						assert(exists (method m in c) (substring(getName(m), 0, 3)=="set" AND upperCase(substring(getName(m),3)) == upperCase(getAttr(property, "name")))){
+						assert(exists (method m in getMethods(c)) (substring(getName(m), 0, 3)=="set" AND upperCase(substring(getName(m),3)) == upperCase(getAttr(property, "name")))){
 							msg("There is no field of %s corresponding to the property %s of bean %s", getFQN(c), getAttr(property, "name"), getAttr(bean, "id"));
 						}
 					}

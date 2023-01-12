@@ -4,7 +4,7 @@ Rule field-property-map {
 			for (<bean> bean in getElms(xml, "<bean>")) {
 				if (getAttr(bean, "class") == getFQN(c)) {
 					for (<property> property in getElms(bean, "<property>")) {
-						assert(exists(field f in c)(getAttr(property, "name") == getName(f))) {
+						assert(exists(field f in getFields(c))(getAttr(property, "name") == getName(f))) {
 							msg("There is no field of %s corresponding to the property %s of bean %s", getFQN(c), getAttr(property, "name"), getAttr(bean, "id"));
 						}
 					}
