@@ -68,6 +68,10 @@ public class XMLItem {
         return Constants.EMPTY_STRING;
     }
 
+    public Map<String, String> getAttrMap() {
+        return this.mapAttr;
+    }
+
     public Map<String, Boolean> getMapChildTags() {
         return this.mapChildTags;
     }

@@ -282,6 +282,27 @@ public class EngineFunctions implements IEngineFunctions {
                 new StringItem(node.getAttr(attrName)));
     }
 
+    /**
+     * Get all -method attributes' values
+     * 
+     * @param node
+     * @param suffix
+     * @return
+     */
+    private DataResult getAttrs(XMLItem node, String suffix) {
+        if (suffix.startsWith("*"))
+            suffix = suffix.substring(1);
+        final String suffString = suffix;
+
+        List<StringItem> attrs = new ArrayList<>();
+        node.getAttrMap().forEach((attr, val) -> {
+            if (attr.endsWith(suffString))
+                attrs.add(new StringItem(val));
+        });
+
+        return new DataResult<List<StringItem>>(Constants.TYPE_STRING_LIST, attrs);
+    }
+
     private DataResult<BooleanItem> elementExists(XMLItem xml, String selector) {
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN,
                 new BooleanItem(xml.getMapChildTags().containsKey(selector)));
@@ -497,6 +518,14 @@ public class EngineFunctions implements IEngineFunctions {
                     XMLItem parentElm = (XMLItem) params.get(0).getResult();
                     StringItem attr = (StringItem) params.get(1).getResult();
                     result = this.getAttr(parentElm, attr.getValue());
+                }
+                    break;
+
+                case Constants.FUNCTION_GET_ATTRS: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    XMLItem parentElm = (XMLItem) params.get(0).getResult();
+                    StringItem attrSuffix = (StringItem) params.get(1).getResult();
+                    result = this.getAttrs(parentElm, attrSuffix.getValue());
                 }
                     break;
 
