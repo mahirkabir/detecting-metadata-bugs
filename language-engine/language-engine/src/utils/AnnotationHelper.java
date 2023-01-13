@@ -11,6 +11,11 @@ import java.util.stream.Collectors;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.expr.ArrayInitializerExpr;
+import com.github.javaparser.ast.expr.ClassExpr;
+import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
@@ -68,20 +73,39 @@ public class AnnotationHelper {
                 annotationItem.setAnnotationType(Constants.ANNOTATION_CLASS);
                 List<AnnotationAttrItem> attrs = new ArrayList<AnnotationAttrItem>();
 
-                item.getChildNodes().forEach(paramItem -> {
-                    if (paramItem.getChildNodes().size() >= 1) {
-                        AnnotationAttrItem attr = new AnnotationAttrItem();
-                        attr.setAnnotationAttrName(paramItem.toString().split("=")[0].strip());
+                if (item instanceof NormalAnnotationExpr) {
+                    item.getChildNodes().forEach(paramItem -> {
+                        if (paramItem.getChildNodes().size() >= 1) {
+                            AnnotationAttrItem attr = new AnnotationAttrItem();
+                            attr.setAnnotationAttrName(paramItem.toString().split("=")[0].strip());
 
-                        List<Node> childNodes = paramItem.getChildNodes();
-                        if (childNodes.size() > 1) {
-                            String paramValue = childNodes.get(1).toString();
-                            attr.setAnnotationAttrValue(paramValue);
+                            List<Node> childNodes = paramItem.getChildNodes();
+                            if (childNodes.size() > 1) {
+                                String paramValue = childNodes.get(1).toString();
+                                attr.setAnnotationAttrValue(paramValue);
+                            }
+
+                            attrs.add(attr);
                         }
+                    });
 
-                        attrs.add(attr);
-                    }
-                });
+                } else if (item instanceof SingleMemberAnnotationExpr) {
+                    item.getChildNodes().forEach(paramItem -> {
+                        if (paramItem instanceof ClassExpr) {
+                            AnnotationAttrItem attr = new AnnotationAttrItem();
+                            attr.setAnnotationAttrName(paramItem.toString());
+                            attrs.add(attr);
+                        } else if (paramItem instanceof ArrayInitializerExpr) {
+                            paramItem.getChildNodes().forEach(exprItem -> {
+                                if (exprItem instanceof ClassExpr) {
+                                    AnnotationAttrItem attr = new AnnotationAttrItem();
+                                    attr.setAnnotationAttrName(exprItem.toString());
+                                    attrs.add(attr);
+                                }
+                            });
+                        }
+                    });
+                }
 
                 annotationItem.setAnnotationAttrs(attrs);
                 annotations.add(annotationItem);

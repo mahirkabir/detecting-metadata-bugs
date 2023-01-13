@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -287,6 +288,36 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
+    private DataResult<List<StringItem>> getAnnoAttrNames(ClassItem c, String anno) {
+        anno = anno.replace("@", "");
+        String basicFunction = "getAnnoAttrNames()" + "||" + c.getFqn();
+        String functionCall = basicFunction + "||" + anno;
+        DataResult<List<StringItem>> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            List<StringItem> attrNames = new ArrayList<>();
+            final String annoName = anno;
+
+            List<AnnotationItem> annotationItems = c.getAnnotations();
+            if (annotationItems != null) {
+                annotationItems.forEach(annItem -> {
+                    if (annItem.getAnnotationName().equals(annoName)) {
+                        List<AnnotationAttrItem> annAttrItems = annItem.getAnnotationAttrs();
+                        if (annAttrItems != null) {
+                            annAttrItems.forEach(annAttrItem -> {
+                                attrNames.add(new StringItem(annAttrItem.getAnnotationAttrName()));
+                            });
+                        }
+                    }
+                });
+            }
+            result = new DataResult<List<StringItem>>(Constants.TYPE_STRING_LIST, attrNames);
+            this.cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
+    }
+
     private DataResult<List<XMLItem>> getElms(XMLItem xml, String selector) {
         DataResult<List<XMLItem>> result = new DataResult<List<XMLItem>>(Constants.TYPE_XML_LIST,
                 this.xmlHelper.getElms(xml, selector));
@@ -430,6 +461,36 @@ public class EngineFunctions implements IEngineFunctions {
             ret = ret.substring(0, ret.indexOf("<")).strip();
         boolean isIterable = Helper.isIterable(ret);
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(isIterable));
+    }
+
+    /**
+     * Check if only one class has the classSN
+     * 
+     * @param classSN
+     * @return
+     */
+    private DataResult<BooleanItem> isUnique(String classSN) {
+        classSN = classSN.replace(".class", "");
+        Map<String, List<ClassItem>> dictSNClass = this.classHelper.getClassSNDict();
+        boolean isUnique = dictSNClass.containsKey(classSN)
+                && dictSNClass.get(classSN).size() == 1;
+
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(isUnique));
+    }
+
+    /**
+     * Locate class based on Short Name
+     * (If multiple class exists, return the first one)
+     * 
+     * @param classSN
+     * @return
+     */
+    private DataResult<ClassItem> locateClass(String classSN) {
+        classSN = classSN.replace(".class", "");
+        ClassItem ret = new ClassItem("");
+        if (this.classHelper.getClassSNDict().containsKey(classSN))
+            ret = this.classHelper.getClassSNDict().get(classSN).get(0);
+        return new DataResult<ClassItem>(Constants.TYPE_CLASS, ret);
     }
 
     /*
@@ -645,6 +706,28 @@ public class EngineFunctions implements IEngineFunctions {
                     StringItem anno = (StringItem) params.get(1).getResult();
                     StringItem prop = (StringItem) params.get(2).getResult();
                     result = this.hasAnnoAttr(classItem, anno.getValue(), prop.getValue());
+                }
+                    break;
+
+                case Constants.FUNCTION_GET_ANNO_ATTR_NAMES: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    ClassItem classItem = (ClassItem) params.get(0).getResult();
+                    StringItem anno = (StringItem) params.get(1).getResult();
+                    result = this.getAnnoAttrNames(classItem, anno.getValue());
+                }
+                    break;
+
+                case Constants.FUNCTION_IS_UNIQUE: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    StringItem className = (StringItem) params.get(0).getResult();
+                    result = this.isUnique(className.getValue());
+                }
+                    break;
+
+                case Constants.FUNCTION_LOCATE_CLASS: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    StringItem className = (StringItem) params.get(0).getResult();
+                    result = this.locateClass(className.getValue());
                 }
                     break;
             }

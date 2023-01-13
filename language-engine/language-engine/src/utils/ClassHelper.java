@@ -28,6 +28,7 @@ public class ClassHelper {
     private List<String> javaFiles;
     private String projectPath;
     private Map<String, ClassItem> dictClass;
+    private Map<String, List<ClassItem>> dictSNClass;
 
     /**
      * Instantiate project path for the project
@@ -39,6 +40,7 @@ public class ClassHelper {
         this.javaFiles = new ArrayList<String>();
         this.projectPath = projectPath;
         this.dictClass = new HashMap<String, ClassItem>();
+        this.dictSNClass = new HashMap<String, List<ClassItem>>();
     }
 
     /**
@@ -88,6 +90,9 @@ public class ClassHelper {
                 // classInstance is one of the classes located in javaFile
                 classes.add(classInstance);
                 this.dictClass.put(classInstance.getFqn(), classInstance);
+                if (!this.dictSNClass.containsKey(classInstance.getName()))
+                    this.dictSNClass.put(classInstance.getName(), new ArrayList<>());
+                this.dictSNClass.get(classInstance.getName()).add(classInstance);
             });
         }
 
@@ -335,5 +340,9 @@ public class ClassHelper {
         }
 
         return classItem.getAnnotations();
+    }
+
+    public Map<String, List<ClassItem>> getClassSNDict() {
+        return this.dictSNClass;
     }
 }

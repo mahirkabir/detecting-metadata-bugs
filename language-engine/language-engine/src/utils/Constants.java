@@ -63,6 +63,7 @@ public class Constants {
     public static final String FUNCTION_GET_ATTR = "getAttr";
     public static final String FUNCTION_GET_ATTRS = "getAttrs";
     public static final String FUNCTION_GET_ANNO_ATTR = "getAnnoAttr";
+    public static final String FUNCTION_GET_ANNO_ATTR_NAMES = "getAnnoAttrNames";
     public static final String FUNCTION_GET_ANNOTATED = "getAnnotated";
     public static final String FUNCTION_GET_FILE_NAME = "getFileName";
     public static final String FUNCTION_GET_TYPE = "getType";
@@ -80,6 +81,8 @@ public class Constants {
     public static final String FUNCTION_GET_RETURN_TYPE = "getReturnType";
     public static final String FUNCTION_IS_ITERABLE = "isIterable";
     public static final String FUNCTION_HAS_ANNO_ATTR = "hasAnnoAttr";
+    public static final String FUNCTION_IS_UNIQUE = "isUnique";
+    public static final String FUNCTION_LOCATE_CLASS = "locateClass";
     public static final String ANNOTATION_METHOD = "method-annotation";
     public static final String ANNOTATION_CLASS = "class-annotation";
 }
