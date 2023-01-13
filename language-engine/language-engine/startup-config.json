@@ -10,8 +10,11 @@
 			"importXMLIntoAnnotation",
 			"methodExist",
 			"runwithNoParameters",
+            "runwithNoSuiteclasses",
 			"runwithNoTest",
 			"setterMethod",
+            "suiteclassesNoRunwith",
+            "suiteclassesNoTest",
 			"testParamsNotIterable",
 			"xmlPathCheck"
 		]
