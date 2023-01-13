@@ -162,6 +162,22 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
+    /**
+     * Check if annotation of classItem has the attribute - attr
+     * 
+     * @param classItem
+     * @param annotation
+     * @param attr
+     * @return
+     */
+    private DataResult hasAnnoAttr(ClassItem classItem, String annotation, String attr) {
+        if (annotation.startsWith("@"))
+            annotation = annotation.substring(1);
+        List<StringItem> annoAttrs = this.getAnnoAttr(classItem, annotation, attr).getResult();
+        boolean annoExists = annoAttrs.size() > 0;
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(annoExists));
+    }
+
     private DataResult<List<StringItem>> getArg(ClassItem c, String methodName, int argIdx) {
         String functionCall = "getArg()" + "||" + c.getFqn() + "||" + methodName + "||" + argIdx;
         DataResult<List<StringItem>> result = this.cache.fetchFunctionCall(functionCall);
@@ -628,12 +644,7 @@ public class EngineFunctions implements IEngineFunctions {
                     ClassItem classItem = (ClassItem) params.get(0).getResult();
                     StringItem anno = (StringItem) params.get(1).getResult();
                     StringItem prop = (StringItem) params.get(2).getResult();
-
-                    anno.setValue(anno.getValue().substring(1)); // To remove the @
-                    List<StringItem> annoAttrs = this.getAnnoAttr(classItem, anno.getValue(), prop.getValue())
-                            .getResult();
-                    boolean annoExists = annoAttrs.size() > 0;
-                    result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(annoExists));
+                    result = this.hasAnnoAttr(classItem, anno.getValue(), prop.getValue());
                 }
                     break;
             }

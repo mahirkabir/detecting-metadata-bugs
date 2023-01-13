@@ -1,0 +1,11 @@
+Rule runwith-no-suitclasses {
+	for (class c in getClasses()) {
+		if (hasAnnotation(c, "@RunWith")) {
+			if (hasAnnoAttr(c, "@RunWith", "Suite.class")) {
+				assert(hasAnnotation(c, "@SuiteClasses")) {
+					msg("Class: %s has @RunWith(Suite.class) but no @SuiteClasses", getFQN(c));
+				}
+			}
+		}
+	}
+}
