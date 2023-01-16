@@ -19,7 +19,7 @@ def count_dirs(root_folder):
 def update_repos(root_folder):
     """Recursively update all the .git projects under `root_folder`"""
     total_dirs = count_dirs(root_folder)
-    helper.init_log()
+    helper.init_logs()
     helper.log("Total git repositories: " + str(total_dirs))
     with tqdm(total=total_dirs) as pbar:
         for root, dirs, _ in os.walk(root_folder):

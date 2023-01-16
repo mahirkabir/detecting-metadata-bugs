@@ -23,9 +23,11 @@ def execute_cmd(path, cmd):
         return [True, str_stdout]
 
 
-def init_log():
-    """Initialize log file"""
+def init_logs():
+    """Initialize log files"""
     logger = open("log.txt", "w", encoding="utf-8")
+    logger.close()
+    logger = open("error-log.txt", "w", encoding="utf-8")
     logger.close()
 
 
