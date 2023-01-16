@@ -23,6 +23,12 @@ def execute_cmd(path, cmd):
         return [True, str_stdout]
 
 
+def init_log():
+    """Initialize log file"""
+    logger = open("log.txt", "w", encoding="utf-8")
+    logger.close()
+
+
 def log(message):
     """Log `message` in log file"""
     logger = open("log.txt", "a", encoding="utf-8")
