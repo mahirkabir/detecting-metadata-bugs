@@ -23,23 +23,21 @@ def execute_cmd(path, cmd):
         return [True, str_stdout]
 
 
-def init_logs():
+def init_log(log_file):
     """Initialize log files"""
-    logger = open("log.txt", "w", encoding="utf-8")
-    logger.close()
-    logger = open("error-log.txt", "w", encoding="utf-8")
+    logger = open(log_file, "w", encoding="utf-8")
     logger.close()
 
 
-def log(message):
-    """Log `message` in log file"""
-    logger = open("log.txt", "a", encoding="utf-8")
-    logger.write(message + "\n")
+def log(log_file, message):
+    """Log `message` in `log_file`"""
+    logger = open(log_file, "a", encoding="utf-8")
+    logger.write("[Output] " + message + "\n")
     logger.close()
 
 
-def error(message):
-    """Log error `message` in error-log file"""
-    logger = open("error-log.txt", "a", encoding="utf-8")
-    logger.write(message + "\n")
+def error(log_file, message):
+    """Log error `message` in `log_file`"""
+    logger = open(log_file, "a", encoding="utf-8")
+    logger.write("[Error] " + message + "\n")
     logger.close()
