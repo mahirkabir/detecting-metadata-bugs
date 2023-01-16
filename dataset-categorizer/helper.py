@@ -28,3 +28,10 @@ def log(message):
     logger = open("log.txt", "a", encoding="utf-8")
     logger.write(message + "\n")
     logger.close()
+
+
+def error(message):
+    """Log error `message` in error-log file"""
+    logger = open("error-log.txt", "a", encoding="utf-8")
+    logger.write(message + "\n")
+    logger.close()

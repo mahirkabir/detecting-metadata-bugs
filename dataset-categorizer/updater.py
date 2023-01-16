@@ -28,7 +28,7 @@ def update_repos(root_folder):
                     helper.log("Git Updating: " + str(root))
                     res, output = helper.execute_cmd(root, "git pull")
                     if res == False:
-                        helper.log(output)
+                        helper.error(output)
 
                 except Exception as ex:
                     helper.log("Error updating: " + str(ex))
