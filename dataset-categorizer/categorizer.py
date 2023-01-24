@@ -17,7 +17,7 @@ if __name__ == "__main__":
     dataset_loc = sys.argv[1]
     dirs = os.listdir(dataset_loc)
 
-    with open("categorizer.csv", "w", encoding="utf-8") as writer:
+    with open("categorizer.csv", "w", encoding="utf-8", errors="ignore") as writer:
         writer.write("Project\tBeans\tAnnotations\tJUnit\n")
 
     for dir in tqdm(dirs):
@@ -31,28 +31,32 @@ if __name__ == "__main__":
                 for cfile in cfiles:
                     cfile = os.path.join(croot, cfile)
                     if cfile.endswith(".xml"):
-                        with open(cfile, "r", encoding="utf-8") as xml:
-                            content = xml.read()
-                            if categories["beans"] == False and "</beans>" in content:
-                                categories["beans"] = True
+                        try:
+                            with open(cfile, "r", encoding="utf-8", errors="ignore") as xml:
+                                content = xml.read()
+                                if categories["beans"] == False and "</beans>" in content:
+                                    categories["beans"] = True
+                        except Exception as ex:
+                            print("Error processing %s: %s" % (cfile, ex))
                     elif cfile.endswith(".java"):
-                        with open(cfile, "r", encoding="utf-8") as javaFile:
-                            content = javaFile.read()
-                            if categories["junit"] == False and "org.junit" in content:
-                                categories["junit"] = True
-                            if categories["annotations"] == False and has_content(content, "@(.)+"):
-                                categories["annotations"] = True
+                        try:
+                            with open(cfile, "r", encoding="utf-8", errors="ignore") as javaFile:
+                                content = javaFile.read()
+                                if categories["junit"] == False and "org.junit" in content:
+                                    categories["junit"] = True
+                                if categories["annotations"] == False and has_content(content, "@(.)+"):
+                                    categories["annotations"] = True
+                        except Exception as ex:
+                            print("Error processing %s: %s" % (cfile, ex))
 
                     if categories["beans"] and categories["annotations"] and categories["junit"]:
                         break
                 if categories["beans"] and categories["annotations"] and categories["junit"]:
                     break
 
-            with open("categorizer.csv", "a", encoding="utf-8") as writer:
+            with open("categorizer.csv", "a", encoding="utf-8", errors="ignore") as writer:
                 writer.write("%s\t%s\t%s\t%s\n" % (
                     dir, categories["beans"], categories["annotations"], categories["junit"]))
 
         except Exception as ex:
             print("Error processing " + str(dir) + ": " + str(ex))
-
-        break
