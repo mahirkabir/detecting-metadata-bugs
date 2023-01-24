@@ -1,14 +1,18 @@
 import os
 import sys
 from tqdm import tqdm
-import re
 
 
-def has_content(content, regex):
-    """Check if `regex` is found in `content`"""
-    sresult = re.search(regex, content)
-    if sresult:
-        return True
+def has_annotation(content):
+    """Check if any relevant annotation is found in `content`"""
+    annotations = ["@Component", "@Service", "@Repository", "@Controller", "@RestController",
+                   "@Bean", "@Autowired", "@Qualifier", "@PostConstruct", "@PreDestroy", "@Resource",
+                   "@ImportResource", "@RunWith", "@Parameters", "@SuiteClasses", "@Test"]
+
+    for annotation in annotations:
+        if annotation in content:
+            return True
+
     return False
 
 
@@ -48,7 +52,7 @@ if __name__ == "__main__":
                                 content = javaFile.read()
                                 if "org.junit" in content:
                                     categories["junit"].append(cfile)
-                                if has_content(content, "@(.)+"):
+                                if has_annotation(content):
                                     categories["annotations"].append(cfile)
                         except Exception as ex:
                             print("Error reading: %s" % cfile)
