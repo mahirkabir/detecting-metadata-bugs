@@ -2,3 +2,4 @@
 target/
 language-engine/.vscode/
 */__pycache__/helper.cpython-37.pyc
+dataset-categorizer/.vscode/launch.json
