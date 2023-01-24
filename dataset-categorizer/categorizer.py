@@ -17,46 +17,57 @@ if __name__ == "__main__":
     dataset_loc = sys.argv[1]
     dirs = os.listdir(dataset_loc)
 
-    with open("categorizer.csv", "w", encoding="utf-8", errors="ignore") as writer:
-        writer.write("Project\tBeans\tAnnotations\tJUnit\n")
+    writer = open("beans.txt", "w", encoding="utf-8", errors="ignore")
+    writer.close()
+    writer = open("annotations.txt", "w", encoding="utf-8", errors="ignore")
+    writer.close()
+    writer = open("junits.txt", "w", encoding="utf-8", errors="ignore")
+    writer.close()
 
     for dir in tqdm(dirs):
         """Check if Beans/Annotations/JUnit are used"""
         try:
 
             project_loc = os.path.join(dataset_loc, dir)
-            categories = {"beans": False,
-                          "annotations": False, "junit": False}
+            categories = {"beans": [],
+                          "annotations": [], "junit": []}
             for croot, cdirs, cfiles in os.walk(project_loc):
                 for cfile in cfiles:
                     cfile = os.path.join(croot, cfile)
                     if cfile.endswith(".xml"):
                         try:
-                            with open(cfile, "r", encoding="utf-8", errors="ignore") as xml:
+                            with open(cfile, "r", errors="ignore") as xml:
                                 content = xml.read()
-                                if categories["beans"] == False and "</beans>" in content:
-                                    categories["beans"] = True
+                                if "</beans>" in content:
+                                    categories["beans"].append(cfile)
                         except Exception as ex:
-                            print("Error processing %s: %s" % (cfile, ex))
+                            print("Error reading: %s" % cfile)
                     elif cfile.endswith(".java"):
                         try:
-                            with open(cfile, "r", encoding="utf-8", errors="ignore") as javaFile:
+                            with open(cfile, "r", errors="ignore") as javaFile:
                                 content = javaFile.read()
-                                if categories["junit"] == False and "org.junit" in content:
-                                    categories["junit"] = True
-                                if categories["annotations"] == False and has_content(content, "@(.)+"):
-                                    categories["annotations"] = True
+                                if "org.junit" in content:
+                                    categories["junit"].append(cfile)
+                                if has_content(content, "@(.)+"):
+                                    categories["annotations"].append(cfile)
                         except Exception as ex:
-                            print("Error processing %s: %s" % (cfile, ex))
+                            print("Error reading: %s" % cfile)
 
-                    if categories["beans"] and categories["annotations"] and categories["junit"]:
-                        break
-                if categories["beans"] and categories["annotations"] and categories["junit"]:
-                    break
+            with open("beans.txt", "a", encoding="utf-8", errors="ignore") as writer:
+                writer.write("%s: (%s)\n" % (dir, len(categories["beans"])))
+                for cfile in categories["beans"]:
+                    writer.write("%s\n" % cfile)
 
-            with open("categorizer.csv", "a", encoding="utf-8", errors="ignore") as writer:
-                writer.write("%s\t%s\t%s\t%s\n" % (
-                    dir, categories["beans"], categories["annotations"], categories["junit"]))
+            with open("annotations.txt", "a", encoding="utf-8", errors="ignore") as writer:
+                writer.write("%s: (%s)\n" %
+                             (dir, len(categories["annotations"])))
+                for cfile in categories["annotations"]:
+                    writer.write("%s\n" % cfile)
+
+            with open("junits.txt", "a", encoding="utf-8", errors="ignore") as writer:
+                writer.write("%s: (%s)\n" % (dir, len(categories["junit"])))
+                for cfile in categories["junit"]:
+                    writer.write("%s\n" % cfile)
 
         except Exception as ex:
             print("Error processing " + str(dir) + ": " + str(ex))
