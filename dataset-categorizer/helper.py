@@ -13,7 +13,7 @@ def execute_cmd(path, cmd):
 
     stdout, stderr = out.communicate()
     # utf-8 encoding is reverse compatible with ASCII
-    str_stdout = stdout.decode("utf-8")
+    str_stdout = stdout.decode("utf-8", errors="ignore")
 
     os.chdir(working_dir)
 

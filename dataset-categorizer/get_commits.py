@@ -18,12 +18,13 @@ def get_file_commits(filepath):
     return commits
 
 
-def get_commits(file, dict_commits, dict_file_commits):
+def get_commits(root, file, dict_commits, dict_file_commits):
     """Get commit numbers of files inside result `file`"""
     dict_files = {}
-    writer = open("new_" + file, "w", encoding="utf-8", errors="ignore")
+    writer = open(os.path.join(root, "new_" + file),
+                  "w", encoding="utf-8", errors="ignore")
     writer.close()
-    with open(file, "r", encoding="utf-8", errors="ignore") as reader:
+    with open(os.path.join(root, file), "r", encoding="utf-8", errors="ignore") as reader:
         lines = reader.readlines()
         proj = ""
         rel_file = ""
@@ -33,7 +34,8 @@ def get_commits(file, dict_commits, dict_file_commits):
                 is_proj = re.search("(.)+: \((\d)+\)", line)
                 if is_proj:
                     if proj != "":
-                        with open("new_" + file, "a", encoding="utf-8", errors="ignore") as writer:
+                        with open(os.path.join(root, "new_" + file),
+                                  "a", encoding="utf-8", errors="ignore") as writer:
                             writer.write("Project: %s\n" % proj)
                             for commit in dict_files[proj]:
                                 writer.write("%s\n" % commit)
@@ -60,7 +62,8 @@ def get_commits(file, dict_commits, dict_file_commits):
             except Exception as ex:
                 print("Error processing %s: %s" % (line, str(ex)))
 
-    with open("new_" + file, "a", encoding="utf-8", errors="ignore") as writer:
+    with open(os.path.join(root, "new_" + file),
+              "a", encoding="utf-8", errors="ignore") as writer:
         writer.write("Project: %s\n" % proj)
         for commit in dict_files[proj]:
             writer.write("%s\n" % commit)
@@ -72,15 +75,16 @@ if __name__ == "__main__":
     """Get commits on beans, annotations, & junits related files"""
     dict_commits = {}
     dict_file_commits = {}
+    root = os.getcwd()
     dict_commits, dict_file_commits = get_commits(
-        "beans.txt", dict_commits, dict_file_commits)
+        root, "annotations.txt", dict_commits, dict_file_commits)
     dict_commits, dict_file_commits = get_commits(
-        "annotations.txt", dict_commits, dict_file_commits)
+        root, "beans.txt", dict_commits, dict_file_commits)
     dict_commits, _ = get_commits(
-        "junits.txt", dict_commits, dict_file_commits)
+        root, "junits.txt", dict_commits, dict_file_commits)
 
     tot_versions = 0
-    with open("unique_commits.txt", "w", encoding="utf-8", errors="ignore") as writer:
+    with open(os.path.join(root, "unique_commits.txt"), "w", encoding="utf-8", errors="ignore") as writer:
         for proj in dict_commits:
             tot_versions += len(dict_commits[proj])
             writer.write("Project: %s\n" % proj)
