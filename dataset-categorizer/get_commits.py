@@ -21,6 +21,8 @@ def get_file_commits(filepath):
 def get_commits(file, dict_commits):
     """Get commit numbers of files inside result `file`"""
     dict_files = {}
+    writer = open("new_" + file, "w", encoding="utf-8", errors="ignore")
+    writer.close()
     with open(file, "r", encoding="utf-8", errors="ignore") as reader:
         lines = reader.readlines()
         proj = ""
@@ -30,6 +32,12 @@ def get_commits(file, dict_commits):
             try:
                 is_proj = re.search("(.)+: \((\d)+\)", line)
                 if is_proj:
+                    if proj != "":
+                        with open("new_" + file, "a", encoding="utf-8", errors="ignore") as writer:
+                            writer.write("Project: %s\n" % proj)
+                            for commit in dict_files[proj]:
+                                writer.write("%s\n" % commit)
+
                     proj = line.split(":")[0]
                     dict_files[proj] = []
                 else:
@@ -48,13 +56,10 @@ def get_commits(file, dict_commits):
             except Exception as ex:
                 print("Error processing %s: %s" % (line, str(ex)))
 
-    print("Updating %s" % file)
-    with open("new_" + file, "w", encoding="utf-8", errors="ignore") as writer:
-        for proj in tqdm(dict_files):
-            writer.write("Project: %s\n" % proj)
-            for commit in dict_files[proj]:
-                writer.write("%s\n" % commit)
-
+    with open("new_" + file, "a", encoding="utf-8", errors="ignore") as writer:
+        writer.write("Project: %s\n" % proj)
+        for commit in dict_files[proj]:
+            writer.write("%s\n" % commit)
     return dict_commits
 
 
