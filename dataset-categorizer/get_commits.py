@@ -18,7 +18,7 @@ def get_file_commits(filepath):
     return commits
 
 
-def get_commits(file, dict_commits):
+def get_commits(file, dict_commits, dict_file_commits):
     """Get commit numbers of files inside result `file`"""
     dict_files = {}
     writer = open("new_" + file, "w", encoding="utf-8", errors="ignore")
@@ -42,7 +42,11 @@ def get_commits(file, dict_commits):
                     dict_files[proj] = []
                 else:
                     rel_file = line.strip()
-                    commits = get_file_commits(rel_file)
+                    if rel_file in dict_file_commits:
+                        commits = dict_file_commits[rel_file]
+                    else:
+                        commits = get_file_commits(rel_file)
+                    dict_file_commits[rel_file] = commits
                     new_line = rel_file
 
                     for commit in commits:
@@ -60,15 +64,20 @@ def get_commits(file, dict_commits):
         writer.write("Project: %s\n" % proj)
         for commit in dict_files[proj]:
             writer.write("%s\n" % commit)
-    return dict_commits
+
+    return dict_commits, dict_file_commits
 
 
 if __name__ == "__main__":
     """Get commits on beans, annotations, & junits related files"""
     dict_commits = {}
-    dict_commits = get_commits("beans.txt", dict_commits)
-    dict_commits = get_commits("annotations.txt", dict_commits)
-    dict_commits = get_commits("junits.txt", dict_commits)
+    dict_file_commits = {}
+    dict_commits, dict_file_commits = get_commits(
+        "beans.txt", dict_commits, dict_file_commits)
+    dict_commits, dict_file_commits = get_commits(
+        "annotations.txt", dict_commits, dict_file_commits)
+    dict_commits, _ = get_commits(
+        "junits.txt", dict_commits, dict_file_commits)
 
     tot_versions = 0
     with open("unique_commits.txt", "w", encoding="utf-8", errors="ignore") as writer:
