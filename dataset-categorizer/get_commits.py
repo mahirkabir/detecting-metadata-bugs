@@ -70,8 +70,12 @@ if __name__ == "__main__":
     dict_commits = get_commits("annotations.txt", dict_commits)
     dict_commits = get_commits("junits.txt", dict_commits)
 
+    tot_versions = 0
     with open("unique_commits.txt", "w", encoding="utf-8", errors="ignore") as writer:
         for proj in dict_commits:
+            tot_versions += len(dict_commits[proj])
             writer.write("Project: %s\n" % proj)
             for commit in dict_commits[proj]:
                 writer.write("%s\n" % commit)
+
+        writer.write("Total versions to process: %s\n" % tot_versions)
