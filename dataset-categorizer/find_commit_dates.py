@@ -1,7 +1,9 @@
+from datetime import datetime
 import os
 from tqdm import tqdm
 import helper
 from functools import partialmethod
+import re
 
 
 def get_month(month):
@@ -14,7 +16,7 @@ def get_month(month):
     return dict[month]
 
 
-if __name__ == "__main__":
+if __name__ == "__main__OFF":
     """Find commit dates from commit id"""
     dataset_loc = "D:\Mahir\detecting-metadata-bugs\dataset\projects"
     root = os.getcwd()
@@ -71,3 +73,41 @@ if __name__ == "__main__":
                          (proj, len(dict_result[proj])))
             for commit in dict_result[proj]:
                 writer.write("%s\n" % commit)
+
+if __name__ == "__main__":
+    """Sort project commit lines based on commit count -> commit date"""
+    root = os.getcwd()
+    dict_result = {}
+    with open(os.path.join(root, "commit_dates.txt"), "r", encoding="utf-8", errors="ignore") as reader:
+        lines = reader.readlines()
+        for line in tqdm(lines):
+            line = line.strip()
+            match = re.search(".*: \(\d+\)", line)
+            if match:
+                proj = line.split(": ")[0]
+                commit_count = line.split(": ")[1][1:-1]
+                dict_result[proj] = []
+            else:
+                [commit_id, commit_date] = line.split("\t")
+                dict_result[proj].append(
+                    {"commit_id": commit_id, "commit_date": commit_date})
+
+    # Sort based on commit count
+    dict_result = {k: v for k, v in sorted(
+        dict_result.items(), key=lambda item: int(len(item[1])), reverse=True)}
+
+    tot_versions = 0
+    with open(os.path.join(root, "sorted_unique_commits.txt"), "w", encoding="utf-8", errors="ignore") as writer:
+        for proj in dict_result:
+            tot_versions += len(dict_result[proj])
+            writer.write("%s: (%s)\n" % (proj, len(dict_result[proj])))
+
+            # Sort based on date
+            dict_result[proj] = sorted(dict_result[proj], key=lambda item: datetime.strptime(
+                item["commit_date"][1:-1], "%Y-%m-%d"), reverse=True)
+
+            for commit in dict_result[proj]:
+                writer.write("%s\t%s\n" %
+                             (commit["commit_id"], commit["commit_date"]))
+
+        writer.write("Total versions to process: %s\n" % tot_versions)
