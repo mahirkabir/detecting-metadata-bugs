@@ -1,6 +1,7 @@
 import os
 from tqdm import tqdm
 import helper
+from functools import partialmethod
 
 
 def get_month(month):
@@ -18,13 +19,29 @@ if __name__ == "__main__":
     dataset_loc = "D:\Mahir\detecting-metadata-bugs\dataset\projects"
     root = os.getcwd()
     dict_result = {}
+
+    # Disable tqdm to avoid printing unnecessary progress bars
+    tqdm.__init__ = partialmethod(tqdm.__init__, disable=True)
+    # Initialize the output file
+    writer = open(os.path.join(root, "commit_dates.txt"),
+                  "w", encoding="utf-8", errors="ignore")
+    writer.close()
+
     with open(os.path.join(root, "unique_commits.txt"), "r", encoding="utf-8", errors="ignore") as reader:
         lines = reader.readlines()
         proj = ""
         proj_loc = ""
-        for line in tqdm(lines):
+        for line in tqdm(lines, disable=False):
             line = line.strip()
             if "Project: " in line:
+                if proj != "":
+                    """Print the last project's commits"""
+                    with open(os.path.join(root, "commit_dates.txt"), "a", encoding="utf-8", errors="ignore") as writer:
+                        writer.write("%s: (%s)\n" %
+                                     (proj, len(dict_result[proj])))
+                        for commit in dict_result[proj]:
+                            writer.write("%s\n" % commit)
+
                 proj = line.replace("Project: ", "")
                 proj_loc = os.path.join(dataset_loc, proj)
                 dict_result[proj] = []
@@ -41,13 +58,16 @@ if __name__ == "__main__":
                                 parts[4]), parts[5]
 
                             dict_result[proj].append("%s\t(%s-%s-%s)" %
-                                                (commit_id, year, month, day))
+                                                     (commit_id, year, month, day))
+                            break
                 except Exception as ex:
                     print("Error. Project: %s. Commit: %s => %s" %
                           (proj, commit_id, str(ex)))
 
-    with open(os.path.join(root, "commit_dates.txt"), "w", encoding="utf-8", errors="ignore") as writer:
-        for proj in tqdm(dict_result):
-            writer.write("%s: (%s)\n" % (proj, len(dict_result[proj])))
+    if proj != "":
+        """Print the last project's commits"""
+        with open(os.path.join(root, "commit_dates.txt"), "a", encoding="utf-8", errors="ignore") as writer:
+            writer.write("%s: (%s)\n" %
+                         (proj, len(dict_result[proj])))
             for commit in dict_result[proj]:
                 writer.write("%s\n" % commit)
