@@ -37,6 +37,7 @@ public class EngineMain {
         Config config = loadConfig(args[0]);
 
         for (String rule : config.rules.run) {
+            EngineFactory.setRunningRule(rule);
             String ruleLoc = Paths.get(config.rules.dir, rule + ".txt").toString();
             System.out.println("Reading from standard input: " + ruleLoc);
 

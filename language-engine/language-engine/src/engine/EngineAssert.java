@@ -112,6 +112,10 @@ public class EngineAssert implements IEngineAssert {
             message = Helper.formatStr(message, formatValues);
         }
 
-        utils.Logger.output(message);
+        StringBuilder sbMessage = new StringBuilder("[" + EngineFactory.getProjectPath() + "]");
+        sbMessage.append("\t" + EngineFactory.getRunningRule());
+        sbMessage.append("\t" + message);
+        sbMessage.append("\n");
+        utils.Logger.output(sbMessage.toString());
     }
 }

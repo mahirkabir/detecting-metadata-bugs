@@ -2,6 +2,8 @@ package engine;
 
 public class EngineFactory {
     private static String projectPath;
+    private static String runningRule;
+
     private static IEngineAssert engineAssert;
     private static IEngineCache engineCache;
     private static IEngineDecl engineDecl;
@@ -15,6 +17,7 @@ public class EngineFactory {
 
     /**
      * Return the prepared engine for assert
+     * 
      * @return
      */
     public static IEngineAssert getEngineAssert() {
@@ -23,6 +26,7 @@ public class EngineFactory {
 
     /**
      * Return the prepared engine for caching
+     * 
      * @return
      */
     public static IEngineCache getEngineCache() {
@@ -31,6 +35,7 @@ public class EngineFactory {
 
     /**
      * Return the prepared engine for declaration
+     * 
      * @return
      */
     public static IEngineDecl getEngineDecl() {
@@ -39,6 +44,7 @@ public class EngineFactory {
 
     /**
      * Return the prepared engine for evaluation
+     * 
      * @return
      */
     public static IEngineEvaluate getEvaluator() {
@@ -47,6 +53,7 @@ public class EngineFactory {
 
     /**
      * Return the prepared engine for FOR
+     * 
      * @return
      */
     public static IEngineFor getEngineFor() {
@@ -55,6 +62,7 @@ public class EngineFactory {
 
     /**
      * Return the prepared engine for functions
+     * 
      * @return
      */
     public static IEngineFunctions getEngineFunctions() {
@@ -87,5 +95,23 @@ public class EngineFactory {
 
     public static void setEngineFunctions(IEngineFunctions engineFunctions) {
         EngineFactory.engineFunctions = engineFunctions;
+    }
+
+    /**
+     * Return the rule that is currently getting executed
+     * 
+     * @return
+     */
+    public static String getRunningRule() {
+        return runningRule;
+    }
+
+    /**
+     * Set the rule that is currently getting execute
+     * 
+     * @param runningRule
+     */
+    public static void setRunningRule(String runningRule) {
+        EngineFactory.runningRule = runningRule;
     }
 }
