@@ -63,6 +63,8 @@ public class EngineAssert implements IEngineAssert {
             ASTExpression booleanExp = (ASTExpression) assertSimExp.jjtGetChild(3);
             assertPass |= this.evaluator.evalBooleanExpr(booleanExp);
             this.engineDecl.resetFrame();
+            if (assertPass)
+                break;
         }
         this.engineDecl.removeFrame();
 
