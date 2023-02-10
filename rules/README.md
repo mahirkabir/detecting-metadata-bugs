@@ -64,3 +64,6 @@ Reports if class has `@SuiteClasses(CLASS1.class, CLASS2.class ...)` but any of 
 ## testParamsNotIterable
 ---------------
 Reports if the return type of the method with `@Parameters` annotation is not iterable.
+
+# TODO
+1. Verify if we need to remove `fieldProperty` rule
