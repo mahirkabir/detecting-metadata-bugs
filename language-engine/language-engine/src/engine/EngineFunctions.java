@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -531,6 +532,46 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
+    /**
+     * Check if there are multiple beans for the same class
+     * 
+     * @param xmlItem
+     * @return
+     */
+    private DataResult<BooleanItem> hasDuplicateBeans(XMLItem xmlItem) {
+        List<XMLItem> beans = xmlItem.getChildNodes(Constants.NODE_TYPE_BEAN);
+
+        Map<String, List<XMLItem>> mapClassBeans = new HashMap<>();
+        for (XMLItem bean : beans) {
+            String className = bean.getAttr(Constants.TYPE_CLASS);
+            if (!className.isEmpty()) {
+                if (!mapClassBeans.containsKey(className))
+                    mapClassBeans.put(className, new ArrayList<XMLItem>());
+                mapClassBeans.get(className).add(bean);
+            }
+        }
+
+        boolean dupFound = false;
+        for (Map.Entry<String, List<XMLItem>> entry : mapClassBeans.entrySet()) {
+            List<XMLItem> beansForClass = entry.getValue();
+            if (beansForClass.size() > 1) {
+                boolean primaryFound = false;
+                for (XMLItem beanItem : beansForClass) {
+                    if (beanItem.getAttr(Constants.ATTR_PRIMARY).equals(Constants.BOOLEAN_TRUE)) {
+                        primaryFound = true;
+                        break;
+                    }
+                }
+                if (!primaryFound) {
+                    dupFound = true;
+                    break;
+                }
+            }
+        }
+
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(dupFound));
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -779,6 +820,14 @@ public class EngineFunctions implements IEngineFunctions {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     StringItem classFQN = (StringItem) params.get(0).getResult();
                     result = this.classExists(classFQN.getValue());
+                }
+                    break;
+
+                case Constants.FUNCTION_HAS_DUPLICATE_BEANS: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    XMLItem xmlItem = (XMLItem) params.get(0).getResult();
+                    result = this.hasDuplicateBeans(xmlItem);
+
                 }
                     break;
             }

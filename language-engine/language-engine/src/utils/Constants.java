@@ -50,6 +50,7 @@ public class Constants {
     public static final String NODE_TYPE_BEAN = "bean";
     public static final String ATTR_ID = "id";
     public static final String ATTR_NAME = "name";
+    public static final String ATTR_PRIMARY = "primary";
     public static final String PACKAGE = "package";
     public static final String FUNCTION_GET_CLASSES = "getClasses";
     public static final String FUNCTION_GET_XMLS = "getXMLs";
@@ -84,6 +85,7 @@ public class Constants {
     public static final String FUNCTION_IS_UNIQUE = "isUnique";
     public static final String FUNCTION_LOCATE_CLASS = "locateClass";
     public static final String FUNCTION_CLASS_EXISTS = "classExists";
+    public static final String FUNCTION_HAS_DUPLICATE_BEANS = "hasDuplicateBeans";
     public static final String ANNOTATION_METHOD = "method-annotation";
     public static final String ANNOTATION_CLASS = "class-annotation";
 }

@@ -1,0 +1,9 @@
+Rule dup-beans-exist {
+	for (file xml in getXMLs()) {
+		if (elementExists(xml, "<bean>")) {
+			assert(NOT hasDuplicateBeans(xml)) {
+				msg("File: %s has multiple beans for same class and none of them is marked primary", getName(xml));
+			}
+		}
+	}
+}
