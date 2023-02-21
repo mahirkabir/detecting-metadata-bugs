@@ -359,6 +359,10 @@ public class EngineFunctions implements IEngineFunctions {
         return new DataResult<StringItem>(Constants.TYPE_STRING, new StringItem(jItem.getName()));
     }
 
+    private DataResult<StringItem> getName(XMLItem xmlItem) {
+        return new DataResult<StringItem>(Constants.TYPE_STRING, new StringItem(xmlItem.getId()));
+    }
+
     private DataResult<BooleanItem> pathExists(String path) {
         if (path.startsWith("\"") && path.endsWith("\""))
             path = path.substring(1, path.length() - 1);
@@ -441,6 +445,11 @@ public class EngineFunctions implements IEngineFunctions {
                 new BooleanItem(list.size() != 0));
     }
 
+    private DataResult<BooleanItem> isEmpty(String item) {
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN,
+                new BooleanItem(item.isEmpty()));
+    }
+
     private DataResult<BooleanItem> endsWith(String str, String suffix) {
         boolean endsWith = str.endsWith(suffix);
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(endsWith));
@@ -493,6 +502,35 @@ public class EngineFunctions implements IEngineFunctions {
         return new DataResult<ClassItem>(Constants.TYPE_CLASS, ret);
     }
 
+    /**
+     * Check if a class exists using the fully qualified name
+     * 
+     * @param classFQN
+     * @return
+     */
+    private DataResult<BooleanItem> classExists(String classFQN) {
+        String basicFunction = "classExists()";
+        String functionCall = basicFunction + "||" + classFQN;
+        DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            DataResult<List<ClassItem>> classesDT = this.getClasses();
+            List<ClassItem> classes = classesDT.getResult();
+            Boolean found = false;
+            for (ClassItem classItem : classes) {
+                functionCall = basicFunction + "||" + classItem.getFqn();
+                DataResult<BooleanItem> currResult = new DataResult<BooleanItem>(
+                        Constants.TYPE_BOOLEAN, new BooleanItem(true));
+                this.cache.addFunctionCall(functionCall, currResult);
+                if (classItem.getFqn().equals(classFQN))
+                    found = true;
+            }
+            result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(found));
+        }
+
+        return result;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -539,8 +577,11 @@ public class EngineFunctions implements IEngineFunctions {
 
                 case Constants.FUNCTION_GET_NAME: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
-                    JItem jItem = (JItem) params.get(0).getResult();
-                    result = this.getName(jItem);
+                    Object item = params.get(0).getResult();
+                    if (item instanceof JItem)
+                        result = this.getName((JItem) item);
+                    else if (item instanceof XMLItem)
+                        result = this.getName((XMLItem) item);
                 }
                     break;
 
@@ -649,8 +690,11 @@ public class EngineFunctions implements IEngineFunctions {
                 case Constants.FUNCTION_IS_EMPTY: {
                     // TODO: Need to introduce list variable
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
-                    List list = (List) params.get(0).getResult();
-                    result = this.isEmpty(list);
+                    Object item = params.get(0).getResult();
+                    if (item instanceof List)
+                        result = this.isEmpty((List) item);
+                    else if (item instanceof StringItem)
+                        result = this.isEmpty(((StringItem) item).getValue());
                 }
                     break;
 
@@ -728,6 +772,13 @@ public class EngineFunctions implements IEngineFunctions {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     StringItem className = (StringItem) params.get(0).getResult();
                     result = this.locateClass(className.getValue());
+                }
+                    break;
+
+                case Constants.FUNCTION_CLASS_EXISTS: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    StringItem classFQN = (StringItem) params.get(0).getResult();
+                    result = this.classExists(classFQN.getValue());
                 }
                     break;
             }

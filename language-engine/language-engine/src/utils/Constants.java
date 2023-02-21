@@ -83,6 +83,7 @@ public class Constants {
     public static final String FUNCTION_HAS_ANNO_ATTR = "hasAnnoAttr";
     public static final String FUNCTION_IS_UNIQUE = "isUnique";
     public static final String FUNCTION_LOCATE_CLASS = "locateClass";
+    public static final String FUNCTION_CLASS_EXISTS = "classExists";
     public static final String ANNOTATION_METHOD = "method-annotation";
     public static final String ANNOTATION_CLASS = "class-annotation";
 }
