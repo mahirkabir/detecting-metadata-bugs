@@ -1,9 +1,0 @@
-Rule context-annotation-config-annotation {
-	for (file xml in getXMLs()) {
-		if(elementExists(xml, "<context:annotation-config>")) {
-			assert (NOT isEmpty(join(getAnnotated("@Autowired", "*"), getAnnotated("@Qualifier", "*"), getAnnotated("@PostConstruct", "*"), getAnnotated("@PreDestroy", "*"), getAnnotated("@Resource", "*")))) {
-				msg("Although <context:annotation-config> is used in XML: %s, there is no software entity annotated with @Autowired, @Qualifier, @PostConstruct, @PreDestroy, or @Resource", getFileName(xml));
-			}
-		}
-	}
-}
