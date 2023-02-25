@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MethodItem extends JItem {
@@ -7,6 +8,7 @@ public class MethodItem extends JItem {
     private String accessModifier;
     private String declType;
     private List<AnnotationItem> annotations;
+    private List<ParamItem> parameters;
 
     /**
      * Get the method annotations
@@ -48,5 +50,21 @@ public class MethodItem extends JItem {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public List<ParamItem> getParameters() {
+        if (parameters == null)
+            return new ArrayList<ParamItem>();
+        return parameters;
+    }
+
+    public void addParameter(ParamItem param) {
+        if (this.parameters == null)
+            this.parameters = new ArrayList<ParamItem>();
+        this.parameters.add(param);
+    }
+
+    public void setParameters(List<ParamItem> parameters) {
+        this.parameters = parameters;
     }
 }

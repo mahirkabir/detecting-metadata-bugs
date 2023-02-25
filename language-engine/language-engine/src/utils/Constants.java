@@ -25,6 +25,8 @@ public class Constants {
     public static final String TYPE_FIELD = "field";
     public static final String TYPE_METHOD_LIST = "method-list";
     public static final String TYPE_METHOD = "method";
+    public static final String TYPE_CONSTRUCTOR = "constructor";
+    public static final String TYPE_CONSTRUCTOR_LIST = "constructor-list";
     public static final String TYPE_INVOCATION_LIST = "invocation-list";
     public static final String TYPE_INVOCATION = "invocation";
     public static final String TYPE_ANNOTATION_LIST = "annotation-list";
@@ -56,6 +58,7 @@ public class Constants {
     public static final String FUNCTION_GET_XMLS = "getXMLs";
     public static final String FUNCTION_GET_FIELDS = "getFields";
     public static final String FUNCTION_GET_METHODS = "getMethods";
+    public static final String FUNCTION_GET_CONSTRUCTORS = "getConstructors";
     public static final String FUNCTION_GET_FQN = "getFQN";
     public static final String FUNCTION_GET_SN = "getSN";
     public static final String FUNCTION_GET_ARG = "getArg";
@@ -86,6 +89,7 @@ public class Constants {
     public static final String FUNCTION_LOCATE_CLASS = "locateClass";
     public static final String FUNCTION_CLASS_EXISTS = "classExists";
     public static final String FUNCTION_HAS_DUPLICATE_BEANS = "hasDuplicateBeans";
+    public static final String FUNCTION_INDEX_IN_BOUND = "indexInBound";
     public static final String ANNOTATION_METHOD = "method-annotation";
     public static final String ANNOTATION_CLASS = "class-annotation";
 }

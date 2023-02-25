@@ -252,6 +252,45 @@ public class ClassHelper {
     }
 
     /**
+     * Get all constructors for class with cFqn as fully qualified name
+     * 
+     * @param cFqn
+     * @return
+     */
+    public List<MethodItem> getConstructors(String cFqn) {
+        if (!this.dictClass.containsKey(cFqn))
+            return new ArrayList<MethodItem>();
+
+        ClassItem classItem = this.dictClass.get(cFqn);
+        if (classItem.getConstructors() != null)
+            return classItem.getConstructors();
+
+        String javaFilePath = classItem.getFilePath();
+        List<MethodItem> constructors = new ConstructorHelper(javaFilePath).GetConstructors();
+
+        Map<String, String> dictRelevantClasses = new HashMap<String, String>();
+        for (Map.Entry<String, ClassItem> entry : this.dictClass.entrySet()) {
+            ClassItem elm = entry.getValue();
+            if (elm.getFilePath().equals(javaFilePath))
+                dictRelevantClasses.put(elm.getName(), elm.getFqn());
+        }
+
+        if (constructors != null) {
+            for (MethodItem method : constructors) {
+                String classSN = method.getClassName();
+                if (dictRelevantClasses.containsKey(classSN)) {
+                    String classFQN = dictRelevantClasses.get(classSN);
+                    if (this.dictClass.containsKey(classFQN)) {
+                        this.dictClass.get(classFQN).addMethod(method);
+                    }
+                }
+            }
+        }
+
+        return classItem.getMethods();
+    }
+
+    /**
      * Get all method invocations for class with cFqn as fully qualified name
      * 
      * @param cFqn

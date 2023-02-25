@@ -109,6 +109,22 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
+    private DataResult<List<MethodItem>> getConstructors(ClassItem c) {
+        String functionCall = "getConstructors()" + "||" + c.getFqn();
+        DataResult<List<MethodItem>> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            List<MethodItem> constructorItems = this.classHelper.getConstructors(c.getFqn());
+            if (constructorItems == null)
+                constructorItems = new ArrayList<MethodItem>();
+            result = new DataResult<List<MethodItem>>(Constants.TYPE_CONSTRUCTOR_LIST,
+                    constructorItems);
+            cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
+    }
+
     private DataResult<List<AnnotationItem>> getAnnotations(ClassItem c) {
         DataResult<List<AnnotationItem>> result = new DataResult<List<AnnotationItem>>(
                 Constants.TYPE_ANNOTATION_LIST,
@@ -572,6 +588,20 @@ public class EngineFunctions implements IEngineFunctions {
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(dupFound));
     }
 
+    /**
+     * Check if the constructor index mentioned in the bean is in bound wrt the constructor params
+     * @param constructorItem
+     * @param index
+     * @return
+     */
+    private DataResult<BooleanItem> indexInBound(MethodItem constructorItem, int index) {
+        boolean inBound = constructorItem.getParameters().size() > index;
+        DataResult<BooleanItem> resInBound = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(
+           inBound
+        ));
+        return resInBound;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -606,6 +636,13 @@ public class EngineFunctions implements IEngineFunctions {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     ClassItem classItem = (ClassItem) params.get(0).getResult();
                     result = this.getMethods(classItem);
+                }
+                    break;
+
+                case Constants.FUNCTION_GET_CONSTRUCTORS: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    ClassItem classItem = (ClassItem) params.get(0).getResult();
+                    result = this.getConstructors(classItem);
                 }
                     break;
 
@@ -827,6 +864,22 @@ public class EngineFunctions implements IEngineFunctions {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     XMLItem xmlItem = (XMLItem) params.get(0).getResult();
                     result = this.hasDuplicateBeans(xmlItem);
+
+                }
+                    break;
+
+                case Constants.FUNCTION_INDEX_IN_BOUND: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    MethodItem constructorItem = (MethodItem) params.get(0).getResult();
+                    StringItem constructorIndex = (StringItem) params.get(1).getResult();
+                    try {
+                        int index = Integer.parseInt(constructorIndex.getValue());
+                        result = this.indexInBound(constructorItem, index);
+                    } catch (NumberFormatException numFormExp) {
+                        utils.Logger
+                                .log(name.getIdentifier() + ": " + constructorIndex.getValue() + " is not an integer");
+                        result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(false));
+                    }
 
                 }
                     break;
