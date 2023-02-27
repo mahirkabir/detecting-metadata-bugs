@@ -4,7 +4,7 @@ Rule constructor-arg-name-field-map {
 			for (<bean> bean in getElms(xml, "<bean>")) {
 				if (getAttr(bean, "class") == getFQN(c)) {
 					for (<constructor-arg> constructor_arg in getElms(bean, "<constructor-arg>")) {
-						assert (exists (field f in c) (getAttr(constructor_arg, "name") == getName(f))) {
+						assert (exists (field f in getFields(c)) (getAttr(constructor_arg, "name") == getName(f))) {
 							msg ("<constructor-arg> %s does not correspond to any field of class %s", getAttr(constructor_arg, "name"), getName(c));
 						}
 					}
