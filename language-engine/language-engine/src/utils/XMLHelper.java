@@ -18,6 +18,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import engine.EngineFactory;
+import engine.IEngineCache;
 import models.XMLItem;
 
 public class XMLHelper {
@@ -27,11 +29,13 @@ public class XMLHelper {
     private DocumentBuilderFactory documentBuilderFactory;
     private DocumentBuilder documentBuilder;
     private Document document;
+    private IEngineCache engineCache;
 
     public XMLHelper(String projectPath) {
         super();
         this.xmlFiles = new ArrayList<String>();
         this.projectPath = projectPath;
+        this.engineCache = EngineFactory.getEngineCache();
     }
 
     /**
@@ -48,8 +52,13 @@ public class XMLHelper {
                 if (currFile.isDirectory()) {
                     this.loadXMLFiles(fullPath.toString());
                 } else {
-                    if (currFile.getName().endsWith(".xml"))
+                    if (currFile.getName().endsWith(Constants.EXTENSION_XML))
                         this.xmlFiles.add(fullPath);
+
+                    if (currFile.getName().endsWith(Constants.EXTENSION_JAVA)
+                            || currFile.getName().endsWith(Constants.EXTENSION_XML)) {
+                        this.engineCache.addLoadedFilename(fullPath);
+                    }
                 }
             }
         }

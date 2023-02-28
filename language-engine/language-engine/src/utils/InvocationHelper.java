@@ -54,32 +54,36 @@ public class InvocationHelper {
         for (MethodCallExpr decl : declInvocations) {
             System.out.println("========");
 
-            Node classNode = decl
-                    .getParentNode().get()
-                    .getParentNode().get()
-                    .getParentNode().get()
-                    .getParentNode().get();
-            @SuppressWarnings("unchecked")
-            String className = ((NodeWithSimpleName<VariableDeclarator>) classNode)
-                    .getNameAsString();
-            Node parentNode = decl.getParentNode().get();
-            String invocationStmnt = parentNode.toString();
-            String callee = decl.getNameAsString();
-            List<String> arguments = new ArrayList<String>();
+            try {
+                Node classNode = decl
+                        .getParentNode().get()
+                        .getParentNode().get()
+                        .getParentNode().get()
+                        .getParentNode().get();
+                @SuppressWarnings("unchecked")
+                String className = ((NodeWithSimpleName<VariableDeclarator>) classNode)
+                        .getNameAsString();
+                Node parentNode = decl.getParentNode().get();
+                String invocationStmnt = parentNode.toString();
+                String callee = decl.getNameAsString();
+                List<String> arguments = new ArrayList<String>();
 
-            if (arguments != null) {
-                decl.getArguments().forEach(item -> {
-                    arguments.add(item.toString());
-                });
+                if (arguments != null) {
+                    decl.getArguments().forEach(item -> {
+                        arguments.add(item.toString());
+                    });
+                }
+
+                InvocationItem invocationItem = new InvocationItem();
+                invocationItem.setCallee(callee);
+                invocationItem.setCaller(className); // TODO: See if we need to change it to caller method
+                invocationItem.setClassName(className);
+                invocationItem.setInvocationStmnt(invocationStmnt);
+                invocationItem.setArguments(arguments);
+                invocations.add(invocationItem);
+            } catch (Exception ex) {
+                utils.Logger.log("Error processing invocation: " + decl.toString());
             }
-
-            InvocationItem invocationItem = new InvocationItem();
-            invocationItem.setCallee(callee);
-            invocationItem.setCaller(className); // TODO: See if we need to change it to caller method
-            invocationItem.setClassName(className);
-            invocationItem.setInvocationStmnt(invocationStmnt);
-            invocationItem.setArguments(arguments);
-            invocations.add(invocationItem);
         }
 
         return invocations;

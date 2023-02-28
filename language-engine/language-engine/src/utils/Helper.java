@@ -1,6 +1,9 @@
 package utils;
 
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.github.javaparser.utils.Pair;
 
@@ -292,5 +295,56 @@ public class Helper {
     public static DataResult getExistsValue(ASTSimExp simExp) {
         IEngineAssert engineAssert = EngineFactory.getEngineAssert();
         return engineAssert.getExistsValue(simExp);
+    }
+
+    /**
+     * Check if file path exists
+     * 
+     * @param path
+     * @return
+     */
+    public static boolean pathExists(String path) {
+        Map<String, Boolean> mapLoadedFilenames = EngineFactory.getEngineCache().getLoadedFilenames();
+        if (mapLoadedFilenames.containsKey(path))
+            return true;
+
+        if (path.startsWith(Constants.CONTEXT_PATH_CLASSPATH))
+            path = path.replace(path, Constants.CONTEXT_PATH_CLASSPATH);
+        else if (path.startsWith(Constants.CONTEXT_PATH_FILE))
+            path = path.replace(path, Constants.CONTEXT_PATH_FILE);
+        else if (path.startsWith("./"))
+            path = path.substring(2);
+
+        for (Map.Entry<String, Boolean> entry : mapLoadedFilenames.entrySet()) {
+            String filename = entry.getKey();
+            if (filename.endsWith(path))
+                return true;
+            try {
+                String safeFilename = filename.replace("\\", "\\\\");
+                Pattern pattern = Pattern.compile(regexFriendly(path));
+                Matcher matcher = pattern.matcher(safeFilename);
+                boolean matchFound = matcher.find();
+                if (matchFound)
+                    return true;
+            } catch (Exception ex) {
+                utils.Logger.log("Error matching pattern: " + path + " for: " + path);
+            }
+        }
+
+        return false;
+    }
+
+    /***
+     * Make the filepath regex friendly
+     * 
+     * @param filepath
+     * @return
+     */
+    private static String regexFriendly(String filepath) {
+        String regexFriendlyVersion = filepath
+                .replace("\\", "\\\\")
+                .replace(".", "\\.")
+                .replace("*", ".*");
+        return regexFriendlyVersion;
     }
 }

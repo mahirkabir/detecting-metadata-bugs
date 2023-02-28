@@ -1,5 +1,7 @@
 package engine;
 
+import java.util.Map;
+
 import models.DataResult;
 
 public interface IEngineCache {
@@ -18,4 +20,18 @@ public interface IEngineCache {
      * @return
      */
     DataResult fetchFunctionCall(String functionCall);
+
+    /**
+     * Add loaded filename in the cache
+     * 
+     * @param filename
+     */
+    void addLoadedFilename(String filename);
+
+    /**
+     * Get all the laoded filenames from the cache
+     * 
+     * @return
+     */
+    Map<String, Boolean> getLoadedFilenames();
 }

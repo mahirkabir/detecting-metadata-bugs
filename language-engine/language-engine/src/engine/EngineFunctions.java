@@ -383,13 +383,7 @@ public class EngineFunctions implements IEngineFunctions {
     private DataResult<BooleanItem> pathExists(String path) {
         if (path.startsWith("\"") && path.endsWith("\""))
             path = path.substring(1, path.length() - 1);
-
-        boolean pathExists = Files.exists(Paths.get(path));
-        if (!pathExists) {
-            Path relativePath = Paths.get(EngineFactory.getProjectPath(), path);
-            pathExists = Files.exists(relativePath);
-        }
-
+        boolean pathExists = Helper.pathExists(path);
         BooleanItem booleanItem = new BooleanItem(pathExists);
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, booleanItem);
     }
@@ -589,7 +583,9 @@ public class EngineFunctions implements IEngineFunctions {
     }
 
     /**
-     * Check if the constructor index mentioned in the bean is in bound wrt the constructor params
+     * Check if the constructor index mentioned in the bean is in bound wrt the
+     * constructor params
+     * 
      * @param constructorItem
      * @param index
      * @return
@@ -597,8 +593,7 @@ public class EngineFunctions implements IEngineFunctions {
     private DataResult<BooleanItem> indexInBound(MethodItem constructorItem, int index) {
         boolean inBound = constructorItem.getParameters().size() > index;
         DataResult<BooleanItem> resInBound = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(
-           inBound
-        ));
+                inBound));
         return resInBound;
     }
 

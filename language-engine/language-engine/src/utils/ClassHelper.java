@@ -18,6 +18,8 @@ import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
 import com.github.javaparser.utils.SourceRoot;
 
+import engine.EngineFactory;
+import engine.IEngineCache;
 import models.AnnotationItem;
 import models.ClassItem;
 import models.FieldItem;
@@ -29,6 +31,7 @@ public class ClassHelper {
     private String projectPath;
     private Map<String, ClassItem> dictClass;
     private Map<String, List<ClassItem>> dictSNClass;
+    private IEngineCache engineCache;
 
     /**
      * Instantiate project path for the project
@@ -41,6 +44,7 @@ public class ClassHelper {
         this.projectPath = projectPath;
         this.dictClass = new HashMap<String, ClassItem>();
         this.dictSNClass = new HashMap<String, List<ClassItem>>();
+        this.engineCache = EngineFactory.getEngineCache();
     }
 
     /**
@@ -57,8 +61,13 @@ public class ClassHelper {
                 if (currFile.isDirectory()) {
                     this.loadJavaFiles(fullPath.toString());
                 } else {
-                    if (currFile.getName().endsWith(".java"))
+                    if (currFile.getName().endsWith(Constants.EXTENSION_JAVA))
                         this.javaFiles.add(fullPath);
+
+                    if (currFile.getName().endsWith(Constants.EXTENSION_JAVA)
+                            || currFile.getName().endsWith(Constants.EXTENSION_XML)) {
+                        this.engineCache.addLoadedFilename(fullPath);
+                    }
                 }
             }
         }
