@@ -19,6 +19,7 @@ import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
@@ -79,16 +80,30 @@ public class AnnotationHelper {
                 if (item instanceof NormalAnnotationExpr) {
                     item.getChildNodes().forEach(paramItem -> {
                         if (paramItem.getChildNodes().size() >= 1) {
-                            AnnotationAttrItem attr = new AnnotationAttrItem();
-                            attr.setAnnotationAttrName(paramItem.toString().split("=")[0].strip());
-
                             List<Node> childNodes = paramItem.getChildNodes();
                             if (childNodes.size() > 1) {
-                                String paramValue = childNodes.get(1).toString();
-                                attr.setAnnotationAttrValue(paramValue);
+                                if (childNodes.get(1) instanceof ArrayInitializerExpr) {
+                                    ArrayInitializerExpr attrValArray = (ArrayInitializerExpr) childNodes.get(1);
+                                    if (attrValArray.getChildNodes().size() > 0) {
+                                        attrValArray.getChildNodes().forEach(attrValItem -> {
+                                            if (attrValItem instanceof StringLiteralExpr) {
+                                                AnnotationAttrItem attr = new AnnotationAttrItem();
+                                                attr.setAnnotationAttrName(paramItem.toString().split("=")[0].strip());
+                                                String paramValue = attrValItem.toString();
+                                                attr.setAnnotationAttrValue(paramValue);
+                                                attrs.add(attr);
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    AnnotationAttrItem attr = new AnnotationAttrItem();
+                                    attr.setAnnotationAttrName(paramItem.toString().split("=")[0].strip());
+                                    String paramValue = childNodes.get(1).toString();
+                                    attr.setAnnotationAttrValue(paramValue);
+                                    attrs.add(attr);
+                                }
                             }
 
-                            attrs.add(attr);
                         }
                     });
 

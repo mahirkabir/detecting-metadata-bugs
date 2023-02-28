@@ -309,9 +309,9 @@ public class Helper {
             return true;
 
         if (path.startsWith(Constants.CONTEXT_PATH_CLASSPATH))
-            path = path.replace(path, Constants.CONTEXT_PATH_CLASSPATH);
+            path = path.replace(Constants.CONTEXT_PATH_CLASSPATH, "");
         else if (path.startsWith(Constants.CONTEXT_PATH_FILE))
-            path = path.replace(path, Constants.CONTEXT_PATH_FILE);
+            path = path.replace(Constants.CONTEXT_PATH_FILE, "");
         else if (path.startsWith("./"))
             path = path.substring(2);
 
