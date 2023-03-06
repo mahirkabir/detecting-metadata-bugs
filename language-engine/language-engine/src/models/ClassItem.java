@@ -14,6 +14,8 @@ public class ClassItem extends JItem {
     private List<AnnotationItem> annotations;
     private List<InvocationItem> invocations;
 
+    private List<VariableItem> variables;
+
     public ClassItem(String javaFilePath) {
         super();
         super.setType(Constants.TYPE_CLASS);
@@ -86,5 +88,19 @@ public class ClassItem extends JItem {
         if (this.invocations == null)
             this.invocations = new ArrayList<InvocationItem>();
         this.invocations.add(invocation);
+    }
+
+    public List<VariableItem> getVariables() {
+        return variables;
+    }
+
+    public void setVariables(List<VariableItem> variables) {
+        this.variables = variables;
+    }
+
+    public void addVariable(VariableItem variable) {
+        if (this.variables == null)
+            this.variables = new ArrayList<VariableItem>();
+        this.variables.add(variable);
     }
 }

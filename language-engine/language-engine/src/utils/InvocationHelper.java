@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
@@ -55,19 +56,26 @@ public class InvocationHelper {
             System.out.println("========");
 
             try {
-                Node classNode = decl
-                        .getParentNode().get()
-                        .getParentNode().get()
-                        .getParentNode().get()
-                        .getParentNode().get();
-                @SuppressWarnings("unchecked")
-                String className = ((NodeWithSimpleName<VariableDeclarator>) classNode)
-                        .getNameAsString();
+                StringBuilder className = new StringBuilder("");
+                Node classNode = decl.getParentNode().get();
+                while (classNode != null && !(classNode instanceof ClassOrInterfaceDeclaration)) {
+                    classNode = classNode.getParentNode().get();
+                }
+                if (classNode instanceof ClassOrInterfaceDeclaration) {
+                    className.append(((NodeWithSimpleName<VariableDeclarator>) classNode).getNameAsString());
+                }
+
                 Node parentNode = decl.getParentNode().get();
                 String invocationStmnt = parentNode.toString();
                 String callee = decl.getNameAsString();
-                List<String> arguments = new ArrayList<String>();
 
+                String[] methodCallParts = decl.toString().split("\\.");
+                String callerVariable = "";
+                if (methodCallParts.length > 1) {
+                    callerVariable = methodCallParts[methodCallParts.length - 2];
+                }
+
+                List<String> arguments = new ArrayList<String>();
                 if (arguments != null) {
                     decl.getArguments().forEach(item -> {
                         arguments.add(item.toString());
@@ -76,8 +84,8 @@ public class InvocationHelper {
 
                 InvocationItem invocationItem = new InvocationItem();
                 invocationItem.setCallee(callee);
-                invocationItem.setCaller(className); // TODO: See if we need to change it to caller method
-                invocationItem.setClassName(className);
+                invocationItem.setCaller(callerVariable);
+                invocationItem.setClassName(className.toString());
                 invocationItem.setInvocationStmnt(invocationStmnt);
                 invocationItem.setArguments(arguments);
                 invocations.add(invocationItem);

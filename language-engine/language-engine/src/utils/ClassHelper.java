@@ -25,6 +25,7 @@ import models.ClassItem;
 import models.FieldItem;
 import models.InvocationItem;
 import models.MethodItem;
+import models.VariableItem;
 
 public class ClassHelper {
     private List<String> javaFiles;
@@ -342,6 +343,51 @@ public class ClassHelper {
         }
 
         return classItem.getInvocations();
+    }
+
+    /**
+     * Get all variable declarations for class with cFqn as fully qualified name
+     * 
+     * @param cFqn
+     * @return
+     */
+    public List<VariableItem> getVariables(String cFqn) {
+        if (!this.dictClass.containsKey(cFqn))
+            return new ArrayList<VariableItem>();
+
+        ClassItem classItem = this.dictClass.get(cFqn);
+        if (classItem.getVariables() != null)
+            // If already loaded before, return the memoized result
+            return classItem.getVariables();
+
+        String javaFilePath = classItem.getFilePath();
+        List<VariableItem> variables = new VariableHelper(javaFilePath).GetVariables();
+
+        Map<String, String> dictRelevantClasses = new HashMap<String, String>();
+        for (Map.Entry<String, ClassItem> entry : this.dictClass.entrySet()) {
+            // Collecting all classes in the javaFilePath
+            // Because, VariableHelper will get all invocations from javaFilePath
+            // We need to assign each variable to the corresponding class using the class SN
+            // Note: This will not be an extra O(N) operation as for each java file, it will
+            // be done only once. For the later times, memoized values will be returned
+            ClassItem elm = entry.getValue();
+            if (elm.getFilePath().equals(javaFilePath))
+                dictRelevantClasses.put(elm.getName(), elm.getFqn());
+        }
+
+        if (variables != null) {
+            for (VariableItem variable : variables) {
+                String classSN = variable.getClassName();
+                if (dictRelevantClasses.containsKey(classSN)) {
+                    String classFQN = dictRelevantClasses.get(classSN);
+                    if (this.dictClass.containsKey(classFQN)) {
+                        this.dictClass.get(classFQN).addVariable(variable);
+                    }
+                }
+            }
+        }
+
+        return classItem.getVariables();
     }
 
     /**

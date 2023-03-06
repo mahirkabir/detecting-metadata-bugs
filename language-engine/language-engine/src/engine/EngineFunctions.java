@@ -27,6 +27,7 @@ import models.InvocationItem;
 import models.JItem;
 import models.MethodItem;
 import models.StringItem;
+import models.VariableItem;
 import models.XMLItem;
 import parser.ASTFunctionOrId;
 import parser.ASTFunctionTail;
@@ -196,7 +197,7 @@ public class EngineFunctions implements IEngineFunctions {
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(annoExists));
     }
 
-    private DataResult<List<StringItem>> getArg(ClassItem c, String methodName, int argIdx) {
+    private DataResult<List<StringItem>> getArg(ClassItem c, String callerClass, String methodName, int argIdx) {
         String functionCall = "getArg()" + "||" + c.getFqn() + "||" + methodName + "||" + argIdx;
         DataResult<List<StringItem>> result = this.cache.fetchFunctionCall(functionCall);
 
@@ -211,12 +212,23 @@ public class EngineFunctions implements IEngineFunctions {
             }
 
             if (invocationItems != null) {
+                List<FieldItem> fields = this.getFields(c).getResult();
+                List<VariableItem> variables = this.classHelper.getVariables(c.getFqn());
+
                 for (InvocationItem invocationItem : invocationItems) {
-                    if (invocationItem.getInvocationLine().strip().startsWith(methodName + "(")) {
-                        String arg = invocationItem.getArguments().get(argIdx);
-                        if (arg.startsWith("\""))
-                            arg = arg.substring(1, arg.length() - 1);
-                        result.getResult().add(new StringItem(arg));
+                    if (invocationItem.getCallee().equals(methodName)) {
+                        String callerObjectName = invocationItem.getCaller();
+                        boolean callerClassMatches = fields.stream().anyMatch(item -> item.getName()
+                                .equals(callerObjectName) && item.getType().equals(callerClass));
+                        if (!callerClassMatches)
+                            callerClassMatches = variables.stream().anyMatch(item -> item.getName()
+                                    .equals(callerObjectName) && item.getType().equals(callerClass));
+                        if (callerClassMatches) {
+                            String arg = invocationItem.getArguments().get(argIdx);
+                            if (arg.startsWith("\""))
+                                arg = arg.substring(1, arg.length() - 1);
+                            result.getResult().add(new StringItem(arg));
+                        }
                     }
                 }
             }
@@ -227,32 +239,31 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
-    private DataResult<BooleanItem> callExists(ClassItem c, String invocation) {
+    private DataResult<BooleanItem> callExists(ClassItem c, String callerClass, String invocation) {
         String basicFunction = "callExists()" + "||" + c.getFqn();
         String functionCall = basicFunction + "||" + invocation;
         DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
 
         if (result == null) {
-            result = new DataResult<BooleanItem>(
-                    Constants.TYPE_BOOLEAN, new BooleanItem(false));
-            DataResult<BooleanItem> trueRes = new DataResult<BooleanItem>(
-                    Constants.TYPE_BOOLEAN, new BooleanItem(true));
+            boolean resCallExists = false;
+            List<FieldItem> fields = this.getFields(c).getResult();
+            List<VariableItem> variables = this.classHelper.getVariables(c.getFqn());
 
-            DataResult<List<InvocationItem>> invocationResult = new DataResult<List<InvocationItem>>(
-                    Constants.TYPE_INVOCATION_LIST,
-                    this.classHelper.getInvocations(c.getFqn()));
-
-            List<InvocationItem> invocationItems = invocationResult.getResult();
-            if (invocationItems != null) {
-                for (InvocationItem invocationItem : invocationItems) {
-                    String invStmnt = invocationItem.getInvocationLine();
-                    String invMethod = invStmnt.split("(\\()")[0];
-                    if (invMethod.strip().equals(invocation))
-                        result = trueRes;
-                    cache.addFunctionCall(basicFunction + "||" + invMethod, trueRes);
+            List<InvocationItem> invocations = this.classHelper.getInvocations(c.getFqn());
+            for (InvocationItem invocationItem : invocations) {
+                if (invocationItem.getCallee().equals(invocation)) {
+                    String callerObjectName = invocationItem.getCaller();
+                    resCallExists = fields.stream().anyMatch(item -> item.getName()
+                            .equals(callerObjectName) && item.getType().equals(callerClass));
+                    if (!resCallExists)
+                        resCallExists = variables.stream().anyMatch(item -> item.getName()
+                                .equals(callerObjectName) && item.getType().equals(callerClass));
                 }
+                if (resCallExists)
+                    break;
             }
 
+            result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(resCallExists));
             cache.addFunctionCall(functionCall, result);
         }
 
@@ -661,8 +672,9 @@ public class EngineFunctions implements IEngineFunctions {
                 case Constants.FUNCTION_CALL_EXISTS: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     ClassItem classItem = (ClassItem) params.get(0).getResult();
-                    StringItem invocation = (StringItem) params.get(1).getResult();
-                    result = this.callExists(classItem, invocation.getValue());
+                    StringItem callerClass = (StringItem) params.get(1).getResult();
+                    StringItem invocation = (StringItem) params.get(2).getResult();
+                    result = this.callExists(classItem, callerClass.getValue(), invocation.getValue());
                 }
                     break;
 
@@ -680,9 +692,10 @@ public class EngineFunctions implements IEngineFunctions {
                 case Constants.FUNCTION_GET_ARG: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     ClassItem classItem = (ClassItem) params.get(0).getResult();
-                    StringItem invocation = (StringItem) params.get(1).getResult();
-                    IntegerItem argIdx = (IntegerItem) params.get(2).getResult();
-                    result = this.getArg(classItem, invocation.getValue(), argIdx.getValue());
+                    StringItem callerClass = (StringItem) params.get(1).getResult();
+                    StringItem invocation = (StringItem) params.get(2).getResult();
+                    IntegerItem argIdx = (IntegerItem) params.get(3).getResult();
+                    result = this.getArg(classItem, callerClass.getValue(), invocation.getValue(), argIdx.getValue());
                 }
                     break;
 

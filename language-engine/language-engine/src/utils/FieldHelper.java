@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
@@ -44,9 +45,14 @@ public class FieldHelper {
         List<FieldDeclaration> fieldDecls = cu.findAll(FieldDeclaration.class);
         fieldDecls.forEach(decl -> {
             Node parentNode = decl.getParentNode().get();
-            @SuppressWarnings("unchecked")
-            String className = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
+            String fieldClass = "";
+            while (parentNode != null && !(parentNode instanceof ClassOrInterfaceDeclaration))
+                parentNode = parentNode.getParentNode().get();
+            if (parentNode != null && parentNode instanceof NodeWithSimpleName) {
+                fieldClass = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
+            }
 
+            String className = fieldClass;
             List<String> modifiers = new ArrayList<String>();
             decl.getModifiers().forEach(item -> {
                 modifiers.add(item.toString());
