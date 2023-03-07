@@ -26,10 +26,9 @@ public interface Eg12TreeConstants
   public int JJTFILE = 22;
   public int JJTCLASS = 23;
   public int JJTMETHOD = 24;
-  public int JJTCONSTRUCTOR = 25;
-  public int JJTFIELD = 26;
-  public int JJTSTRING = 27;
-  public int JJTBOOL = 28;
+  public int JJTFIELD = 25;
+  public int JJTSTRING = 26;
+  public int JJTBOOL = 27;
 
 
   public String[] jjtNodeName = {
@@ -58,10 +57,9 @@ public interface Eg12TreeConstants
     "File",
     "Class",
     "Method",
-    "Constructor",
     "Field",
     "String",
     "Bool",
   };
 }
-/* JavaCC - OriginalChecksum=e874fca48b726d616ee64818efea1d16 (do not edit this line) */
+/* JavaCC - OriginalChecksum=ef947b50188dba0a035bf76aad627ede (do not edit this line) */

@@ -145,14 +145,12 @@ SPECIAL_TOKEN : /* COMMENTS */
 		| "<" <IDENTIFIER> ">"
 		| <CLASS>
 		| <METHOD>
-		| <CONSTRUCTOR>
 		| <FIELD>
 		| <STRING>
 		| <BOOL> >
 	| <FILE: "file" >
 	| <CLASS: "class" >
 	| <METHOD: "method" >
-	| <CONSTRUCTOR: "constructor" >
 	| <FIELD: "field" >
 	| <STRING: "String">
 	| <BOOL: "bool" >
@@ -447,7 +445,6 @@ void Types(): {}
 	| "<" Identifier() ">"
 	| <CLASS> #Class
 	| <METHOD> #Method
-	| <CONSTRUCTOR> #Constructor
 	| <FIELD> #Field
 	| <STRING> #String
 	| <BOOL> #Bool

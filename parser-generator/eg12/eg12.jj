@@ -149,14 +149,12 @@ SPECIAL_TOKEN : /* COMMENTS */
 		| "<" <IDENTIFIER> ">"
 		| <CLASS>
 		| <METHOD>
-		| <CONSTRUCTOR>
 		| <FIELD>
 		| <STRING>
 		| <BOOL> >
 	| <FILE: "file" >
 	| <CLASS: "class" >
 	| <METHOD: "method" >
-	| <CONSTRUCTOR: "constructor" >
 	| <FIELD: "field" >
 	| <STRING: "String">
 	| <BOOL: "bool" >
@@ -1039,59 +1037,45 @@ void Types(): {}
             }
           }
 /*@egen*/        
-	|/*@bgen(jjtree) Constructor */
+	|/*@bgen(jjtree) Field */
           {
-            ASTConstructor jjtn004 = new ASTConstructor(JJTCONSTRUCTOR);
+            ASTField jjtn004 = new ASTField(JJTFIELD);
             boolean jjtc004 = true;
             jjtree.openNodeScope(jjtn004);
           }
           try {
-/*@egen*/ <CONSTRUCTOR>/*@bgen(jjtree)*/
+/*@egen*/ <FIELD>/*@bgen(jjtree)*/
           } finally {
             if (jjtc004) {
               jjtree.closeNodeScope(jjtn004, true);
             }
           }
-/*@egen*/             
-	|/*@bgen(jjtree) Field */
+/*@egen*/       
+	|/*@bgen(jjtree) String */
           {
-            ASTField jjtn005 = new ASTField(JJTFIELD);
+            ASTString jjtn005 = new ASTString(JJTSTRING);
             boolean jjtc005 = true;
             jjtree.openNodeScope(jjtn005);
           }
           try {
-/*@egen*/ <FIELD>/*@bgen(jjtree)*/
+/*@egen*/ <STRING>/*@bgen(jjtree)*/
           } finally {
             if (jjtc005) {
               jjtree.closeNodeScope(jjtn005, true);
             }
           }
-/*@egen*/       
-	|/*@bgen(jjtree) String */
+/*@egen*/        
+	|/*@bgen(jjtree) Bool */
           {
-            ASTString jjtn006 = new ASTString(JJTSTRING);
+            ASTBool jjtn006 = new ASTBool(JJTBOOL);
             boolean jjtc006 = true;
             jjtree.openNodeScope(jjtn006);
           }
           try {
-/*@egen*/ <STRING>/*@bgen(jjtree)*/
+/*@egen*/ <BOOL>/*@bgen(jjtree)*/
           } finally {
             if (jjtc006) {
               jjtree.closeNodeScope(jjtn006, true);
-            }
-          }
-/*@egen*/        
-	|/*@bgen(jjtree) Bool */
-          {
-            ASTBool jjtn007 = new ASTBool(JJTBOOL);
-            boolean jjtc007 = true;
-            jjtree.openNodeScope(jjtn007);
-          }
-          try {
-/*@egen*/ <BOOL>/*@bgen(jjtree)*/
-          } finally {
-            if (jjtc007) {
-              jjtree.closeNodeScope(jjtn007, true);
             }
           }
 /*@egen*/      
