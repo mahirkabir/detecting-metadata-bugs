@@ -285,8 +285,11 @@ public class EngineFunctions implements IEngineFunctions {
             if (invocations != null) {
                 for (InvocationItem invocationItem : invocations) {
                     if (invocationItem.getCallee().equals(invocation)) {
+                        // TODO: Need to handle static method invocations
                         String callerObjectName = invocationItem.getCaller();
-                        if (fields != null)
+                        if (callerObjectName.isEmpty())
+                            resCallExists = true; // Same-class-method
+                        if (!resCallExists && fields != null)
                             resCallExists = fields.stream().anyMatch(item -> item.getName()
                                     .equals(callerObjectName) && item.getType().equals(callerClass));
                         if (!resCallExists && variables != null)
