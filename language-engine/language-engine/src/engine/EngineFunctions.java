@@ -282,17 +282,20 @@ public class EngineFunctions implements IEngineFunctions {
             List<VariableItem> variables = this.classHelper.getVariables(c.getFqn());
 
             List<InvocationItem> invocations = this.classHelper.getInvocations(c.getFqn());
-            for (InvocationItem invocationItem : invocations) {
-                if (invocationItem.getCallee().equals(invocation)) {
-                    String callerObjectName = invocationItem.getCaller();
-                    resCallExists = fields.stream().anyMatch(item -> item.getName()
-                            .equals(callerObjectName) && item.getType().equals(callerClass));
-                    if (!resCallExists)
-                        resCallExists = variables.stream().anyMatch(item -> item.getName()
-                                .equals(callerObjectName) && item.getType().equals(callerClass));
+            if (invocations != null) {
+                for (InvocationItem invocationItem : invocations) {
+                    if (invocationItem.getCallee().equals(invocation)) {
+                        String callerObjectName = invocationItem.getCaller();
+                        if (fields != null)
+                            resCallExists = fields.stream().anyMatch(item -> item.getName()
+                                    .equals(callerObjectName) && item.getType().equals(callerClass));
+                        if (!resCallExists && variables != null)
+                            resCallExists = variables.stream().anyMatch(item -> item.getName()
+                                    .equals(callerObjectName) && item.getType().equals(callerClass));
+                    }
+                    if (resCallExists)
+                        break;
                 }
-                if (resCallExists)
-                    break;
             }
 
             result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(resCallExists));
