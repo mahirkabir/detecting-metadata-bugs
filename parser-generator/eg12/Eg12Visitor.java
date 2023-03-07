@@ -26,8 +26,9 @@ public interface Eg12Visitor
   public Object visit(ASTFile node, Object data);
   public Object visit(ASTClass node, Object data);
   public Object visit(ASTMethod node, Object data);
+  public Object visit(ASTConstructor node, Object data);
   public Object visit(ASTField node, Object data);
   public Object visit(ASTString node, Object data);
   public Object visit(ASTBool node, Object data);
 }
-/* JavaCC - OriginalChecksum=0f0bce86af519fe295dbdd796dea8884 (do not edit this line) */
+/* JavaCC - OriginalChecksum=5d6d03290fec0142262316f580c12729 (do not edit this line) */

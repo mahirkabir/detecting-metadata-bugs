@@ -234,6 +234,14 @@ public class Eg12DumpVisitor implements Eg12Visitor
 		return data;
 	}
 	
+	public Object visit(ASTConstructor node, Object data) {
+		System.out.println(indentString() + node);
+		++indent;
+		data = node.childrenAccept(this, data);
+		--indent;
+		return data;
+	}
+	
 	public Object visit(ASTField node, Object data) {
 		System.out.println(indentString() + node);
 		++indent;

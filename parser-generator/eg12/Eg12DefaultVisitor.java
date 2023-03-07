@@ -79,6 +79,9 @@ public class Eg12DefaultVisitor implements Eg12Visitor{
   public Object visit(ASTMethod node, Object data){
     return defaultVisit(node, data);
   }
+  public Object visit(ASTConstructor node, Object data){
+    return defaultVisit(node, data);
+  }
   public Object visit(ASTField node, Object data){
     return defaultVisit(node, data);
   }
@@ -89,4 +92,4 @@ public class Eg12DefaultVisitor implements Eg12Visitor{
     return defaultVisit(node, data);
   }
 }
-/* JavaCC - OriginalChecksum=436265e19c63dccc925ad0a659e7c59c (do not edit this line) */
+/* JavaCC - OriginalChecksum=9b4cdcd04256faab9fa1bb2699722785 (do not edit this line) */
