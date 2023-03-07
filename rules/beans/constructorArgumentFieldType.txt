@@ -6,7 +6,7 @@ Rule constructor-arg-type-field-map {
 					for (<constructor-arg> constructor_arg in getElms(bean, "<constructor-arg>")) {
 						if (NOT isEmpty(getAttr(constructor_arg, "type"))) {
 							assert(exists(method con in getConstructors(c))(hasParamType(con, getAttr(constructor_arg, "type")))) {
-								msg ("The type of <constructor-arg>: %s does not correspond to any constuctor-parameter's type in class: %s", getAttr(constructor_arg, "type"), getFQN(c));
+								msg ("The type of <constructor-arg>: %s in bean: %s does not correspond to any constuctor-parameter's type in class: %s", getAttr(constructor_arg, "type"), getName(bean), getFQN(c));
 							}
 						}
 					}
