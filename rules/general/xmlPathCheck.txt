@@ -1,7 +1,7 @@
 Rule xml-path-Check {
 	for (class c in getClasses()) {
-		if (callExists(c, "ApplicationContext.ClassPathXmlApplicationContext")) {
-			assert (pathExists(getArg(c, "ApplicationContext.ClassPathXmlApplicationContext", 0))) {
+		if (callExists(c, "ApplicationContext", "ClassPathXmlApplicationContext")) {
+			assert (pathExists(getArg(c, "ApplicationContext", "ClassPathXmlApplicationContext", 0))) {
 				msg("The path %s referenced by ApplicationContext.ClassPathXMLApplicationContext() does not exist", getArg("ApplicationContext.ClassPathXmlApplicationContext", 0));
 			}
 		}
