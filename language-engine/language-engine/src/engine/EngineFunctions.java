@@ -125,6 +125,23 @@ public class EngineFunctions implements IEngineFunctions {
     }
 
     /**
+     * Check if a method/constructor has parameter of a certain name
+     * 
+     * @param m
+     * @param name
+     * @return
+     */
+    private DataResult<BooleanItem> hasParam(MethodItem m, String name) {
+        List<ParamItem> parameters = m.getParameters();
+        boolean hasName = false;
+        if (parameters != null) {
+            hasName = m.getParameters().stream()
+                    .anyMatch(paramItem -> paramItem.getName().equals(name));
+        }
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(hasName));
+    }
+
+    /**
      * Check if a method/constructor has parameter of a certain type
      * 
      * @param m
@@ -667,12 +684,21 @@ public class EngineFunctions implements IEngineFunctions {
                 }
                     break;
 
+                case Constants.FUNCTION_HAS_PARAM: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    MethodItem m = (MethodItem) params.get(0).getResult();
+                    StringItem paramName = (StringItem) params.get(1).getResult();
+                    result = this.hasParam(m, paramName.getValue());
+                }
+                    break;
+
                 case Constants.FUNCTION_HAS_PARAM_TYPE: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     MethodItem m = (MethodItem) params.get(0).getResult();
                     StringItem type = (StringItem) params.get(1).getResult();
                     result = this.hasParamType(m, type.getValue());
                 }
+                    break;
 
                 case Constants.FUNCTION_GET_FQN: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
