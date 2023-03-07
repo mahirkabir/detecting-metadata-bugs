@@ -4,8 +4,10 @@ Rule constructor-arg-type-field-map {
 			for (<bean> bean in getElms(xml, "<bean>")) { // @bean
 				if (getAttr(bean, "class") == getFQN(c)) {
 					for (<constructor-arg> constructor_arg in getElms(bean, "<constructor-arg>")) {
-						assert (exists (field f in getFields(c)) (getAttr(constructor_arg, "type") == getType(f))) {
-							msg ("The type of <constructor-arg> %s does not correspond to any fields' type in class %s", getAttr(constructor_arg, "type"), getName(c));
+						if (NOT isEmpty(getAttr(constructor_arg, "type"))) {
+							assert(exists(method con in getConstructors(c))(hasParamType(con, getAttr(constructor_arg, "type")))) {
+								msg ("The type of <constructor-arg>: %s does not correspond to any constuctor-parameter's field type in class %s", getAttr(constructor_arg, "type"), getFQN(c));
+							}
 						}
 					}
 				}

@@ -1,9 +1,6 @@
 package engine;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,6 +23,7 @@ import models.IntegerItem;
 import models.InvocationItem;
 import models.JItem;
 import models.MethodItem;
+import models.ParamItem;
 import models.StringItem;
 import models.VariableItem;
 import models.XMLItem;
@@ -124,6 +122,23 @@ public class EngineFunctions implements IEngineFunctions {
         }
 
         return result;
+    }
+
+    /**
+     * Check if a method/constructor has parameter of a certain type
+     * 
+     * @param m
+     * @param type
+     * @return
+     */
+    private DataResult<BooleanItem> hasParamType(MethodItem m, String type) {
+        List<ParamItem> parameters = m.getParameters();
+        boolean hasType = false;
+        if (parameters != null) {
+            hasType = m.getParameters().stream()
+                    .anyMatch(paramItem -> paramItem.getType().equals(type));
+        }
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(hasType));
     }
 
     private DataResult<List<AnnotationItem>> getAnnotations(ClassItem c) {
@@ -651,6 +666,13 @@ public class EngineFunctions implements IEngineFunctions {
                     result = this.getConstructors(classItem);
                 }
                     break;
+
+                case Constants.FUNCTION_HAS_PARAM_TYPE: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    MethodItem m = (MethodItem) params.get(0).getResult();
+                    StringItem type = (StringItem) params.get(1).getResult();
+                    result = this.hasParamType(m, type.getValue());
+                }
 
                 case Constants.FUNCTION_GET_FQN: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
