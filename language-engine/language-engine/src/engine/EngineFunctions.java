@@ -15,6 +15,7 @@ import org.xml.sax.SAXException;
 
 import models.AnnotationAttrItem;
 import models.AnnotationItem;
+import models.ArgumentItem;
 import models.BooleanItem;
 import models.ClassItem;
 import models.DataResult;
@@ -23,6 +24,7 @@ import models.IntegerItem;
 import models.InvocationItem;
 import models.JItem;
 import models.MethodItem;
+import models.ObjectCreationItem;
 import models.ParamItem;
 import models.StringItem;
 import models.VariableItem;
@@ -265,6 +267,65 @@ public class EngineFunctions implements IEngineFunctions {
                 }
             }
 
+            cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
+    }
+
+    /**
+     * Get all the argIdx number arguments for the constructorInvocation inside c
+     * 
+     * @param c
+     * @param constructorInvocation
+     * @param argIdx
+     * @return
+     */
+    private DataResult<List<StringItem>> getArg(ClassItem c, String constructorInvocation, Integer argIdx) {
+        String functionCall = "getArg()" + "||" + c.getFqn() + "||" + constructorInvocation + "||" + argIdx;
+        DataResult<List<StringItem>> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            List<StringItem> args = new ArrayList<StringItem>();
+            List<ObjectCreationItem> objectCreations = this.classHelper
+                    .getObjectCreations(c.getFqn());
+            if (objectCreations != null) {
+                objectCreations.forEach(objectCreationItem -> {
+                    if (objectCreationItem.getDeclType().equals(constructorInvocation)) {
+                        List<ArgumentItem> arguments = objectCreationItem.getArguments();
+                        if (arguments != null && arguments.size() - 1 >= argIdx) {
+                            args.add(new StringItem(arguments.get(argIdx).getValue()));
+                        }
+                    }
+                });
+            }
+
+            result = new DataResult<List<StringItem>>(Constants.TYPE_STRING_LIST, args);
+            this.cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
+    }
+
+    /**
+     * Check if the constructor was used to create any object
+     * 
+     * @param c
+     * @param constructor
+     * @return
+     */
+    private DataResult<BooleanItem> objectCreated(ClassItem c, String constructor) {
+        String functionCall = "objectCreated()" + "||" + c.getFqn() + "||" + constructor;
+        DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            boolean resObjectCreated = false;
+
+            List<ObjectCreationItem> objectCreations = this.classHelper.getObjectCreations(c.getFqn());
+            if (objectCreations != null)
+                resObjectCreated = objectCreations.stream().anyMatch(item -> item.getDeclType().equals(constructor));
+
+            result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(resObjectCreated));
             cache.addFunctionCall(functionCall, result);
         }
 
@@ -746,10 +807,20 @@ public class EngineFunctions implements IEngineFunctions {
                 case Constants.FUNCTION_GET_ARG: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     ClassItem classItem = (ClassItem) params.get(0).getResult();
-                    StringItem callerClass = (StringItem) params.get(1).getResult();
-                    StringItem invocation = (StringItem) params.get(2).getResult();
-                    IntegerItem argIdx = (IntegerItem) params.get(3).getResult();
-                    result = this.getArg(classItem, callerClass.getValue(), invocation.getValue(), argIdx.getValue());
+
+                    if (params.size() == 4) {
+                        // For method invocations
+                        StringItem callerClass = (StringItem) params.get(1).getResult();
+                        StringItem invocation = (StringItem) params.get(2).getResult();
+                        IntegerItem argIdx = (IntegerItem) params.get(3).getResult();
+                        result = this.getArg(classItem, callerClass.getValue(), invocation.getValue(),
+                                argIdx.getValue());
+                    } else {
+                        // For object creations
+                        StringItem constructorInvocation = (StringItem) params.get(1).getResult();
+                        IntegerItem argIdx = (IntegerItem) params.get(2).getResult();
+                        result = this.getArg(classItem, constructorInvocation.getValue(), argIdx.getValue());
+                    }
                 }
                     break;
 
@@ -943,6 +1014,14 @@ public class EngineFunctions implements IEngineFunctions {
                         result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(false));
                     }
 
+                }
+                    break;
+
+                case Constants.FUNCTION_OBJECT_CREATED: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    ClassItem c = (ClassItem) params.get(0).getResult();
+                    StringItem objectCreationMethod = (StringItem) params.get(1).getResult();
+                    result = this.objectCreated(c, objectCreationMethod.getValue());
                 }
                     break;
             }

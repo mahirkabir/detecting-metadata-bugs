@@ -25,6 +25,7 @@ import models.ClassItem;
 import models.FieldItem;
 import models.InvocationItem;
 import models.MethodItem;
+import models.ObjectCreationItem;
 import models.VariableItem;
 
 public class ClassHelper {
@@ -297,7 +298,46 @@ public class ClassHelper {
             }
         }
 
-        return classItem.getMethods();
+        return classItem.getConstructors();
+    }
+
+    /**
+     * Get all object creations for class with cFqn as fully qualified name
+     * 
+     * @param cFqn
+     * @return
+     */
+    public List<ObjectCreationItem> getObjectCreations(String cFqn) {
+        if (!this.dictClass.containsKey(cFqn))
+            return new ArrayList<ObjectCreationItem>();
+
+        ClassItem classItem = this.dictClass.get(cFqn);
+        if (classItem.getObjectCreations() != null)
+            return classItem.getObjectCreations();
+
+        String javaFilePath = classItem.getFilePath();
+        List<ObjectCreationItem> objectCreations = new ObjectCreationHelper(javaFilePath).GetObjectCreations();
+
+        Map<String, String> dictRelevantClasses = new HashMap<String, String>();
+        for (Map.Entry<String, ClassItem> entry : this.dictClass.entrySet()) {
+            ClassItem elm = entry.getValue();
+            if (elm.getFilePath().equals(javaFilePath))
+                dictRelevantClasses.put(elm.getName(), elm.getFqn());
+        }
+
+        if (objectCreations != null) {
+            for (ObjectCreationItem objectCreation : objectCreations) {
+                String classSN = objectCreation.getClassName();
+                if (dictRelevantClasses.containsKey(classSN)) {
+                    String classFQN = dictRelevantClasses.get(classSN);
+                    if (this.dictClass.containsKey(classFQN)) {
+                        this.dictClass.get(classFQN).addObjectCreation(objectCreation);
+                    }
+                }
+            }
+        }
+
+        return classItem.getObjectCreations();
     }
 
     /**

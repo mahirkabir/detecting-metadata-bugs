@@ -31,6 +31,7 @@ public class Constants {
     public static final String TYPE_INVOCATION = "invocation";
     public static final String TYPE_ANNOTATION_LIST = "annotation-list";
     public static final String TYPE_ANNOTATION = "annotation";
+    public static final String TYPE_OBJECT_CREATION = "object-creation";
     public static final String TYPE_FILE = "file";
     public static final String TYPE_LIST = "list";
     public static final String ITERABLE_TYPE_COLLECTION = "Collection";
@@ -92,6 +93,7 @@ public class Constants {
     public static final String FUNCTION_INDEX_IN_BOUND = "indexInBound";
     public static final String FUNCTION_HAS_PARAM = "hasParam";
     public static final String FUNCTION_HAS_PARAM_TYPE = "hasParamType";
+    public static final String FUNCTION_OBJECT_CREATED = "objectCreated";
     public static final String ANNOTATION_METHOD = "method-annotation";
     public static final String ANNOTATION_CLASS = "class-annotation";
     public static final String CONTEXT_PATH_CLASSPATH = "classpath:";

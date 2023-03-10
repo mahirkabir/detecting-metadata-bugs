@@ -15,6 +15,7 @@ public class ClassItem extends JItem {
     private List<InvocationItem> invocations;
 
     private List<VariableItem> variables;
+    private List<ObjectCreationItem> objectCreations;
 
     public ClassItem(String javaFilePath) {
         super();
@@ -102,5 +103,24 @@ public class ClassItem extends JItem {
         if (this.variables == null)
             this.variables = new ArrayList<VariableItem>();
         this.variables.add(variable);
+    }
+
+    /**
+     * Get all the object creations in the class
+     * 
+     * @return
+     */
+    public List<ObjectCreationItem> getObjectCreations() {
+        return objectCreations;
+    }
+
+    public void setObjectCreations(List<ObjectCreationItem> objectCreations) {
+        this.objectCreations = objectCreations;
+    }
+
+    public void addObjectCreation(ObjectCreationItem objectCreationItem) {
+        if (this.objectCreations == null)
+            this.objectCreations = new ArrayList<ObjectCreationItem>();
+        this.objectCreations.add(objectCreationItem);
     }
 }
