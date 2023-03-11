@@ -13,6 +13,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import models.AnnotatedItem;
 import models.AnnotationAttrItem;
 import models.AnnotationItem;
 import models.ArgumentItem;
@@ -60,6 +61,30 @@ public class EngineFunctions implements IEngineFunctions {
         if (result == null) {
             List<ClassItem> classItems = this.classHelper.getClasses();
             result = new DataResult<List<ClassItem>>(Constants.TYPE_CLASS_LIST, classItems);
+            this.cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
+    }
+
+    private DataResult<List<AnnotatedItem>> getAnnotated(String annotation, String entityType) {
+        String functionCall = "getAnnotated()" + "||" + annotation + "||" + entityType;
+        DataResult<List<AnnotatedItem>> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            List<AnnotatedItem> annotatedItems = this.classHelper.getAnnotated();
+            List<AnnotatedItem> filteredAnnotatedItems = new ArrayList<AnnotatedItem>();
+
+            for (AnnotatedItem annItem : annotatedItems) {
+                if ((entityType.equals("*") ||
+                        annItem.getEntity().getType().equals(entityType))
+                        && annItem.getAnnotationName()
+                                .equals(annotation.replace("@", "")))
+                    filteredAnnotatedItems.add(annItem);
+            }
+
+            result = new DataResult<List<AnnotatedItem>>(
+                    Constants.TYPE_ANNOTATED_ENTITY_LIST, filteredAnnotatedItems);
             this.cache.addFunctionCall(functionCall, result);
         }
 
@@ -513,41 +538,6 @@ public class EngineFunctions implements IEngineFunctions {
                 new StringItem(str.toUpperCase()));
     }
 
-    private DataResult<List<StringItem>> getAnnotated(String annotation, String entityType) {
-        String functionCall = "getAnnotated()" + "||" + annotation + "||" + entityType;
-        DataResult<List<StringItem>> result = this.cache.fetchFunctionCall(functionCall);
-
-        if (result == null) {
-            result = new DataResult<List<StringItem>>(
-                    Constants.TYPE_STRING_LIST, new ArrayList<StringItem>());
-            // TODO: Need to search annotation in methods as well
-            if (entityType.equals("*") || entityType.equals(Constants.TYPE_CLASS)) {
-                DataResult<List<ClassItem>> cResult = this.getClasses();
-                List<ClassItem> classItems = cResult.getResult();
-                if (classItems != null) {
-                    for (ClassItem classItem : cResult.getResult()) {
-                        List<AnnotationItem> annotationItems = classItem.getAnnotations();
-                        if (annotationItems == null)
-                            this.classHelper.getAnnotations(classItem.getFqn());
-                        annotationItems = classItem.getAnnotations();
-                        if (annotationItems != null) {
-                            for (AnnotationItem annItem : annotationItems) {
-                                if (annItem.getAnnotationName().equals(annotation)) {
-                                    result.getResult().add(new StringItem(classItem.getFqn()));
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            cache.addFunctionCall(functionCall, result);
-        }
-
-        return result;
-    }
-
     private DataResult<List> join(List<List> lists) {
         List ret = new ArrayList();
         for (List list : lists) {
@@ -830,7 +820,22 @@ public class EngineFunctions implements IEngineFunctions {
                     StringItem entityType = (StringItem) params.get(1).getResult();
 
                     annoStr.setValue(annoStr.getValue().substring(1));
-                    result = this.getAnnotated(annoStr.getValue(), entityType.getValue());
+                    List<AnnotatedItem> annRes = this.getAnnotated(
+                            annoStr.getValue(), entityType.getValue()).getResult();
+                    if (entityType.getValue().equals(Constants.TYPE_CLASS)) {
+                        List<ClassItem> annotatedClasses = new ArrayList<ClassItem>();
+                        annRes.forEach(annItem -> {
+                            ClassItem classItem = new ClassItem(annItem.getJavaFilePath());
+                            classItem.setName(annItem.getEntity().getName());
+                            annotatedClasses.add(classItem);
+                        });
+                        result = new DataResult<List<ClassItem>>(
+                                Constants.TYPE_CLASS_LIST, annotatedClasses);
+
+                    } else {
+                        result = new DataResult<List<AnnotatedItem>>(
+                                Constants.TYPE_ANNOTATED_ENTITY_LIST, annRes);
+                    }
                 }
                     break;
 

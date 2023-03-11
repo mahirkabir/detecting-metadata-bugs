@@ -3,6 +3,7 @@ package utils;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.NumberFormat.Style;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,10 @@ import java.util.stream.Collectors;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
@@ -20,16 +25,19 @@ import com.github.javaparser.utils.SourceRoot;
 
 import engine.EngineFactory;
 import engine.IEngineCache;
+import models.AnnotatedItem;
 import models.AnnotationItem;
 import models.ClassItem;
 import models.FieldItem;
 import models.InvocationItem;
+import models.JItem;
 import models.MethodItem;
 import models.ObjectCreationItem;
 import models.VariableItem;
 
 public class ClassHelper {
     private List<String> javaFiles;
+    private List<AnnotatedItem> annotatedItems;
     private String projectPath;
     private Map<String, ClassItem> dictClass;
     private Map<String, List<ClassItem>> dictSNClass;
@@ -478,5 +486,59 @@ public class ClassHelper {
 
     public Map<String, List<ClassItem>> getClassSNDict() {
         return this.dictSNClass;
+    }
+
+    /**
+     * Get all annotated items (Class, Method, Field, Constructor)
+     * 
+     * @return
+     */
+    public List<AnnotatedItem> getAnnotated() {
+        if (this.annotatedItems != null)
+            return this.annotatedItems;
+
+        this.annotatedItems = new ArrayList<AnnotatedItem>();
+        if (this.javaFiles.size() == 0)
+            this.loadJavaFiles(this.projectPath);
+
+        this.javaFiles.forEach(javaFilePath -> {
+            Path path = Paths.get(javaFilePath);
+            String filename = path.getFileName().toString();
+            String folder = path.getParent().toString();
+
+            Log.setAdapter(new Log.StandardOutStandardErrorAdapter());
+            SourceRoot sourceRoot = new SourceRoot(
+                    CodeGenerationUtils.mavenModuleRoot(FieldHelper.class)
+                            .resolve(folder));
+            CompilationUnit cu = sourceRoot.parse("", filename);
+
+            cu.findAll(AnnotationExpr.class).forEach(annItem -> {
+                AnnotatedItem annotatedItem = new AnnotatedItem();
+                annotatedItem.setJavaFilePath(javaFilePath);
+                annotatedItem.setAnnotationName(annItem.getNameAsString());
+
+                JItem jItem = new JItem();
+                Node parentNode = annItem.getParentNode().get();
+                if (parentNode instanceof ClassOrInterfaceDeclaration) {
+                    jItem.setName(((ClassOrInterfaceDeclaration) parentNode).getNameAsString());
+                    jItem.setType(Constants.TYPE_CLASS);
+                } else if (parentNode instanceof FieldDeclaration) {
+                    // TODO: Do we need to the variable name?
+                    jItem.setName(((FieldDeclaration) parentNode).toString());
+                    jItem.setType(Constants.TYPE_FIELD);
+                } else if (parentNode instanceof MethodDeclaration) {
+                    jItem.setName(((MethodDeclaration) parentNode).getNameAsString());
+                    jItem.setType(Constants.TYPE_METHOD);
+                } else if (parentNode instanceof ConstructorDeclaration) {
+                    jItem.setName(((ConstructorDeclaration) parentNode).getNameAsString());
+                    jItem.setType(Constants.TYPE_CONSTRUCTOR);
+                }
+                annotatedItem.setEntity(jItem);
+
+                this.annotatedItems.add(annotatedItem);
+            });
+        });
+
+        return this.annotatedItems;
     }
 }

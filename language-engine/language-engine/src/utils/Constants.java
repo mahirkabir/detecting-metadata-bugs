@@ -17,6 +17,7 @@ public class Constants {
     public static final String TYPE_STRING_LIST = "String-list";
     public static final String TYPE_INTEGER = "Integer";
     public static final String TYPE_BOOLEAN = "bool";
+    public static final String TYPE_ANNOTATED_ENTITY_LIST = "annotated-entity-list";
     public static final String TYPE_CLASS = "class";
     public static final String TYPE_CLASS_LIST = "class-list";
     public static final String TYPE_XML = "xml";
