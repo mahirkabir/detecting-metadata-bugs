@@ -67,6 +67,7 @@ public class Constants {
     public static final String FUNCTION_GET_ELMS = "getElms";
     public static final String FUNCTION_GET_NAME = "getName";
     public static final String FUNCTION_GET_ATTR = "getAttr";
+    public static final String FUNCTION_HAS_ATTR = "hasAttr";
     public static final String FUNCTION_GET_ATTRS = "getAttrs";
     public static final String FUNCTION_GET_ANNO_ATTR = "getAnnoAttr";
     public static final String FUNCTION_GET_ANNO_ATTR_NAMES = "getAnnoAttrNames";

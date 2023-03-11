@@ -295,12 +295,12 @@ public class ClassHelper {
         }
 
         if (constructors != null) {
-            for (MethodItem method : constructors) {
-                String classSN = method.getClassName();
+            for (MethodItem constructor : constructors) {
+                String classSN = constructor.getClassName();
                 if (dictRelevantClasses.containsKey(classSN)) {
                     String classFQN = dictRelevantClasses.get(classSN);
                     if (this.dictClass.containsKey(classFQN)) {
-                        this.dictClass.get(classFQN).addMethod(method);
+                        this.dictClass.get(classFQN).addConstructor(constructor);
                     }
                 }
             }

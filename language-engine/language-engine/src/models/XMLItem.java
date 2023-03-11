@@ -68,6 +68,10 @@ public class XMLItem {
         return Constants.EMPTY_STRING;
     }
 
+    public boolean hasAttr(String attr) {
+        return this.mapAttr.containsKey(attr);
+    }
+
     public Map<String, String> getAttrMap() {
         return this.mapAttr;
     }

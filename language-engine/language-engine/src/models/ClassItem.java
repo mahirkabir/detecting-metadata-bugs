@@ -63,6 +63,12 @@ public class ClassItem extends JItem {
         this.constructors = constructors;
     }
 
+    public void addConstructor(MethodItem method) {
+        if (this.constructors == null)
+            this.constructors = new ArrayList<MethodItem>();
+        this.constructors.add(method);
+    }
+
     public List<AnnotationItem> getAnnotations() {
         return annotations;
     }

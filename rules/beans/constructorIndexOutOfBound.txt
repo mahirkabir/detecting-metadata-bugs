@@ -4,12 +4,14 @@ Rule constructor-index-out-of-bound {
 			for (<bean> bean in getElms(xml, "<bean>")) {
 				if (getAttr(bean, "class") == getFQN(c)) {
 					for (<constructor-arg> constructor_arg in getElms(bean, "<constructor-arg>")) {
-						assert(exists(method constructor in getConstructors(c))(indexInBound(constructor, getAttr(constructor_arg, "index")))) {
-							msg("Constructor index: %s of bean for class: %s in xml: %s is out of bound", getAttr(constructor_arg, "index"), getFQN(c), getName(xml)); 	 
+						if (hasAttr(constructor_arg, "index")) {
+							assert(exists(method constructor in getConstructors(c))(indexInBound(constructor, getAttr(constructor_arg, "index")))) {
+								msg("Constructor index: %s of bean for class: %s in xml: %s is out of bound", getAttr(constructor_arg, "index"), getFQN(c), getName(xml)); 	 
+							}
 						}
 					}
 				}
 			}
-		}		
+		}
     }
 }

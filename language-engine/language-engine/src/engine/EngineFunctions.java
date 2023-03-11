@@ -481,6 +481,12 @@ public class EngineFunctions implements IEngineFunctions {
                 new StringItem(node.getAttr(attrName)));
     }
 
+    private DataResult<BooleanItem> hasAttr(XMLItem node, String attrName) {
+        boolean resHasAttr = node.hasAttr(attrName);
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN,
+                new BooleanItem(resHasAttr));
+    }
+
     /**
      * Get all -method attributes' values
      * 
@@ -852,6 +858,14 @@ public class EngineFunctions implements IEngineFunctions {
                     XMLItem parentElm = (XMLItem) params.get(0).getResult();
                     StringItem attr = (StringItem) params.get(1).getResult();
                     result = this.getAttr(parentElm, attr.getValue());
+                }
+                    break;
+
+                case Constants.FUNCTION_HAS_ATTR: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    XMLItem parentElm = (XMLItem) params.get(0).getResult();
+                    StringItem attr = (StringItem) params.get(1).getResult();
+                    result = this.hasAttr(parentElm, attr.getValue());
                 }
                     break;
 
