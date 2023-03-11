@@ -5,7 +5,7 @@ Rule method-exist {
 				if (getAttr(bean, "class") == getFQN(c)) {
 					for (String s in getAttrs(bean, "*method")) {
 						assert(exists(method m in getMethods(c))(getName(m) == s)) {
-							msg("The referenced method name %s in XML is not defined", s);
+							msg("The referenced method: %s in bean: %s is not defined in class: %s", s, getName(bean), getFQN(c));
 						}
 					}
 				}
