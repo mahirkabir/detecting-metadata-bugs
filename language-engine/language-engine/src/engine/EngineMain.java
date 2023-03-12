@@ -75,6 +75,9 @@ public class EngineMain {
                     EngineFactory.setProjectPath(projectPath.toString());
                     Helper.gitCheckout(projectPath, versionInfo.getCommitId());
 
+                    bindEngines();
+                    engineDecl = EngineFactory.getEngineDecl();
+
                     List<RuleSet> rulesetsToRun = getRulesetsToRun(versionInfo, config);
                     rulesetsToRun.forEach(ruleset -> {
                         ruleset.run.forEach(rule -> {
