@@ -102,4 +102,9 @@ public class Constants {
     public static final String CONTEXT_PATH_FILE = "file:";
     public static final String EXTENSION_JAVA = ".java";
     public static final String EXTENSION_XML = ".xml";
+    public static final Object CATEGORY_GENERAL = "general";
+    public static final Object CATEGORY_BEANS = "beans";
+    public static final Object CATEGORY_ANNOTATIONS = "annotations";
+    public static final Object CATEGORY_JUNITS = "junits";
+    public static final Object JSON_KEY_RULESETS = "rulesets";
 }

@@ -3,6 +3,7 @@ package engine;
 public class EngineFactory {
     private static String projectPath;
     private static String runningRule;
+    private static String logPath;
 
     private static IEngineAssert engineAssert;
     private static IEngineCache engineCache;
@@ -113,5 +114,23 @@ public class EngineFactory {
      */
     public static void setRunningRule(String runningRule) {
         EngineFactory.runningRule = runningRule;
+    }
+
+    /**
+     * Get the log file path
+     * 
+     * @return
+     */
+    public static String getLogPath() {
+        return logPath;
+    }
+
+    /**
+     * Set the log file path
+     * 
+     * @param logPath
+     */
+    public static void setLogPath(String logPath) {
+        EngineFactory.logPath = logPath;
     }
 }

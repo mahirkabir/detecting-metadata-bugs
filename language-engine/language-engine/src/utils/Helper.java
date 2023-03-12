@@ -1,5 +1,6 @@
 package utils;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -20,6 +21,7 @@ import models.FieldItem;
 import models.IntegerItem;
 import models.MethodItem;
 import models.StringItem;
+import models.VersionCategory;
 import models.XMLItem;
 import parser.ASTAssertStmnt;
 import parser.ASTDeclStmnt;
@@ -332,6 +334,15 @@ public class Helper {
         }
 
         return false;
+    }
+
+    /**
+     * Checkout commitId version for project located in projectPath
+     * 
+     * @param projectPath
+     * @param commitId
+     */
+    public static void gitCheckout(Path projectPath, String commitId) {
     }
 
     /***

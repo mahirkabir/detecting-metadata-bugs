@@ -4,20 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Config {
-    public class Rules {
-        public String dir;
-        public List<String> run;
-
-        public Rules() {
-            this.run = new ArrayList<>();
-        }
-    }
-
-    public Rules rules;
     private static Config singletonInstance;
+    public List<RuleSet> rulesets;
 
     private Config() {
-        rules = new Rules();
+        rulesets = new ArrayList<RuleSet>();
     }
 
     public static Config getInstance() {
