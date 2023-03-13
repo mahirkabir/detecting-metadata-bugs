@@ -113,6 +113,7 @@ public class EngineAssert implements IEngineAssert {
         }
 
         StringBuilder sbMessage = new StringBuilder("[" + EngineFactory.getProjectPath() + "]");
+        sbMessage.append("(" + EngineFactory.getProjectCommitId() + ")");
         sbMessage.append("\t" + EngineFactory.getRunningRule());
         sbMessage.append("\t" + message);
         sbMessage.append("\n");

@@ -112,7 +112,7 @@ public class ClassHelper {
                     this.dictSNClass.get(classInstance.getName()).add(classInstance);
                 });
             } catch (Exception ex) {
-                System.out.println("getClasses() => Error parsing file: " + javaFile);
+                Logger.log("getClasses() => Error parsing file: " + javaFile);
             }
         }
 

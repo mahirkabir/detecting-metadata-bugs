@@ -2,6 +2,8 @@ package engine;
 
 public class EngineFactory {
     private static String projectPath;
+    private static String projectCommitId;
+
     private static String runningRule;
     private static String outputPath;
 
@@ -132,5 +134,23 @@ public class EngineFactory {
      */
     public static void setOutputPath(String outputPath) {
         EngineFactory.outputPath = outputPath;
+    }
+
+    /**
+     * Get the commit id of the project version that is being investigated
+     * 
+     * @return
+     */
+    public static String getProjectCommitId() {
+        return projectCommitId;
+    }
+
+    /**
+     * Set the commit id of the project version that is being investigated
+     * 
+     * @param projectCommitId
+     */
+    public static void setProjectCommitId(String projectCommitId) {
+        EngineFactory.projectCommitId = projectCommitId;
     }
 }

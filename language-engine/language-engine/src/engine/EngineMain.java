@@ -74,6 +74,8 @@ public class EngineMain {
 
                     Path projectPath = Paths.get(datasetFolder, currentProject);
                     EngineFactory.setProjectPath(projectPath.toString());
+                    EngineFactory.setProjectCommitId(versionInfo.getCommitId());
+
                     Helper.gitCheckout(projectPath.toString(), versionInfo.getCommitId());
 
                     bindEngines();
@@ -100,8 +102,8 @@ public class EngineMain {
                                 engineDecl.createFrame();
                                 int totalChildren = n.jjtGetNumChildren();
                                 for (int i = 0; i < totalChildren; ++i) {
-                                Node stmnt = n.jjtGetChild(i);
-                                Helper.process(stmnt);
+                                    Node stmnt = n.jjtGetChild(i);
+                                    Helper.process(stmnt);
                                 }
 
                                 engineDecl.removeFrame();
@@ -184,7 +186,7 @@ public class EngineMain {
 
             br.close();
         } catch (IOException e) {
-            System.out.println("Error reading " + versionCategories + ": " + e.toString());
+            Logger.log("Error reading " + versionCategories + ": " + e.toString());
         }
         return mapVersions;
     }

@@ -83,7 +83,7 @@ public class XMLHelper {
                     XMLItem xmlItem = this.readXML(xmlFilePath);
                     xmlItems.add(xmlItem);
                 } catch (Exception ex) {
-                    System.out.println("getXMLs() => Error parsing xml file: " + xmlFilePath);
+                    Logger.log("getXMLs() => Error parsing xml file: " + xmlFilePath);
                 }
             }
         }
