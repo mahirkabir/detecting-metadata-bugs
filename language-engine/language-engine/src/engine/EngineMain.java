@@ -24,6 +24,7 @@ import parser.Eg12;
 import parser.Node;
 import utils.Constants;
 import utils.Helper;
+import utils.Logger;
 
 public class EngineMain {
     /**
@@ -99,14 +100,15 @@ public class EngineMain {
                                 engineDecl.createFrame();
                                 int totalChildren = n.jjtGetNumChildren();
                                 for (int i = 0; i < totalChildren; ++i) {
-                                    Node stmnt = n.jjtGetChild(i);
-                                    Helper.process(stmnt);
+                                Node stmnt = n.jjtGetChild(i);
+                                Helper.process(stmnt);
                                 }
 
                                 engineDecl.removeFrame();
                                 System.out.println("Thank you.");
 
                             } catch (Exception e) {
+                                Logger.log("Oops. Error running: " + rule);
                                 System.out.println("Oops. Error running: " + rule);
                                 System.out.println(e.getMessage());
                                 e.printStackTrace();
