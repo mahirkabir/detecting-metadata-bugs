@@ -79,8 +79,12 @@ public class XMLHelper {
 
         if (this.xmlFiles != null) {
             for (String xmlFilePath : this.xmlFiles) {
-                XMLItem xmlItem = this.readXML(xmlFilePath);
-                xmlItems.add(xmlItem);
+                try {
+                    XMLItem xmlItem = this.readXML(xmlFilePath);
+                    xmlItems.add(xmlItem);
+                } catch (Exception ex) {
+                    System.out.println("getXMLs() => Error parsing xml file: " + xmlFilePath);
+                }
             }
         }
 

@@ -351,7 +351,9 @@ public class Helper {
         try {
             Process process = processBuilder.start();
             exitCode = process.waitFor();
-            System.out.println("Checked out: " + projectPath + " with Exit code: " + exitCode);
+            System.out.println("Checked out version: "
+                    + commitId + " of project: " + projectPath + " with Exit code: "
+                    + exitCode);
         } catch (IOException ioException) {
             ioException.printStackTrace();
         } catch (InterruptedException e) {

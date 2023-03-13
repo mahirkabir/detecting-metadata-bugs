@@ -3,12 +3,10 @@ package utils;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.NumberFormat.Style;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.CompilationUnit;
@@ -18,7 +16,6 @@ import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
-import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
 import com.github.javaparser.utils.SourceRoot;
@@ -100,19 +97,23 @@ public class ClassHelper {
             // List<AnnotationItem> annotations = new
             // AnnotationHelper(javaFile).GetAnnotations();
 
-            List<ClassItem> classInstances = this.GetClassInstances(javaFile);
+            try {
+                List<ClassItem> classInstances = this.GetClassInstances(javaFile);
 
-            if (classInstances == null)
-                continue;
+                if (classInstances == null)
+                    continue;
 
-            classInstances.forEach(classInstance -> {
-                // classInstance is one of the classes located in javaFile
-                classes.add(classInstance);
-                this.dictClass.put(classInstance.getFqn(), classInstance);
-                if (!this.dictSNClass.containsKey(classInstance.getName()))
-                    this.dictSNClass.put(classInstance.getName(), new ArrayList<>());
-                this.dictSNClass.get(classInstance.getName()).add(classInstance);
-            });
+                classInstances.forEach(classInstance -> {
+                    // classInstance is one of the classes located in javaFile
+                    classes.add(classInstance);
+                    this.dictClass.put(classInstance.getFqn(), classInstance);
+                    if (!this.dictSNClass.containsKey(classInstance.getName()))
+                        this.dictSNClass.put(classInstance.getName(), new ArrayList<>());
+                    this.dictSNClass.get(classInstance.getName()).add(classInstance);
+                });
+            } catch (Exception ex) {
+                System.out.println("getClasses() => Error parsing file: " + javaFile);
+            }
         }
 
         return classes;
@@ -137,14 +138,16 @@ public class ClassHelper {
                         .resolve(folder));
         CompilationUnit cu = sourceRoot.parse("", filename);
 
-        Map<String, ClassOrInterfaceDeclaration> classes = cu
+        List<ClassOrInterfaceDeclaration> classes = cu
                 .findAll(ClassOrInterfaceDeclaration.class)
                 .stream()
-                .collect(Collectors.toMap(NodeWithSimpleName::getNameAsString, Function.identity()));
-
+                .collect(Collectors.toList());
+        
         String packageName = null;
-        for (Map.Entry<String, ClassOrInterfaceDeclaration> mapElm : classes.entrySet()) {
-            ClassOrInterfaceDeclaration decl = mapElm.getValue();
+        if (classes == null)
+            return classInstances;
+
+        for (ClassOrInterfaceDeclaration decl : classes) {
 
             System.out.println("========");
 

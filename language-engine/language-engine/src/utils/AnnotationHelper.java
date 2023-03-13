@@ -4,8 +4,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.CompilationUnit;
@@ -20,7 +18,6 @@ import com.github.javaparser.ast.expr.MemberValuePair;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
-import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
 import com.github.javaparser.utils.SourceRoot;
@@ -54,17 +51,15 @@ public class AnnotationHelper {
                         .resolve(folder));
         CompilationUnit cu = sourceRoot.parse("", filename);
 
-        Map<String, ClassOrInterfaceDeclaration> fields = cu
+        List<ClassOrInterfaceDeclaration> fields = cu
                 .findAll(ClassOrInterfaceDeclaration.class)
                 .stream()
-                .collect(Collectors.toMap(NodeWithSimpleName::getNameAsString, Function.identity()));
+                .collect(Collectors.toList());
 
         if (fields == null)
             return annotations;
 
-        for (Map.Entry<String, ClassOrInterfaceDeclaration> mapElm : fields.entrySet()) {
-            ClassOrInterfaceDeclaration decl = mapElm.getValue();
-
+        for (ClassOrInterfaceDeclaration decl : fields) {
             System.out.println("========");
 
             String className = decl.getNameAsString();
