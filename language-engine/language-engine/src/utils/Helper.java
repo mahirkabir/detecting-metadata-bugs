@@ -345,8 +345,7 @@ public class Helper {
     public static void gitCheckout(String projectPath, String commitId) {
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.directory(new File(projectPath));
-        // processBuilder.command("cmd", "/c", "git checkout " + commitId);
-        processBuilder.command("cmd", "/c", "echo \"test\" >> test.txt");
+        processBuilder.command("cmd", "/c", "git checkout " + commitId);
 
         int exitCode;
         try {
