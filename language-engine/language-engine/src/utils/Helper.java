@@ -1,6 +1,7 @@
 package utils;
 
-import java.nio.file.Path;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -21,7 +22,6 @@ import models.FieldItem;
 import models.IntegerItem;
 import models.MethodItem;
 import models.StringItem;
-import models.VersionCategory;
 import models.XMLItem;
 import parser.ASTAssertStmnt;
 import parser.ASTDeclStmnt;
@@ -342,7 +342,23 @@ public class Helper {
      * @param projectPath
      * @param commitId
      */
-    public static void gitCheckout(Path projectPath, String commitId) {
+    public static void gitCheckout(String projectPath, String commitId) {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.directory(new File(projectPath));
+        // processBuilder.command("cmd", "/c", "git checkout " + commitId);
+        processBuilder.command("cmd", "/c", "echo \"test\" >> test.txt");
+
+        int exitCode;
+        try {
+            Process process = processBuilder.start();
+            exitCode = process.waitFor();
+            System.out.println("Checked out: " + projectPath + " with Exit code: " + exitCode);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /***

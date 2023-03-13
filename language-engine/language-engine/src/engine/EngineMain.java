@@ -68,12 +68,12 @@ public class EngineMain {
                             .println("Processing version: " + versionInfo.getCommitId() + " of project: "
                                     + currentProject);
 
-                    Path logPath = Paths.get("output", currentProject + ".txt");
-                    EngineFactory.setLogPath(logPath.toString());
+                    Path outputPath = Paths.get("output", currentProject + ".txt");
+                    EngineFactory.setOutputPath(outputPath.toString());
 
                     Path projectPath = Paths.get(datasetFolder, currentProject);
                     EngineFactory.setProjectPath(projectPath.toString());
-                    Helper.gitCheckout(projectPath, versionInfo.getCommitId());
+                    Helper.gitCheckout(projectPath.toString(), versionInfo.getCommitId());
 
                     bindEngines();
                     engineDecl = EngineFactory.getEngineDecl();
