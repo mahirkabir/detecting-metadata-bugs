@@ -3,7 +3,7 @@ Rule testParams-not-iterable {
 		if (hasAnnotation(c, "@RunWith")) {
 			if (hasAnnoAttr(c, "@RunWith", "Parameterized.class")) {
 				for (method m in getMethods(c)) {
-					if (hasAnnotation(c, m, "@Parameters")) {
+					if (hasAnnotation(c, m, "@Parameters") OR hasAnnotation(c, m, "@Parameterized.Parameters")) {
 						assert(isIterable(getReturnType(m))) {
 							msg("Class: %s, Method: %s has @Parameters but return type is not iterable", getFQN(c), getName(m));
 						}
