@@ -283,10 +283,17 @@ public class EngineFunctions implements IEngineFunctions {
                             callerClassMatches = variables.stream().anyMatch(item -> item.getName()
                                     .equals(callerObjectName) && item.getType().equals(callerClass));
                         if (callerClassMatches) {
-                            String arg = invocationItem.getArguments().get(argIdx);
-                            if (arg.startsWith("\""))
+                           String arg = invocationItem.getArguments().get(argIdx);
+                            // NOTE: For now, we are only considering string literals
+                            // or CLASSNAME.class arguments
+                            // Variables are skipped for now
+                            // Other literals are also skipped for now
+                            if (arg.startsWith("\"")) {
                                 arg = arg.substring(1, arg.length() - 1);
-                            result.getResult().add(new StringItem(arg));
+                                result.getResult().add(new StringItem(arg));
+                            } else if (arg.endsWith("." + Constants.TYPE_CLASS)) {
+                                result.getResult().add(new StringItem(arg));
+                            }
                         }
                     }
                 }

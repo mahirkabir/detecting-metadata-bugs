@@ -10,6 +10,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
@@ -69,10 +70,13 @@ public class InvocationHelper {
                 String invocationStmnt = parentNode.toString();
                 String callee = decl.getNameAsString();
 
-                String[] methodCallParts = decl.toString().split("\\.");
+                Expression callerExpr = decl.getScope().orElse(null);
                 String callerVariable = "";
-                if (methodCallParts.length > 1) {
-                    callerVariable = methodCallParts[methodCallParts.length - 2];
+                if (callerExpr != null) {
+                    String[] methodCallParts = callerExpr.toString().split("\\.");
+                    if (methodCallParts.length > 1) {
+                        callerVariable = methodCallParts[methodCallParts.length - 1];
+                    }
                 }
 
                 List<String> arguments = new ArrayList<String>();

@@ -72,10 +72,9 @@ public class ObjectCreationHelper {
                                         && argumentVal.endsWith("\""))
                                     argumentVal = argumentVal.substring(1, argumentVal.length() - 1);
                                 argument.setValue(argumentVal);
+                                objectCreationItem.addArgument(argument);
                             }
                             // TODO: Do for other types of arguments
-
-                            objectCreationItem.addArgument(argument);
                         });
                     }
 
