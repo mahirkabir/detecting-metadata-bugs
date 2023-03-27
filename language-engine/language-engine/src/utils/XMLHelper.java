@@ -88,6 +88,7 @@ public class XMLHelper {
             }
         }
 
+        Logger.log("Total XMLs: " + xmlItems.size());
         return xmlItems;
     }
 

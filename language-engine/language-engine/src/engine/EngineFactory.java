@@ -1,5 +1,8 @@
 package engine;
 
+/*
+ * Factory class containing all the engine and helper classes
+ */
 public class EngineFactory {
     private static String projectPath;
     private static String projectCommitId;

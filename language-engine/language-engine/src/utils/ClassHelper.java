@@ -7,15 +7,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.ArrayInitializerExpr;
+import com.github.javaparser.ast.expr.ClassExpr;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
+import com.github.javaparser.ast.expr.MemberValuePair;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.expr.VariableDeclarationExpr;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
 import com.github.javaparser.utils.SourceRoot;
@@ -23,15 +40,27 @@ import com.github.javaparser.utils.SourceRoot;
 import engine.EngineFactory;
 import engine.IEngineCache;
 import models.AnnotatedItem;
+import models.AnnotationAttrItem;
 import models.AnnotationItem;
+import models.ArgumentItem;
 import models.ClassItem;
 import models.FieldItem;
 import models.InvocationItem;
 import models.JItem;
 import models.MethodItem;
 import models.ObjectCreationItem;
+import models.ParamItem;
 import models.VariableItem;
 
+/*
+ * NOTE: This is a temporary file to implement urgent eager analysis
+ * NOTE: We will remove this class and cache the compilation unit in future 
+ * to implement faster lazy analysis
+ * ClassHelper version that uses eager analysis to explore different branches of the class tree
+ * e.g. - Fields, Methods, Invocations etc. will be explored at one go
+ * To use this version, first rename it back to ClassHelper (If it's named otherwise),
+ * Then use this to class to instantiate the classHelper variables in the project
+ */
 public class ClassHelper {
     private List<String> javaFiles;
     private List<AnnotatedItem> annotatedItems;
@@ -90,97 +119,515 @@ public class ClassHelper {
 
         this.loadJavaFiles(this.projectPath);
         for (String javaFile : this.javaFiles) {
-            // List<FieldItem> fields = new FieldHelper(javaFile).GetFields();
-            // List<MethodItem> methods = new MethodHelper(javaFile).GetMethods();
-            // List<InvocationItem> invocations = new
-            // InvocationHelper(javaFile).GetInvocations();
-            // List<AnnotationItem> annotations = new
-            // AnnotationHelper(javaFile).GetAnnotations();
-
             try {
-                List<ClassItem> classInstances = this.GetClassInstances(javaFile);
+                Path filePath = Paths.get(javaFile);
+                CompilationUnit cu = StaticJavaParser.parse(filePath);
+                AnnotationHelper annotationHelper = new AnnotationHelper(javaFile);
 
-                if (classInstances == null)
-                    continue;
+                for (TypeDeclaration<?> classDecl : cu.getTypes()) {
+                    ClassItem classItem = new ClassItem(javaFile);
 
-                classInstances.forEach(classInstance -> {
-                    // classInstance is one of the classes located in javaFile
-                    classes.add(classInstance);
-                    this.dictClass.put(classInstance.getFqn(), classInstance);
-                    if (!this.dictSNClass.containsKey(classInstance.getName()))
-                        this.dictSNClass.put(classInstance.getName(), new ArrayList<>());
-                    this.dictSNClass.get(classInstance.getName()).add(classInstance);
-                });
+                    String className = classDecl.getNameAsString();
+                    classItem.setName(className);
+                    classItem.setType(Constants.TYPE_CLASS);
+                    classItem.setFqn(className);
+
+                    String packageName = "";
+                    Optional<PackageDeclaration> packageDecl = cu.getPackageDeclaration();
+                    if (packageDecl.isPresent()) {
+                        packageName = packageDecl.get().getNameAsString();
+                        if (packageName != null && packageName.isEmpty())
+                            classItem.setFqn(packageName + "." + className);
+                    }
+
+                    List<AnnotationItem> annItems = this.getAnnotations(classDecl.getAnnotations());
+                    annItems.forEach(item -> item.setParentEntity(className));
+                    List<FieldItem> fields = this.getFields(classDecl.getFields());
+                    List<MethodItem> constructors = new ArrayList<MethodItem>();
+                    List<MethodItem> methods = new ArrayList<MethodItem>();
+                    List<InvocationItem> invocations = new ArrayList<InvocationItem>();
+                    List<ObjectCreationItem> objectCreations = new ArrayList<ObjectCreationItem>();
+                    List<VariableItem> variables = new ArrayList<VariableItem>();
+
+                    try {
+                        for (ConstructorDeclaration constructorDecl : classDecl.getConstructors()) {
+                            MethodItem constructorItem = new MethodItem();
+                            constructorItem.setName(constructorDecl.getNameAsString());
+                            constructorItem.setClassName(className);
+                            constructorItem.setAnnotations(annotationHelper.getCallableAnnotations(constructorDecl));
+                            constructorItem.setType(Constants.TYPE_CONSTRUCTOR);
+
+                            List<String> modifiers = new ArrayList<String>();
+                            constructorDecl.getModifiers().forEach(item -> {
+                                modifiers.add(item.toString());
+                            });
+
+                            if (modifiers.size() >= 1)
+                                constructorItem.setAccessModifier(modifiers.get(0));
+                            if (modifiers.size() == 2)
+                                constructorItem.setDeclType(modifiers.get(1));
+
+                            if (constructorDecl.getParameters() != null)
+                                constructorDecl.getParameters().forEach(item -> {
+                                    ParamItem paramItem = new ParamItem();
+                                    paramItem.setName(item.getNameAsString());
+                                    paramItem.setType(item.getTypeAsString());
+                                    if (!item.getModifiers().isEmpty())
+                                        paramItem.setAccessModifier(item.getModifiers().get(0).toString());
+                                    constructorItem.addParameter(paramItem);
+                                });
+
+                            constructors.add(constructorItem);
+
+                            try {
+                                for (MethodCallExpr invocationExpr : constructorDecl.findAll(MethodCallExpr.class)) {
+                                    Node parentNode = invocationExpr.getParentNode().get();
+                                    String invocationStmnt = parentNode.toString();
+                                    String callee = invocationExpr.getNameAsString();
+
+                                    Expression callerExpr = invocationExpr.getScope().orElse(null);
+                                    String callerVariable = "";
+                                    if (callerExpr != null) {
+                                        String[] methodCallParts = callerExpr.toString().split("\\.");
+                                        if (methodCallParts.length > 1) {
+                                            callerVariable = methodCallParts[methodCallParts.length - 1];
+                                        }
+                                    }
+
+                                    List<String> arguments = new ArrayList<String>();
+                                    if (arguments != null) {
+                                        invocationExpr.getArguments().forEach(item -> {
+                                            arguments.add(item.toString());
+                                        });
+                                    }
+
+                                    InvocationItem invocationItem = new InvocationItem();
+                                    invocationItem.setCallee(callee);
+                                    invocationItem.setCaller(callerVariable);
+                                    invocationItem.setClassName(className.toString());
+                                    invocationItem.setInvocationStmnt(invocationStmnt);
+                                    invocationItem.setArguments(arguments);
+                                    invocations.add(invocationItem);
+                                }
+                            } catch (Exception ex) {
+                                Logger.log("Error parsing invocations inside constructor for: " + className);
+                            }
+
+                            try {
+                                for (VariableDeclarationExpr variableExpr : constructorDecl
+                                        .findAll(VariableDeclarationExpr.class)) {
+                                    Node parentNode = variableExpr.getParentNode().get();
+                                    String variableMethod = "";
+                                    while (parentNode != null && !(parentNode instanceof ClassOrInterfaceDeclaration)) {
+                                        if (parentNode instanceof MethodDeclaration) {
+                                            MethodDeclaration methodNode = (MethodDeclaration) parentNode;
+                                            String methodType = methodNode.getTypeAsString();
+                                            String methodName = methodNode.getNameAsString();
+                                            StringBuilder parameters = new StringBuilder("(");
+                                            if (methodNode.getParameters() != null) {
+                                                methodNode.getParameters().forEach(methodParam -> {
+                                                    if (parameters.toString().equals("("))
+                                                        parameters.append(methodParam.toString());
+                                                    else
+                                                        parameters.append(", " + methodParam.toString());
+                                                });
+                                            }
+                                            parameters.append(")");
+                                            variableMethod = methodType + " " + methodName + parameters.toString();
+                                        }
+                                        parentNode = parentNode.getParentNode().get();
+                                    }
+
+                                    String parentMethod = variableMethod;
+                                    List<String> varModifiers = new ArrayList<String>();
+                                    variableExpr.getModifiers().forEach(item -> {
+                                        varModifiers.add(item.toString());
+                                    });
+
+                                    if (variableExpr.getVariables() != null) {
+                                        variableExpr.getVariables().forEach(item -> {
+                                            VariableItem variableItem = new VariableItem();
+                                            variableItem.setName(item.getNameAsString());
+                                            variableItem.setType(item.getTypeAsString());
+                                            variableItem.setClassName(className);
+                                            variableItem.setParentMethod(parentMethod);
+                                            if (varModifiers.size() >= 1)
+                                                variableItem.setAccessModifier(varModifiers.get(0));
+                                            if (varModifiers.size() == 2)
+                                                variableItem.setDeclType(varModifiers.get(1));
+
+                                            variables.add(variableItem);
+                                        });
+                                    }
+                                }
+                            } catch (Exception ex) {
+                                Logger.log("Error parsing variables inside constructor for: " + className);
+                            }
+
+                            try {
+                                for (ObjectCreationExpr objectCreationExpr : constructorDecl
+                                        .findAll(ObjectCreationExpr.class)) {
+                                    ObjectCreationItem objectCreationItem = new ObjectCreationItem();
+                                    objectCreationItem.setType(Constants.TYPE_OBJECT_CREATION);
+                                    objectCreationItem.setClassName(className);
+                                    objectCreationItem.setDeclType(objectCreationExpr.getTypeAsString());
+
+                                    if (objectCreationExpr.getArguments() != null) {
+                                        objectCreationExpr.getArguments().forEach(argItem -> {
+                                            ArgumentItem argument = new ArgumentItem();
+                                            if (argItem instanceof StringLiteralExpr) {
+                                                argument.setType(Constants.TYPE_STRING);
+
+                                                String argumentVal = argItem.toString();
+                                                if (argumentVal.startsWith("\"")
+                                                        && argumentVal.endsWith("\""))
+                                                    argumentVal = argumentVal.substring(1, argumentVal.length() - 1);
+                                                argument.setValue(argumentVal);
+                                                objectCreationItem.addArgument(argument);
+                                            }
+                                            // TODO: Do for other types of arguments
+                                        });
+                                    }
+
+                                    objectCreations.add(objectCreationItem);
+                                }
+                            } catch (Exception ex) {
+                                Logger.log("Error parsing object creations inside constructor for: " + className);
+                            }
+                        }
+                    } catch (Exception ex) {
+                        Logger.log("Error parsing constructor declaration for: " + className);
+                    }
+
+                    for (MethodDeclaration methodDecl : classDecl.getMethods()) {
+                        MethodItem methodItem = new MethodItem();
+                        methodItem.setName(methodDecl.getNameAsString());
+                        methodItem.setType(methodDecl.getTypeAsString());
+                        methodItem.setClassName(className);
+                        methodItem.setAnnotations(this.getMethodAnnotations(methodDecl));
+
+                        List<String> modifiers = new ArrayList<String>();
+                        methodDecl.getModifiers().forEach(item -> {
+                            modifiers.add(item.toString());
+                        });
+
+                        if (modifiers.size() >= 1)
+                            methodItem.setAccessModifier(modifiers.get(0));
+                        if (modifiers.size() == 2)
+                            methodItem.setDeclType(modifiers.get(1));
+
+                        methods.add(methodItem);
+
+                        try {
+                            for (MethodCallExpr invocationExpr : methodDecl.findAll(MethodCallExpr.class)) {
+                                Node parentNode = invocationExpr.getParentNode().get();
+                                String invocationStmnt = parentNode.toString();
+                                String callee = invocationExpr.getNameAsString();
+
+                                Expression callerExpr = invocationExpr.getScope().orElse(null);
+                                String callerVariable = "";
+                                if (callerExpr != null) {
+                                    String[] methodCallParts = callerExpr.toString().split("\\.");
+                                    if (methodCallParts.length > 1) {
+                                        callerVariable = methodCallParts[methodCallParts.length - 1];
+                                    }
+                                }
+
+                                List<String> arguments = new ArrayList<String>();
+                                if (arguments != null) {
+                                    invocationExpr.getArguments().forEach(item -> {
+                                        arguments.add(item.toString());
+                                    });
+                                }
+
+                                InvocationItem invocationItem = new InvocationItem();
+                                invocationItem.setCallee(callee);
+                                invocationItem.setCaller(callerVariable);
+                                invocationItem.setClassName(className.toString());
+                                invocationItem.setInvocationStmnt(invocationStmnt);
+                                invocationItem.setArguments(arguments);
+                                invocations.add(invocationItem);
+                            }
+                        } catch (Exception ex) {
+                            Logger.log("Error parsing invocations inside method for: " + className);
+                        }
+
+                        try {
+                            for (VariableDeclarationExpr variableExpr : methodDecl
+                                    .findAll(VariableDeclarationExpr.class)) {
+                                Node parentNode = variableExpr.getParentNode().get();
+                                String variableMethod = "";
+                                while (parentNode != null && !(parentNode instanceof ClassOrInterfaceDeclaration)) {
+                                    if (parentNode instanceof MethodDeclaration) {
+                                        MethodDeclaration methodNode = (MethodDeclaration) parentNode;
+                                        String methodType = methodNode.getTypeAsString();
+                                        String methodName = methodNode.getNameAsString();
+                                        StringBuilder parameters = new StringBuilder("(");
+                                        if (methodNode.getParameters() != null) {
+                                            methodNode.getParameters().forEach(methodParam -> {
+                                                if (parameters.toString().equals("("))
+                                                    parameters.append(methodParam.toString());
+                                                else
+                                                    parameters.append(", " + methodParam.toString());
+                                            });
+                                        }
+                                        parameters.append(")");
+                                        variableMethod = methodType + " " + methodName + parameters.toString();
+                                    }
+                                    parentNode = parentNode.getParentNode().get();
+                                }
+
+                                String parentMethod = variableMethod;
+                                List<String> varModifiers = new ArrayList<String>();
+                                variableExpr.getModifiers().forEach(item -> {
+                                    varModifiers.add(item.toString());
+                                });
+
+                                if (variableExpr.getVariables() != null) {
+                                    variableExpr.getVariables().forEach(item -> {
+                                        VariableItem variableItem = new VariableItem();
+                                        variableItem.setName(item.getNameAsString());
+                                        variableItem.setType(item.getTypeAsString());
+                                        variableItem.setClassName(className);
+                                        variableItem.setParentMethod(parentMethod);
+                                        if (varModifiers.size() >= 1)
+                                            variableItem.setAccessModifier(varModifiers.get(0));
+                                        if (varModifiers.size() == 2)
+                                            variableItem.setDeclType(varModifiers.get(1));
+
+                                        variables.add(variableItem);
+                                    });
+                                }
+                            }
+                        } catch (Exception ex) {
+                            Logger.log("Error parsing variables inside method for: " + className);
+                        }
+
+                        try {
+                            for (ObjectCreationExpr objectCreationExpr : methodDecl
+                                    .findAll(ObjectCreationExpr.class)) {
+                                ObjectCreationItem objectCreationItem = new ObjectCreationItem();
+                                objectCreationItem.setType(Constants.TYPE_OBJECT_CREATION);
+                                objectCreationItem.setClassName(className);
+                                objectCreationItem.setDeclType(objectCreationExpr.getTypeAsString());
+
+                                if (objectCreationExpr.getArguments() != null) {
+                                    objectCreationExpr.getArguments().forEach(argItem -> {
+                                        ArgumentItem argument = new ArgumentItem();
+                                        if (argItem instanceof StringLiteralExpr) {
+                                            argument.setType(Constants.TYPE_STRING);
+
+                                            String argumentVal = argItem.toString();
+                                            if (argumentVal.startsWith("\"")
+                                                    && argumentVal.endsWith("\""))
+                                                argumentVal = argumentVal.substring(1, argumentVal.length() - 1);
+                                            argument.setValue(argumentVal);
+                                            objectCreationItem.addArgument(argument);
+                                        }
+                                        // TODO: Do for other types of arguments
+                                    });
+                                }
+
+                                objectCreations.add(objectCreationItem);
+                            }
+                        } catch (Exception ex) {
+                            Logger.log("Error parsing object creations inside method for: " + className);
+                        }
+                    }
+
+                    classItem.setFields(fields);
+                    classItem.setAnnotations(annItems);
+                    classItem.setConstructors(constructors);
+                    classItem.setMethods(methods);
+                    classItem.setInvocations(invocations);
+                    classItem.setObjectCreations(objectCreations);
+                    classItem.setVariables(variables);
+                    classes.add(classItem);
+
+                    this.dictClass.put(classItem.getFqn(), classItem);
+                    if (this.dictSNClass.get(className) == null)
+                        this.dictSNClass.put(className, new ArrayList<>());
+                    this.dictSNClass.get(className).add(classItem);
+                }
             } catch (Exception ex) {
                 Logger.log("getClasses() => Error parsing file: " + javaFile);
             }
         }
 
+        Logger.log("Total classes: " + classes.size());
         return classes;
     }
 
     /**
-     * Populates classname & class fqn for classes located in javaFilePath
+     * Get all annotations for the method
      * 
-     * @param javaFilePath
+     * @param decl
      * @return
      */
-    private List<ClassItem> GetClassInstances(String javaFilePath) {
-        List<ClassItem> classInstances = new ArrayList<>();
+    private List<AnnotationItem> getMethodAnnotations(MethodDeclaration decl) {
+        List<AnnotationItem> annotationItems = new ArrayList<>();
 
-        Path path = Paths.get(javaFilePath);
-        String filename = path.getFileName().toString();
-        String folder = path.getParent().toString();
+        List<AnnotationExpr> annotations = decl.getAnnotations();
 
-        Log.setAdapter(new Log.StandardOutStandardErrorAdapter());
-        SourceRoot sourceRoot = new SourceRoot(
-                CodeGenerationUtils.mavenModuleRoot(FieldHelper.class)
-                        .resolve(folder));
-        CompilationUnit cu = sourceRoot.parse("", filename);
+        if (annotations == null)
+            return annotationItems;
 
-        List<ClassOrInterfaceDeclaration> classes = cu
-                .findAll(ClassOrInterfaceDeclaration.class)
-                .stream()
-                .collect(Collectors.toList());
-        
-        String packageName = null;
-        if (classes == null)
-            return classInstances;
+        for (AnnotationExpr annotation : annotations) {
+            AnnotationItem annItem = new AnnotationItem();
+            annItem.setParentEntity(decl.getNameAsString());
+            annItem.setAnnotationName(annotation.getNameAsString());
+            annItem.setAnnotationType(Constants.ANNOTATION_METHOD);
 
-        for (ClassOrInterfaceDeclaration decl : classes) {
+            if (annotation instanceof NormalAnnotationExpr) {
+                NormalAnnotationExpr annExpr = (NormalAnnotationExpr) annotation;
 
-            System.out.println("========");
+                List<MemberValuePair> annKeyValuePairs = annExpr.getPairs();
 
-            ClassItem classItem = new ClassItem(javaFilePath);
-            Node parentNode = decl.getParentNode().get();
-            if (packageName == null) {
-                // Only look for the package for the first class.
-                List<Node> children = parentNode.getChildNodes();
-
-                if (children == null)
-                    continue;
-
-                for (Node item : children) {
-                    if (item.toString().contains(Constants.PACKAGE)) {
-                        if (item.getChildNodes().size() > 0) {
-                            packageName = item.getChildNodes().get(0).toString();
-                            break;
-                        }
+                if (annKeyValuePairs != null) {
+                    for (MemberValuePair pair : annKeyValuePairs) {
+                        String annKey = pair.getNameAsString();
+                        String annVal = pair.getValue().toString();
+                        if (annVal.startsWith("\"") && annVal.endsWith("\""))
+                            annVal = annVal.substring(1, annVal.length() - 1);
+                        annItem.addAnnotationAttr(new AnnotationAttrItem(annKey, annVal));
                     }
                 }
+            } else if (annotation instanceof MarkerAnnotationExpr) {
+                // No attribute for MarkerAnnotatiionExpr
+                // No need to do anything about it
+                MarkerAnnotationExpr annoExpr = (MarkerAnnotationExpr) annotation;
+            } else if (annotation instanceof SingleMemberAnnotationExpr) {
+                // Single parameter w/o values for SingleMemberAnnotationExpr
+                // Need to collect the single parameter
+                SingleMemberAnnotationExpr annoExpr = (SingleMemberAnnotationExpr) annotation;
             }
 
-            String classname = decl.getNameAsString();
-            classItem.setName(classname);
-            if (packageName == null || packageName.isEmpty())
-                classItem.setFqn(classname);
-            else
-                classItem.setFqn(packageName + "." + classname);
-
-            classInstances.add(classItem);
+            annotationItems.add(annItem);
         }
 
-        return classInstances;
+        return annotationItems;
+    }
+
+    /**
+     * Get field items from javaparser field declarations
+     * 
+     * @param fields
+     * @return
+     */
+    private List<FieldItem> getFields(List<FieldDeclaration> fieldDecls) {
+        List<FieldItem> fields = new ArrayList<FieldItem>();
+
+        fieldDecls.forEach(decl -> {
+            Node parentNode = decl.getParentNode().get();
+            String fieldClass = "";
+            while (parentNode != null && !(parentNode instanceof ClassOrInterfaceDeclaration))
+                parentNode = parentNode.getParentNode().get();
+            if (parentNode != null && parentNode instanceof NodeWithSimpleName) {
+                fieldClass = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
+            }
+
+            String className = fieldClass;
+            List<String> modifiers = new ArrayList<String>();
+            decl.getModifiers().forEach(item -> {
+                modifiers.add(item.toString());
+            });
+
+            List<AnnotationItem> annItems = new ArrayList<AnnotationItem>();
+            decl.getAnnotations().forEach(fieldAnnItem -> {
+                AnnotationItem annItem = new AnnotationItem();
+                annItem.setAnnotationName(fieldAnnItem.getNameAsString());
+                annItem.setAnnotationType(Constants.ANNOTATION_FIELD);
+                annItem.setParentEntity(decl.toString());
+                annItems.add(annItem);
+            });
+
+            if (decl.getVariables() != null) {
+                decl.getVariables().forEach(item -> {
+                    FieldItem fieldItem = new FieldItem();
+                    fieldItem.setName(item.getNameAsString());
+                    fieldItem.setType(item.getTypeAsString());
+                    fieldItem.setClassName(className);
+                    if (modifiers.size() >= 1)
+                        fieldItem.setAccessModifier(modifiers.get(0));
+                    if (modifiers.size() == 2)
+                        fieldItem.setDeclType(modifiers.get(1));
+
+                    fields.add(fieldItem);
+                });
+            }
+        });
+
+        return fields;
+    }
+
+    /**
+     * Get annotation items from javaparser annotations
+     * 
+     * @param annotations
+     * @return
+     */
+    private List<AnnotationItem> getAnnotations(NodeList<AnnotationExpr> annotations) {
+        List<AnnotationItem> annItems = new ArrayList<AnnotationItem>();
+
+        annotations.forEach(item -> {
+            AnnotationItem annotationItem = new AnnotationItem();
+            annotationItem.setAnnotationName(item.getNameAsString());
+            annotationItem.setAnnotationType(Constants.ANNOTATION_CLASS);
+            List<AnnotationAttrItem> attrs = new ArrayList<AnnotationAttrItem>();
+
+            if (item instanceof NormalAnnotationExpr) {
+                item.getChildNodes().forEach(paramItem -> {
+                    if (paramItem.getChildNodes().size() >= 1) {
+                        List<Node> childNodes = paramItem.getChildNodes();
+                        if (childNodes.size() > 1) {
+                            if (childNodes.get(1) instanceof ArrayInitializerExpr) {
+                                ArrayInitializerExpr attrValArray = (ArrayInitializerExpr) childNodes.get(1);
+                                if (attrValArray.getChildNodes().size() > 0) {
+                                    attrValArray.getChildNodes().forEach(attrValItem -> {
+                                        if (attrValItem instanceof StringLiteralExpr) {
+                                            AnnotationAttrItem attr = new AnnotationAttrItem();
+                                            attr.setAnnotationAttrName(paramItem.toString().split("=")[0].strip());
+                                            String paramValue = attrValItem.toString();
+                                            attr.setAnnotationAttrValue(paramValue);
+                                            attrs.add(attr);
+                                        }
+                                    });
+                                }
+                            } else {
+                                AnnotationAttrItem attr = new AnnotationAttrItem();
+                                attr.setAnnotationAttrName(paramItem.toString().split("=")[0].strip());
+                                String paramValue = childNodes.get(1).toString();
+                                attr.setAnnotationAttrValue(paramValue);
+                                attrs.add(attr);
+                            }
+                        }
+
+                    }
+                });
+
+            } else if (item instanceof SingleMemberAnnotationExpr) {
+                item.getChildNodes().forEach(paramItem -> {
+                    if (paramItem instanceof ClassExpr) {
+                        AnnotationAttrItem attr = new AnnotationAttrItem();
+                        attr.setAnnotationAttrName(paramItem.toString());
+                        attrs.add(attr);
+                    } else if (paramItem instanceof ArrayInitializerExpr) {
+                        paramItem.getChildNodes().forEach(exprItem -> {
+                            if (exprItem instanceof ClassExpr) {
+                                AnnotationAttrItem attr = new AnnotationAttrItem();
+                                attr.setAnnotationAttrName(exprItem.toString());
+                                attrs.add(attr);
+                            }
+                        });
+                    }
+                });
+            }
+
+            annotationItem.setAnnotationAttrs(attrs);
+            annItems.add(annotationItem);
+        });
+
+        return annItems;
     }
 
     /**

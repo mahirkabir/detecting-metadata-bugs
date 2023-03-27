@@ -325,7 +325,7 @@ public class Helper {
                 String safeFilename = filename.replace("\\", "\\\\");
                 Pattern pattern = Pattern.compile(regexFriendly(path));
                 Matcher matcher = pattern.matcher(safeFilename);
-                boolean matchFound = matcher.find();
+                boolean matchFound = matcher.matches();
                 if (matchFound)
                     return true;
             } catch (Exception ex) {
