@@ -3,15 +3,19 @@ package engine;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.javaparser.ast.CompilationUnit;
+
 import models.DataResult;
 
 public class EngineCache implements IEngineCache {
     private Map<String, DataResult> mapResultCache;
     private Map<String, Boolean> mapLoadedFilenameCache;
+    private Map<String, CompilationUnit> mapLoadedASTCache;
 
     public EngineCache() {
         super();
         this.mapResultCache = new HashMap<>();
+        this.mapLoadedASTCache = new HashMap<String, CompilationUnit>();
     }
 
     @Override
@@ -37,5 +41,18 @@ public class EngineCache implements IEngineCache {
     @Override
     public Map<String, Boolean> getLoadedFilenames() {
         return this.mapLoadedFilenameCache;
+    }
+
+    @Override
+    public CompilationUnit getLoadedAST(String filename) {
+
+        if (this.mapLoadedASTCache.containsKey(filename))
+            return this.mapLoadedASTCache.get(filename);
+        return null;
+    }
+
+    @Override
+    public void setLoadedAST(String filename, CompilationUnit cu) {
+        this.mapLoadedASTCache.put(filename, cu);
     }
 }

@@ -22,11 +22,14 @@ import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
 import com.github.javaparser.utils.SourceRoot;
 
+import engine.EngineFactory;
+import engine.IEngineCache;
 import models.AnnotationAttrItem;
 import models.AnnotationItem;
 
 public class AnnotationHelper {
     private String javaFilePath;
+    private IEngineCache engineCache;
 
     /**
      * Used for extracting field items from a java file
@@ -36,6 +39,7 @@ public class AnnotationHelper {
     public AnnotationHelper(String javaFilePath) {
         super();
         this.javaFilePath = javaFilePath;
+        this.engineCache = EngineFactory.getEngineCache();
     }
 
     public List<AnnotationItem> GetAnnotations() {
@@ -45,11 +49,16 @@ public class AnnotationHelper {
         String filename = path.getFileName().toString();
         String folder = path.getParent().toString();
 
-        Log.setAdapter(new Log.StandardOutStandardErrorAdapter());
-        SourceRoot sourceRoot = new SourceRoot(
-                CodeGenerationUtils.mavenModuleRoot(InvocationHelper.class)
-                        .resolve(folder));
-        CompilationUnit cu = sourceRoot.parse("", filename);
+        CompilationUnit cu = this.engineCache.getLoadedAST(javaFilePath);
+        if (cu == null) {
+            Log.setAdapter(new Log.StandardOutStandardErrorAdapter());
+            SourceRoot sourceRoot = new SourceRoot(
+                    CodeGenerationUtils.mavenModuleRoot(FieldHelper.class)
+                            .resolve(folder));
+
+            cu = sourceRoot.parse("", filename);
+            this.engineCache.setLoadedAST(javaFilePath, cu);
+        }
 
         List<ClassOrInterfaceDeclaration> fields = cu
                 .findAll(ClassOrInterfaceDeclaration.class)

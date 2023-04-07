@@ -20,12 +20,15 @@ import com.github.javaparser.utils.CodeGenerationUtils;
 import com.github.javaparser.utils.Log;
 import com.github.javaparser.utils.SourceRoot;
 
+import engine.EngineFactory;
+import engine.IEngineCache;
 import models.AnnotationAttrItem;
 import models.AnnotationItem;
 import models.MethodItem;
 
 public class MethodHelper {
     private String javaFilePath;
+    private IEngineCache engineCache;
 
     /**
      * Used for extracting field items from a java file
@@ -35,6 +38,7 @@ public class MethodHelper {
     public MethodHelper(String javaFilePath) {
         super();
         this.javaFilePath = javaFilePath;
+        this.engineCache = EngineFactory.getEngineCache();
     }
 
     public List<MethodItem> GetMethods() {
@@ -42,11 +46,16 @@ public class MethodHelper {
         String filename = path.getFileName().toString();
         String folder = path.getParent().toString();
 
-        Log.setAdapter(new Log.StandardOutStandardErrorAdapter());
-        SourceRoot sourceRoot = new SourceRoot(
-                CodeGenerationUtils.mavenModuleRoot(MethodHelper.class)
-                        .resolve(folder));
-        CompilationUnit cu = sourceRoot.parse("", filename);
+        CompilationUnit cu = this.engineCache.getLoadedAST(javaFilePath);
+        if (cu == null) {
+            Log.setAdapter(new Log.StandardOutStandardErrorAdapter());
+            SourceRoot sourceRoot = new SourceRoot(
+                    CodeGenerationUtils.mavenModuleRoot(FieldHelper.class)
+                            .resolve(folder));
+
+            cu = sourceRoot.parse("", filename);
+            this.engineCache.setLoadedAST(javaFilePath, cu);
+        }
 
         List<MethodItem> methods = cu
                 .findAll(MethodDeclaration.class)

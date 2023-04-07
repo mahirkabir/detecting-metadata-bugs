@@ -2,6 +2,8 @@ package engine;
 
 import java.util.Map;
 
+import com.github.javaparser.ast.CompilationUnit;
+
 import models.DataResult;
 
 public interface IEngineCache {
@@ -34,4 +36,20 @@ public interface IEngineCache {
      * @return
      */
     Map<String, Boolean> getLoadedFilenames();
+
+    /**
+     * Get loaded AST generated from file - filepath
+     * 
+     * @param filepath
+     * @return
+     */
+    CompilationUnit getLoadedAST(String filepath);
+
+    /**
+     * Set loaded AST generated for the file - filepath
+     * 
+     * @param filepath
+     * @param cu
+     */
+    void setLoadedAST(String filepath, CompilationUnit cu);
 }
