@@ -283,7 +283,7 @@ public class EngineFunctions implements IEngineFunctions {
                             callerClassMatches = variables.stream().anyMatch(item -> item.getName()
                                     .equals(callerObjectName) && item.getType().equals(callerClass));
                         if (callerClassMatches) {
-                           String arg = invocationItem.getArguments().get(argIdx);
+                            String arg = invocationItem.getArguments().get(argIdx);
                             // NOTE: For now, we are only considering string literals
                             // or CLASSNAME.class arguments
                             // Variables are skipped for now
@@ -574,6 +574,18 @@ public class EngineFunctions implements IEngineFunctions {
                 new BooleanItem(item.isEmpty()));
     }
 
+    /**
+     * For checking if ClassItem is an empty ClassItem
+     * (A valid ClassItem will always have a file path)
+     * 
+     * @param classItem
+     * @return
+     */
+    private DataResult<BooleanItem> isEmpty(ClassItem classItem) {
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN,
+                new BooleanItem(classItem.getFilePath().isBlank()));
+    }
+
     private DataResult<BooleanItem> endsWith(String str, String suffix) {
         boolean endsWith = str.endsWith(suffix);
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(endsWith));
@@ -623,6 +635,20 @@ public class EngineFunctions implements IEngineFunctions {
         ClassItem ret = new ClassItem("");
         if (this.classHelper.getClassSNDict().containsKey(classSN))
             ret = this.classHelper.getClassSNDict().get(classSN).get(0);
+        return new DataResult<ClassItem>(Constants.TYPE_CLASS, ret);
+    }
+
+    /**
+     * Locate class based on Fully Qualified Name
+     * 
+     * @param classFQN
+     * @return
+     */
+    private DataResult<ClassItem> locateClassFQN(String classFQN) {
+        classFQN = classFQN.replace(".class", "");
+        ClassItem ret = new ClassItem("");
+        if (this.classHelper.getClassDict().containsKey(classFQN))
+            ret = this.classHelper.getClassDict().get(classFQN);
         return new DataResult<ClassItem>(Constants.TYPE_CLASS, ret);
     }
 
@@ -932,6 +958,8 @@ public class EngineFunctions implements IEngineFunctions {
                         result = this.isEmpty((List) item);
                     else if (item instanceof StringItem)
                         result = this.isEmpty(((StringItem) item).getValue());
+                    else if (item instanceof ClassItem)
+                        result = this.isEmpty((ClassItem) item);
                 }
                     break;
 
@@ -1009,6 +1037,13 @@ public class EngineFunctions implements IEngineFunctions {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     StringItem className = (StringItem) params.get(0).getResult();
                     result = this.locateClass(className.getValue());
+                }
+                    break;
+
+                case Constants.FUNCTION_LOCATE_CLASS_FQN: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    StringItem className = (StringItem) params.get(0).getResult();
+                    result = this.locateClassFQN(className.getValue());
                 }
                     break;
 

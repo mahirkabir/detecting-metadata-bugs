@@ -122,6 +122,7 @@ public class ClassHelper {
             }
         }
 
+        Logger.log("Total Classes: " + classes.size());
         return classes;
     }
 
@@ -500,6 +501,13 @@ public class ClassHelper {
 
     public Map<String, List<ClassItem>> getClassSNDict() {
         return this.dictSNClass;
+    }
+
+    /*
+     * Get the <FQN, ClassItem> Map
+     */
+    public Map<String, ClassItem> getClassDict() {
+        return this.dictClass;
     }
 
     /**
