@@ -647,6 +647,12 @@ public class EngineFunctions implements IEngineFunctions {
     private DataResult<ClassItem> locateClassFQN(String classFQN) {
         classFQN = classFQN.replace(".class", "");
         ClassItem ret = new ClassItem("");
+
+        if (this.classHelper.getClassDict().size() == 0) {
+            // Classes might not have been loaded yet
+            this.getClasses();
+        }
+
         if (this.classHelper.getClassDict().containsKey(classFQN))
             ret = this.classHelper.getClassDict().get(classFQN);
         return new DataResult<ClassItem>(Constants.TYPE_CLASS, ret);
