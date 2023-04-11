@@ -47,24 +47,28 @@ public class EngineAssert implements IEngineAssert {
     @Override
     public DataResult getExistsValue(ASTSimExp assertSimExp) {
         this.engineDecl.createFrame();
+        boolean assertPass = false;
         ASTExpression iterationExp = (ASTExpression) assertSimExp.jjtGetChild(1);
         Pair<ASTType, ASTIdentifier> pIterator = Helper.getIterator(iterationExp);
         ASTExpression containerExp = (ASTExpression) assertSimExp.jjtGetChild(2);
+
         DataResult containerValue = Helper.getContainer(containerExp);
+        if (containerValue != null) {
+            String iteratorType = pIterator.a.getType();
+            String iteratorVar = pIterator.b.getIdentifier();
+            ArrayList containerList = (ArrayList) containerValue.getResult();
 
-        String iteratorType = pIterator.a.getType();
-        String iteratorVar = pIterator.b.getIdentifier();
-        ArrayList containerList = (ArrayList) containerValue.getResult();
-
-        boolean assertPass = false;
-        for (Object element : containerList) {
-            DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
-            this.engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
-            ASTExpression booleanExp = (ASTExpression) assertSimExp.jjtGetChild(3);
-            assertPass |= this.evaluator.evalBooleanExpr(booleanExp);
-            this.engineDecl.resetFrame();
-            if (assertPass)
-                break;
+            if (containerList != null) {
+                for (Object element : containerList) {
+                    DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
+                    this.engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
+                    ASTExpression booleanExp = (ASTExpression) assertSimExp.jjtGetChild(3);
+                    assertPass |= this.evaluator.evalBooleanExpr(booleanExp);
+                    this.engineDecl.resetFrame();
+                    if (assertPass)
+                        break;
+                }
+            }
         }
         this.engineDecl.removeFrame();
 

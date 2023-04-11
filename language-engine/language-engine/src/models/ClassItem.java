@@ -21,16 +21,6 @@ public class ClassItem extends JItem {
         super();
         super.setType(Constants.TYPE_CLASS);
         this.javaFilePath = javaFilePath;
-
-        this.fields = new ArrayList<>();
-        this.methods = new ArrayList<>();
-        this.constructors = new ArrayList<>();
-
-        this.annotations = new ArrayList<>();
-        this.invocations = new ArrayList<>();
-
-        this.variables = new ArrayList<>();
-        this.objectCreations = new ArrayList<>();
     }
 
     public String getFilePath() {

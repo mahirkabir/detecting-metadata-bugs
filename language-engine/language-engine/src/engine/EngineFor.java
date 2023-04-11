@@ -28,22 +28,27 @@ public class EngineFor implements IEngineFor {
         ASTExpression forContExp = (ASTExpression) forStmnt.jjtGetChild(1);
         DataResult containerValue = Helper.getContainer(forContExp);
 
-        String iteratorType = pIterator.a.getType();
-        String iteratorVar = pIterator.b.getIdentifier();
-        ArrayList containerList = (ArrayList) containerValue.getResult();
-        int totalChildren = forStmnt.jjtGetNumChildren();
+        if (containerValue != null) {
+            String iteratorType = pIterator.a.getType();
+            String iteratorVar = pIterator.b.getIdentifier();
+            ArrayList containerList = (ArrayList) containerValue.getResult();
+            if (containerList != null) {
+                int totalChildren = forStmnt.jjtGetNumChildren();
 
-        for (Object element : containerList) {
-            DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
-            engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
+                for (Object element : containerList) {
+                    DataResult iteratorCurrValue = Helper.typeCastValue(iteratorType, element);
+                    engineDecl.declareVariable(iteratorVar, iteratorCurrValue);
 
-            for (int i = 2; i < totalChildren; ++i) {
-                Node forChild = forStmnt.jjtGetChild(i);
-                Helper.process(forChild);
+                    for (int i = 2; i < totalChildren; ++i) {
+                        Node forChild = forStmnt.jjtGetChild(i);
+                        Helper.process(forChild);
+                    }
+
+                    engineDecl.resetFrame();
+                }
             }
-
-            engineDecl.resetFrame();
         }
+
         engineDecl.removeFrame();
     }
 
