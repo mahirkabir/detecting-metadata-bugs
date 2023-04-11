@@ -8,6 +8,7 @@ import java.util.List;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
@@ -52,36 +53,43 @@ public class FieldHelper {
 
         List<FieldItem> fields = new ArrayList<FieldItem>();
         List<FieldDeclaration> fieldDecls = cu.findAll(FieldDeclaration.class);
-        fieldDecls.forEach(decl -> {
-            Node parentNode = decl.getParentNode().get();
-            String fieldClass = "";
-            while (parentNode != null && !(parentNode instanceof ClassOrInterfaceDeclaration))
-                parentNode = parentNode.getParentNode().get();
-            if (parentNode != null && parentNode instanceof NodeWithSimpleName) {
-                fieldClass = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
+        if (fieldDecls != null) {
+            for (FieldDeclaration decl : fieldDecls) {
+                try {
+                    Node parentNode = decl.getParentNode().get();
+                    String fieldClass = "";
+                    while (parentNode != null && !(parentNode instanceof ClassOrInterfaceDeclaration
+                            || parentNode instanceof EnumDeclaration))
+                        parentNode = parentNode.getParentNode().get();
+                    if (parentNode != null && parentNode instanceof NodeWithSimpleName) {
+                        fieldClass = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
+                    }
+
+                    String className = fieldClass;
+                    List<String> modifiers = new ArrayList<String>();
+                    decl.getModifiers().forEach(item -> {
+                        modifiers.add(item.toString());
+                    });
+
+                    if (decl.getVariables() != null) {
+                        decl.getVariables().forEach(item -> {
+                            FieldItem fieldItem = new FieldItem();
+                            fieldItem.setName(item.getNameAsString());
+                            fieldItem.setType(item.getTypeAsString());
+                            fieldItem.setClassName(className);
+                            if (modifiers.size() >= 1)
+                                fieldItem.setAccessModifier(modifiers.get(0));
+                            if (modifiers.size() == 2)
+                                fieldItem.setDeclType(modifiers.get(1));
+
+                            fields.add(fieldItem);
+                        });
+                    }
+                } catch (Exception ex) {
+                    Logger.log("Error parsing fields from: " + javaFilePath + " => " + ex.toString());
+                }
             }
-
-            String className = fieldClass;
-            List<String> modifiers = new ArrayList<String>();
-            decl.getModifiers().forEach(item -> {
-                modifiers.add(item.toString());
-            });
-
-            if (decl.getVariables() != null) {
-                decl.getVariables().forEach(item -> {
-                    FieldItem fieldItem = new FieldItem();
-                    fieldItem.setName(item.getNameAsString());
-                    fieldItem.setType(item.getTypeAsString());
-                    fieldItem.setClassName(className);
-                    if (modifiers.size() >= 1)
-                        fieldItem.setAccessModifier(modifiers.get(0));
-                    if (modifiers.size() == 2)
-                        fieldItem.setDeclType(modifiers.get(1));
-
-                    fields.add(fieldItem);
-                });
-            }
-        });
+        }
 
         return fields;
     }

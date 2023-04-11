@@ -2,8 +2,8 @@ package utils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
@@ -50,10 +50,11 @@ public class ObjectCreationHelper {
             this.engineCache.setLoadedAST(javaFilePath, cu);
         }
 
-        List<ObjectCreationItem> objectCreations = cu
-                .findAll(ObjectCreationExpr.class)
-                .stream()
-                .map(decl -> {
+        List<ObjectCreationItem> objectCreations = new ArrayList<>();
+        List<ObjectCreationExpr> objectCreationExprs = cu.findAll(ObjectCreationExpr.class);
+        if (objectCreationExprs != null) {
+            for (ObjectCreationExpr decl : objectCreationExprs) {
+                try {
                     Node parentNode = decl.getParentNode().get();
 
                     StringBuilder sbClassName = new StringBuilder();
@@ -87,9 +88,12 @@ public class ObjectCreationHelper {
                         });
                     }
 
-                    return objectCreationItem;
-                })
-                .collect(Collectors.toList());
+                    objectCreations.add(objectCreationItem);
+                } catch (Exception ex) {
+                    Logger.log("Error parsing object-creations from: " + javaFilePath + " => " + ex.toString());
+                }
+            }
+        }
 
         return objectCreations;
     }

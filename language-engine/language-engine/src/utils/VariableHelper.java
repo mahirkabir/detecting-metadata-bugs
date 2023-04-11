@@ -67,57 +67,61 @@ public class VariableHelper {
         if (declVariables == null)
             return variables;
 
-        declVariables.forEach(decl -> {
-            Node parentNode = decl.getParentNode().get();
-            String variableClass = "";
-            String variableMethod = "";
-            while (parentNode != null && !(parentNode instanceof ClassOrInterfaceDeclaration)) {
-                if (parentNode instanceof MethodDeclaration) {
-                    MethodDeclaration methodNode = (MethodDeclaration) parentNode;
-                    String methodType = methodNode.getTypeAsString();
-                    String methodName = methodNode.getNameAsString();
-                    StringBuilder parameters = new StringBuilder("(");
-                    if (methodNode.getParameters() != null) {
-                        methodNode.getParameters().forEach(methodParam -> {
-                            if (parameters.toString().equals("("))
-                                parameters.append(methodParam.toString());
-                            else
-                                parameters.append(", " + methodParam.toString());
-                        });
+        for (VariableDeclarationExpr decl : declVariables) {
+            try {
+                Node parentNode = decl.getParentNode().get();
+                String variableClass = "";
+                String variableMethod = "";
+                while (parentNode != null && !(parentNode instanceof ClassOrInterfaceDeclaration)) {
+                    if (parentNode instanceof MethodDeclaration) {
+                        MethodDeclaration methodNode = (MethodDeclaration) parentNode;
+                        String methodType = methodNode.getTypeAsString();
+                        String methodName = methodNode.getNameAsString();
+                        StringBuilder parameters = new StringBuilder("(");
+                        if (methodNode.getParameters() != null) {
+                            methodNode.getParameters().forEach(methodParam -> {
+                                if (parameters.toString().equals("("))
+                                    parameters.append(methodParam.toString());
+                                else
+                                    parameters.append(", " + methodParam.toString());
+                            });
+                        }
+                        parameters.append(")");
+                        variableMethod = methodType + " " + methodName + parameters.toString();
                     }
-                    parameters.append(")");
-                    variableMethod = methodType + " " + methodName + parameters.toString();
+                    parentNode = parentNode.getParentNode().get();
                 }
-                parentNode = parentNode.getParentNode().get();
-            }
 
-            if (parentNode != null && parentNode instanceof NodeWithSimpleName) {
-                variableClass = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
-            }
+                if (parentNode != null && parentNode instanceof NodeWithSimpleName) {
+                    variableClass = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
+                }
 
-            String className = variableClass;
-            String parentMethod = variableMethod;
-            List<String> modifiers = new ArrayList<String>();
-            decl.getModifiers().forEach(item -> {
-                modifiers.add(item.toString());
-            });
-
-            if (decl.getVariables() != null) {
-                decl.getVariables().forEach(item -> {
-                    VariableItem variableItem = new VariableItem();
-                    variableItem.setName(item.getNameAsString());
-                    variableItem.setType(item.getTypeAsString());
-                    variableItem.setClassName(className);
-                    variableItem.setParentMethod(parentMethod);
-                    if (modifiers.size() >= 1)
-                        variableItem.setAccessModifier(modifiers.get(0));
-                    if (modifiers.size() == 2)
-                        variableItem.setDeclType(modifiers.get(1));
-
-                    variables.add(variableItem);
+                String className = variableClass;
+                String parentMethod = variableMethod;
+                List<String> modifiers = new ArrayList<String>();
+                decl.getModifiers().forEach(item -> {
+                    modifiers.add(item.toString());
                 });
+
+                if (decl.getVariables() != null) {
+                    decl.getVariables().forEach(item -> {
+                        VariableItem variableItem = new VariableItem();
+                        variableItem.setName(item.getNameAsString());
+                        variableItem.setType(item.getTypeAsString());
+                        variableItem.setClassName(className);
+                        variableItem.setParentMethod(parentMethod);
+                        if (modifiers.size() >= 1)
+                            variableItem.setAccessModifier(modifiers.get(0));
+                        if (modifiers.size() == 2)
+                            variableItem.setDeclType(modifiers.get(1));
+
+                        variables.add(variableItem);
+                    });
+                }
+            } catch (Exception ex) {
+                Logger.log("Error parsing variables from: " + javaFilePath + " => " + ex.toString());
             }
-        });
+        }
 
         return variables;
     }

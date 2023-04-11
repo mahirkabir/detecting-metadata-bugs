@@ -4,10 +4,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AnnotationExpr;
@@ -57,13 +58,21 @@ public class MethodHelper {
             this.engineCache.setLoadedAST(javaFilePath, cu);
         }
 
-        List<MethodItem> methods = cu
-                .findAll(MethodDeclaration.class)
-                .stream()
-                .map(decl -> {
+        List<MethodItem> methods = new ArrayList<MethodItem>();
+        List<MethodDeclaration> methodDecls = cu.findAll(MethodDeclaration.class);
+        if (methodDecls != null) {
+            for (MethodDeclaration decl : methodDecls) {
+                try {
                     Node parentNode = decl.getParentNode().get();
-                    @SuppressWarnings("unchecked")
-                    String className = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
+                    String methodClass = "";
+                    while (parentNode != null && !(parentNode instanceof ClassOrInterfaceDeclaration
+                            || parentNode instanceof EnumDeclaration))
+                        parentNode = parentNode.getParentNode().get();
+                    if (parentNode != null && parentNode instanceof NodeWithSimpleName) {
+                        methodClass = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
+                    }
+
+                    String className = methodClass;
 
                     MethodItem methodItem = new MethodItem();
                     methodItem.setName(decl.getNameAsString());
@@ -72,18 +81,22 @@ public class MethodHelper {
                     methodItem.setAnnotations(this.getMethodAnnotations(decl));
 
                     List<String> modifiers = new ArrayList<String>();
-                    decl.getModifiers().forEach(item -> {
-                        modifiers.add(item.toString());
-                    });
+                    if (decl.getModifiers() != null)
+                        decl.getModifiers().forEach(item -> {
+                            modifiers.add(item.toString());
+                        });
 
                     if (modifiers.size() >= 1)
                         methodItem.setAccessModifier(modifiers.get(0));
                     if (modifiers.size() == 2)
                         methodItem.setDeclType(modifiers.get(1));
 
-                    return methodItem;
-                })
-                .collect(Collectors.toList());
+                    methods.add(methodItem);
+                } catch (Exception ex) {
+                    Logger.log("Error parsing methods from: " + javaFilePath + " => " + ex.toString());
+                }
+            }
+        }
 
         return methods;
     }

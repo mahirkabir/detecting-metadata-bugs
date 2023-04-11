@@ -60,78 +60,82 @@ public class AnnotationHelper {
             this.engineCache.setLoadedAST(javaFilePath, cu);
         }
 
-        List<ClassOrInterfaceDeclaration> fields = cu
+        List<ClassOrInterfaceDeclaration> classDecls = cu
                 .findAll(ClassOrInterfaceDeclaration.class)
                 .stream()
                 .collect(Collectors.toList());
 
-        if (fields == null)
+        if (classDecls == null)
             return annotations;
 
-        for (ClassOrInterfaceDeclaration decl : fields) {
+        for (ClassOrInterfaceDeclaration decl : classDecls) {
             System.out.println("========");
+            try {
+                String className = decl.getNameAsString();
+                if (decl.getAnnotations() == null)
+                    continue;
+                decl.getAnnotations().forEach(item -> {
+                    AnnotationItem annotationItem = new AnnotationItem();
+                    annotationItem.setParentEntity(className);
+                    annotationItem.setAnnotationName(item.getNameAsString());
+                    annotationItem.setAnnotationType(Constants.ANNOTATION_CLASS);
+                    List<AnnotationAttrItem> attrs = new ArrayList<AnnotationAttrItem>();
 
-            String className = decl.getNameAsString();
-            if (decl.getAnnotations() == null)
-                continue;
-            decl.getAnnotations().forEach(item -> {
-                AnnotationItem annotationItem = new AnnotationItem();
-                annotationItem.setParentEntity(className);
-                annotationItem.setAnnotationName(item.getNameAsString());
-                annotationItem.setAnnotationType(Constants.ANNOTATION_CLASS);
-                List<AnnotationAttrItem> attrs = new ArrayList<AnnotationAttrItem>();
-
-                if (item instanceof NormalAnnotationExpr) {
-                    item.getChildNodes().forEach(paramItem -> {
-                        if (paramItem.getChildNodes().size() >= 1) {
-                            List<Node> childNodes = paramItem.getChildNodes();
-                            if (childNodes.size() > 1) {
-                                if (childNodes.get(1) instanceof ArrayInitializerExpr) {
-                                    ArrayInitializerExpr attrValArray = (ArrayInitializerExpr) childNodes.get(1);
-                                    if (attrValArray.getChildNodes().size() > 0) {
-                                        attrValArray.getChildNodes().forEach(attrValItem -> {
-                                            if (attrValItem instanceof StringLiteralExpr) {
-                                                AnnotationAttrItem attr = new AnnotationAttrItem();
-                                                attr.setAnnotationAttrName(paramItem.toString().split("=")[0].strip());
-                                                String paramValue = attrValItem.toString();
-                                                attr.setAnnotationAttrValue(paramValue);
-                                                attrs.add(attr);
-                                            }
-                                        });
+                    if (item instanceof NormalAnnotationExpr) {
+                        item.getChildNodes().forEach(paramItem -> {
+                            if (paramItem.getChildNodes().size() >= 1) {
+                                List<Node> childNodes = paramItem.getChildNodes();
+                                if (childNodes.size() > 1) {
+                                    if (childNodes.get(1) instanceof ArrayInitializerExpr) {
+                                        ArrayInitializerExpr attrValArray = (ArrayInitializerExpr) childNodes.get(1);
+                                        if (attrValArray.getChildNodes().size() > 0) {
+                                            attrValArray.getChildNodes().forEach(attrValItem -> {
+                                                if (attrValItem instanceof StringLiteralExpr) {
+                                                    AnnotationAttrItem attr = new AnnotationAttrItem();
+                                                    attr.setAnnotationAttrName(
+                                                            paramItem.toString().split("=")[0].strip());
+                                                    String paramValue = attrValItem.toString();
+                                                    attr.setAnnotationAttrValue(paramValue);
+                                                    attrs.add(attr);
+                                                }
+                                            });
+                                        }
+                                    } else {
+                                        AnnotationAttrItem attr = new AnnotationAttrItem();
+                                        attr.setAnnotationAttrName(paramItem.toString().split("=")[0].strip());
+                                        String paramValue = childNodes.get(1).toString();
+                                        attr.setAnnotationAttrValue(paramValue);
+                                        attrs.add(attr);
                                     }
-                                } else {
-                                    AnnotationAttrItem attr = new AnnotationAttrItem();
-                                    attr.setAnnotationAttrName(paramItem.toString().split("=")[0].strip());
-                                    String paramValue = childNodes.get(1).toString();
-                                    attr.setAnnotationAttrValue(paramValue);
-                                    attrs.add(attr);
                                 }
+
                             }
+                        });
 
-                        }
-                    });
+                    } else if (item instanceof SingleMemberAnnotationExpr) {
+                        item.getChildNodes().forEach(paramItem -> {
+                            if (paramItem instanceof ClassExpr) {
+                                AnnotationAttrItem attr = new AnnotationAttrItem();
+                                attr.setAnnotationAttrName(paramItem.toString());
+                                attrs.add(attr);
+                            } else if (paramItem instanceof ArrayInitializerExpr) {
+                                paramItem.getChildNodes().forEach(exprItem -> {
+                                    if (exprItem instanceof ClassExpr) {
+                                        AnnotationAttrItem attr = new AnnotationAttrItem();
+                                        attr.setAnnotationAttrName(exprItem.toString());
+                                        attrs.add(attr);
+                                    }
+                                });
+                            }
+                        });
+                    }
 
-                } else if (item instanceof SingleMemberAnnotationExpr) {
-                    item.getChildNodes().forEach(paramItem -> {
-                        if (paramItem instanceof ClassExpr) {
-                            AnnotationAttrItem attr = new AnnotationAttrItem();
-                            attr.setAnnotationAttrName(paramItem.toString());
-                            attrs.add(attr);
-                        } else if (paramItem instanceof ArrayInitializerExpr) {
-                            paramItem.getChildNodes().forEach(exprItem -> {
-                                if (exprItem instanceof ClassExpr) {
-                                    AnnotationAttrItem attr = new AnnotationAttrItem();
-                                    attr.setAnnotationAttrName(exprItem.toString());
-                                    attrs.add(attr);
-                                }
-                            });
-                        }
-                    });
-                }
-
-                annotationItem.setAnnotationAttrs(attrs);
-                annotations.add(annotationItem);
-            });
+                    annotationItem.setAnnotationAttrs(attrs);
+                    annotations.add(annotationItem);
+                });
+            } catch (Exception ex) {
+                Logger.log("Error parsing annotations from: " + javaFilePath + " => " + ex.toString());
+            }
         }
 
         return annotations;

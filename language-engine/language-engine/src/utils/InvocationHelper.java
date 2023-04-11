@@ -103,7 +103,7 @@ public class InvocationHelper {
                 invocationItem.setArguments(arguments);
                 invocations.add(invocationItem);
             } catch (Exception ex) {
-                utils.Logger.log("Error processing invocation: " + decl.toString());
+                Logger.log("Error parsing invocations from: " + javaFilePath + " => " + ex.toString());
             }
         }
 

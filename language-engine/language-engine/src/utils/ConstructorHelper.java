@@ -53,10 +53,11 @@ public class ConstructorHelper {
             this.engineCache.setLoadedAST(javaFilePath, cu);
         }
 
-        List<MethodItem> constructors = cu
-                .findAll(ConstructorDeclaration.class)
-                .stream()
-                .map(decl -> {
+        List<MethodItem> constructors = new ArrayList<>();
+        List<ConstructorDeclaration> constructorDecls = cu.findAll(ConstructorDeclaration.class);
+        if (constructorDecls != null) {
+            for (ConstructorDeclaration decl : constructorDecls) {
+                try {
                     Node parentNode = decl.getParentNode().get();
                     @SuppressWarnings("unchecked")
                     String className = ((NodeWithSimpleName<VariableDeclarator>) parentNode).getNameAsString();
@@ -87,9 +88,12 @@ public class ConstructorHelper {
                             constructorItem.addParameter(paramItem);
                         });
 
-                    return constructorItem;
-                })
-                .collect(Collectors.toList());
+                    constructors.add(constructorItem);
+                } catch (Exception ex) {
+                    Logger.log("Error parsing constructors from: " + javaFilePath + " => " + ex.toString());
+                }
+            }
+        }
 
         return constructors;
     }
