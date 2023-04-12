@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -55,6 +56,9 @@ public class EngineMain {
 
         int versionIdx = 0;
         int cnt = 1; // Total: 71298
+
+        LocalTime currentTime = LocalTime.now();
+        Logger.log("The current time is: " + currentTime);
 
         while (versionIdx < maxVersionCnt) {
 
@@ -118,6 +122,8 @@ public class EngineMain {
                         });
                     });
 
+                    currentTime = LocalTime.now();
+                    Logger.log("The current time is: " + currentTime);
                     System.out.println("Processed version: " + cnt++);
                 }
             }
