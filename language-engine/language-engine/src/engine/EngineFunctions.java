@@ -742,6 +742,37 @@ public class EngineFunctions implements IEngineFunctions {
         return resInBound;
     }
 
+    /**
+     * Check if property - propertyName is an instance variable of class c
+     * 
+     * @param c
+     * @param propertyName
+     * @return
+     */
+    private DataResult isInstanceVariable(ClassItem c, String propertyName) {
+        String basicFunction = "isInstanceVariable()" + "||" + c.getFqn();
+        String functionCall = basicFunction + "||" + propertyName;
+        DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            List<FieldItem> fields = this.getFields(c).getResult();
+            result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN,
+                    new BooleanItem(false));
+            if (fields != null) {
+                for (FieldItem field : fields) {
+                    functionCall = basicFunction + "||" + field.getName();
+                    DataResult<BooleanItem> currRes = new DataResult<BooleanItem>(functionCall,
+                            new BooleanItem(true));
+                    this.cache.addFunctionCall(functionCall, currRes);
+                    if (field.getName().equals(propertyName))
+                        result.setResult(new BooleanItem(true));
+                }
+            }
+        }
+
+        return result;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -1089,6 +1120,14 @@ public class EngineFunctions implements IEngineFunctions {
                     ClassItem c = (ClassItem) params.get(0).getResult();
                     StringItem objectCreationMethod = (StringItem) params.get(1).getResult();
                     result = this.objectCreated(c, objectCreationMethod.getValue());
+                }
+                    break;
+
+                case Constants.FUNCTION_IS_INSTANCE_VARIABLE: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    ClassItem c = (ClassItem) params.get(0).getResult();
+                    StringItem propertyName = (StringItem) params.get(1).getResult();
+                    result = this.isInstanceVariable(c, propertyName.getValue());
                 }
                     break;
             }
