@@ -118,6 +118,10 @@ public class EngineEvaluate implements IEngineEvaluate {
         Logger.log("ConditionalEqExp");
         DataResult firstResult = evalSimExp((ASTSimExp) eqExp.jjtGetChild(0));
         DataResult secondResult = evalSimExp((ASTSimExp) eqExp.jjtGetChild(1));
+
+        if (firstResult == null || secondResult == null)
+            return firstResult != secondResult;
+
         return Helper.isEqual(firstResult, secondResult);
     }
 
