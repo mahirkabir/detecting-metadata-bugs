@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "EngineMain",
+            "request": "launch",
+            "mainClass": "engine.EngineMain",
+            "projectName": "language-engine",
+            "args": [
+                "dataset-categorizer\\version_categories.txt",
+                "D:\\Mahir\\detecting-metadata-bugs\\dataset\\projects",
+                "language-engine\\language-engine\\startup-config.json",
+                "D:\\Mahir\\detecting-metadata-bugs\\result\\detected-bugs"
+            ]
+        }
+    ]
+}

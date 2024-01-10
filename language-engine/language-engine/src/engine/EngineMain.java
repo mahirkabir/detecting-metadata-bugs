@@ -73,7 +73,7 @@ public class EngineMain {
                             .println("Processing version: " + versionInfo.getCommitId() + " of project: "
                                     + currentProject);
 
-                    Path outputPath = Paths.get("output", currentProject + ".txt");
+                    Path outputPath = Paths.get(args[3], currentProject + ".txt");
                     EngineFactory.setOutputPath(outputPath.toString());
 
                     Path projectPath = Paths.get(datasetFolder, currentProject);
