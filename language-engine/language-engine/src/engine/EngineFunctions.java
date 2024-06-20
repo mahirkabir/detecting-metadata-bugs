@@ -667,6 +667,11 @@ public class EngineFunctions implements IEngineFunctions {
     private DataResult<BooleanItem> classExists(String classFQN) {
         String basicFunction = "classExists()";
         String functionCall = basicFunction + "||" + classFQN;
+
+        if (classFQN.contains("org.apache") || classFQN.contains("org.springframework")) {
+            return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(true));
+        }
+
         DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
 
         if (result == null) {
