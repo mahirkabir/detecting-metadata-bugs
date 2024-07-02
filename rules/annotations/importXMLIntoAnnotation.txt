@@ -5,5 +5,10 @@ Rule import-resource-path {
 				msg ("The @ImportResource path: %s in class: %s does not exist", s, getFQN(c));
 			}
 		}
+		for(String s in getAnnoAttr(c, "@ImportResource", "value")) {
+			assert(pathExists(s)) {
+				msg ("The @ImportResource path: %s in class: %s does not exist", s, getFQN(c));
+			}
+		}
 	}
 }
