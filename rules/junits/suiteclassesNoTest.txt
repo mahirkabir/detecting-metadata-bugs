@@ -4,8 +4,10 @@ Rule suiteclasses-No-Test {
 			for (String className in getAnnoAttrNames(c, "@SuiteClasses")) {
 				if (isUnique(className)) {
 					class testClass = locateClass(className);
-					assert(exists(method m in getMethods(testClass))(hasAnnotation(testClass, m, "@Test"))) {
-						msg("In class: %s, SuiteClass: %s has no @Test method", getFQN(c), className);
+					if (NOT hasAnnotation(testClass, "@SuiteClasses")) {
+						assert(exists(method m in getMethods(testClass))(hasAnnotation(testClass, m, "@Test"))) {
+							msg("In class: %s, SuiteClass: %s has no @Test method", getFQN(c), className);
+						}
 					}
 				}
 			}
