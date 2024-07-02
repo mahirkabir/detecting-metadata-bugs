@@ -36,7 +36,8 @@ if __name__ == "__main__":
     keywords = {
         "@ImportResource": "java", "ApplicationContext": "java",
         ".getBean(": "java", "</bean>": "xml", "<property": "xml",
-        "constructor-arg": "xml", "-method=": "xml"
+        "constructor-arg": "xml", "-method=": "xml",
+        "ClassPathXmlApplicationContext": "java"
     }
     limit = 12
     selected_projects = {}
