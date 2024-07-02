@@ -48,7 +48,7 @@ if __name__ == "__main__":
             if keyword in selected_projects and len(selected_projects[keyword]) == limit:
                 continue
             try:
-                file_path = project_has_keyword(project, keyword)
+                file_path = project_has_keyword(project, keyword, extension=keywords[keyword])
                 if file_path:
                     if keyword not in selected_projects: selected_projects[keyword] = []
                     selected_projects[keyword].append((project, file_path))
