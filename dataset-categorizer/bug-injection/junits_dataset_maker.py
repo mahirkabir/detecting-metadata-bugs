@@ -6,12 +6,17 @@ from tqdm import tqdm
 def project_has_annotation(project_path, annotation):
     for root, _, files in os.walk(project_path):
         for file in files:
-            if file.endswith("Test.java"):
-                file_path = os.path.join(root, file)
-                with open(file_path, 'r', encoding='utf-8', errors="ignore") as f:
-                    content = f.read()
-                    if annotation in content:
-                        return file_path
+            if file.endswith(".java"):
+                fpath = os.path.join(root, file)
+                try:
+                    with open(fpath, 'r', encoding='utf-8', errors="ignore") as f:
+                        content = f.read()
+                        if annotation in content:
+                            return fpath
+                except FileNotFoundError:
+                    print(f"File not found: {fpath}")
+                except Exception as ex:
+                    print(f"Error reading file {fpath}: {str(ex)}")
     return None
 
 if __name__ == "__main__":
@@ -28,25 +33,26 @@ if __name__ == "__main__":
     all_projects = [os.path.join(dataset_folder, project) for project in os.listdir(dataset_folder) if os.path.isdir(os.path.join(dataset_folder, project))]
 
     # Shuffle the projects to randomize the checking order
-    random.seed(42)
+    random.seed(71)
     random.shuffle(all_projects)
 
+    limit = 12
     selected_param_projects = []
     selected_suite_projects = []
 
-    # Check projects until we find 4 of each type or run out of projects
+    # Check projects until we find `limit` of each type or run out of projects
     for project in tqdm(all_projects):
-        if len(selected_param_projects) < 4:
+        if len(selected_param_projects) < limit:
             file_path = project_has_annotation(project, param_annotation)
             if file_path:
                 selected_param_projects.append((project, file_path))
         
-        if len(selected_suite_projects) < 4:
+        if len(selected_suite_projects) < limit:
             file_path = project_has_annotation(project, suite_annotation)
             if file_path:
                 selected_suite_projects.append((project, file_path))
         
-        if len(selected_param_projects) >= 4 and len(selected_suite_projects) >= 4:
+        if len(selected_param_projects) >= limit and len(selected_suite_projects) >= limit:
             break
 
     # Write the results to the log file
