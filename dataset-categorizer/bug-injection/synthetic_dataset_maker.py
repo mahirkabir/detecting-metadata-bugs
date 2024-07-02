@@ -33,7 +33,11 @@ if __name__ == "__main__":
     random.seed(107)
     random.shuffle(all_projects)
 
-    keywords = ["@ImportResource", "ClassPathXmlApplicationContext"]
+    keywords = {
+        "@ImportResource": "java", "ApplicationContext": "java",
+        ".getBean(": "java", "</bean>": "xml", "<property": "xml",
+        "constructor-arg": "xml", "-method=": "xml"
+    }
     limit = 12
     selected_projects = {}
     needed_projects_cnt = int(limit * len(keywords))
