@@ -23,7 +23,7 @@ if __name__ == "__main__":
     """Find dataset projects relevant to junits bugs"""
     # Define the paths
     dataset_folder = "D:\\Mahir\\detecting-metadata-bugs\\dataset\\all_projects"
-    log_file_path = "log_file.log"
+    log_file_path = "junits_log_file.log"
     
     # Define the annotations
     param_annotation = "@RunWith(Parameterized.class)"
