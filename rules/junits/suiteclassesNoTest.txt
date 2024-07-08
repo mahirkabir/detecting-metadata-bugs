@@ -1,10 +1,10 @@
 Rule suiteclasses-No-Test {
 	for (class c in getClasses()) {
-		if (hasAnnotation(c, "@SuiteClasses")) {
-			for (String className in getAnnoAttrNames(c, "@SuiteClasses")) {
+		if (hasAnnotation(c, "@SuiteClasses") OR hasAnnotation(c, "@Suite.SuiteClasses")) {
+			for (String className in join(getAnnoAttrNames(c, "@SuiteClasses"), getAnnoAttrNames(c, "@Suite.SuiteClasses"))) {
 				if (isUnique(className)) {
 					class testClass = locateClass(className);
-					if (NOT hasAnnotation(testClass, "@SuiteClasses")) {
+					if (NOT hasAnnotation(testClass, "@SuiteClasses") AND NOT hasAnnotation(testClass, "@Suite.SuiteClasses")) {
 						assert(exists(method m in getMethods(testClass))(hasAnnotation(testClass, m, "@Test"))) {
 							msg("In class: %s, SuiteClass: %s has no @Test method", getFQN(c), className);
 						}
