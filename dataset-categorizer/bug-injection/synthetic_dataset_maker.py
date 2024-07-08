@@ -23,7 +23,7 @@ if __name__ == "__main__":
     """Find projects for making synthetic dataset"""
     # Define the paths
     dataset_folder = "D:\\Mahir\\detecting-metadata-bugs\\dataset\\all_projects"
-    log_file_path = "log_file.log"
+    log_file_path = "keyword_file_match.txt"
     
 
     # Get a list of all projects in the dataset folder
