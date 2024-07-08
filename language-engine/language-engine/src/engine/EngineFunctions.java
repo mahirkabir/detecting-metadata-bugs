@@ -531,7 +531,11 @@ public class EngineFunctions implements IEngineFunctions {
     private DataResult<BooleanItem> pathExists(String path) {
         if (path.startsWith("\"") && path.endsWith("\""))
             path = path.substring(1, path.length() - 1);
+        while (path.startsWith("/"))
+            path = path.substring(1);
         boolean pathExists = Helper.pathExists(path);
+        if (pathExists == false)
+            System.out.println("");
         BooleanItem booleanItem = new BooleanItem(pathExists);
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, booleanItem);
     }
