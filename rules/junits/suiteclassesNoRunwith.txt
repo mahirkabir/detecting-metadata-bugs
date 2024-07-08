@@ -1,6 +1,6 @@
 Rule suitclasses-no-runwith {
 	for (class c in getClasses()) {
-		if (hasAnnotation(c, "@SuiteClasses")) {
+		if (hasAnnotation(c, "@SuiteClasses") OR hasAnnotation(c, "@Suite.SuiteClasses")) {
 			assert(hasAnnotation(c, "@RunWith")) {
 				msg("Class: %s has @SuiteClasses but no @RunWith", getFQN(c));
 			}
