@@ -6,9 +6,11 @@ Rule property-setter-map {
 			if (NOT isEmpty(c)) {
 				for (<property> property in getElms(bean, "<property>")) {
 					String propertyName = getAttr(property, "name");
-					assert(exists (method m in getMethods(c)) (substring(getName(m), 0, 3)=="set" AND upperCase(substring(getName(m),3)) == upperCase(propertyName)) OR NOT isInstanceVariable(c, propertyName)){
-						msg("There is no corresponding setter method in class: %s for the property: %s in bean: %s", getFQN(c), getAttr(property, "name"), getName(bean));
-					}
+					if (isInstanceVariable(c, propertyName)) {
+                        assert(exists (method m in getMethods(c)) (substring(getName(m), 0, 3)=="set" AND upperCase(substring(getName(m),3)) == upperCase(propertyName))){
+                            msg("There is no corresponding setter method in class: %s for the property: %s in bean: %s", getFQN(c), getAttr(property, "name"), getName(bean));
+                        }
+                    }
 				}
 			}
 		}
