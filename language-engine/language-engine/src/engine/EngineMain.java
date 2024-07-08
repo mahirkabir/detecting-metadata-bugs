@@ -47,6 +47,7 @@ public class EngineMain {
         String versionCategories = args[0];
         String datasetFolder = args[1];
         Config config = loadConfig(args[2]);
+        EngineFactory.setLogPath(args[4]);
 
         Map<String, List<VersionCategory>> mapVersions = getProjectVersions(versionCategories);
 

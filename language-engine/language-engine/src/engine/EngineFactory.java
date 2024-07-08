@@ -9,6 +9,7 @@ public class EngineFactory {
 
     private static String runningRule;
     private static String outputPath;
+    private static String logPath;
 
     private static IEngineAssert engineAssert;
     private static IEngineCache engineCache;
@@ -122,7 +123,7 @@ public class EngineFactory {
     }
 
     /**
-     * Get the log file path
+     * Get the output file path
      * 
      * @return
      */
@@ -137,6 +138,24 @@ public class EngineFactory {
      */
     public static void setOutputPath(String outputPath) {
         EngineFactory.outputPath = outputPath;
+    }
+
+    /**
+     * Get the Log file path
+     * 
+     * @return
+     */
+    public static String getLogPath() {
+        return logPath;
+    }
+
+    /**
+     * Set the Log file path
+     * 
+     * @param logPath
+     */
+    public static void setLogPath(String logPath) {
+        EngineFactory.logPath = logPath;
     }
 
     /**

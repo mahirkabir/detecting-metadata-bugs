@@ -8,7 +8,7 @@ import engine.EngineFactory;
 
 public class Logger {
     public static void log(String message) {
-        try (FileOutputStream fout = new FileOutputStream("log.txt", true)) {
+        try (FileOutputStream fout = new FileOutputStream(EngineFactory.getLogPath(), true)) {
             BufferedOutputStream bout = new BufferedOutputStream(fout);
             bout.write(message.getBytes(Charset.forName("UTF-8")));
             bout.write("\n".getBytes(Charset.forName("UTF-8")));
