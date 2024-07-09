@@ -649,7 +649,10 @@ public class EngineFunctions implements IEngineFunctions {
      * @return
      */
     private DataResult<ClassItem> locateClassFQN(String classFQN) {
-        classFQN = classFQN.replace(".class", "");
+        //classFQN = classFQN.replace(".class", "");
+        if (classFQN.endsWith(".class"))
+            classFQN = classFQN.substring(0, classFQN.length() - 6);
+
         ClassItem ret = new ClassItem("");
 
         if (this.classHelper.getClassDict().size() == 0) {
