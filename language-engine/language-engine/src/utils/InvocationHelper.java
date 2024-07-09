@@ -75,8 +75,8 @@ public class InvocationHelper {
                     className.append(((NodeWithSimpleName<VariableDeclarator>) classNode).getNameAsString());
                 }
 
-                Node parentNode = decl.getParentNode().get();
-                String invocationStmnt = parentNode.toString();
+                Node parentNode = decl.getParentNode().orElse(null);
+                String invocationStmnt = parentNode != null ? parentNode.toString() : "";
                 String callee = decl.getNameAsString();
 
                 Expression callerExpr = decl.getScope().orElse(null);
@@ -85,6 +85,9 @@ public class InvocationHelper {
                     String[] methodCallParts = callerExpr.toString().split("\\.");
                     if (methodCallParts.length > 1) {
                         callerVariable = methodCallParts[methodCallParts.length - 1];
+                    } else {
+                        // Unqualified method call, might be `this` context
+                        callerVariable = "this";
                     }
                 }
 
@@ -102,11 +105,14 @@ public class InvocationHelper {
                 invocationItem.setInvocationStmnt(invocationStmnt);
                 invocationItem.setArguments(arguments);
                 invocations.add(invocationItem);
+
             } catch (Exception ex) {
                 Logger.log("Error parsing invocations from: " + javaFilePath + " => " + ex.toString());
+                ex.printStackTrace(); // Print stack trace for better debugging
             }
         }
 
         return invocations;
     }
+
 }

@@ -277,9 +277,11 @@ public class EngineFunctions implements IEngineFunctions {
                 for (InvocationItem invocationItem : invocationItems) {
                     if (invocationItem.getCallee().equals(methodName)) {
                         String callerObjectName = invocationItem.getCaller();
-                        boolean callerClassMatches = fields.stream().anyMatch(item -> item.getName()
-                                .equals(callerObjectName) && item.getType().equals(callerClass));
-                        if (!callerClassMatches)
+                        boolean callerClassMatches = false;
+                        if (fields != null)
+                            callerClassMatches = fields.stream().anyMatch(item -> item.getName()
+                                    .equals(callerObjectName) && item.getType().equals(callerClass));
+                        if (!callerClassMatches && variables != null)
                             callerClassMatches = variables.stream().anyMatch(item -> item.getName()
                                     .equals(callerObjectName) && item.getType().equals(callerClass));
                         if (callerClassMatches) {
