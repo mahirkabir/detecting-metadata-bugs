@@ -83,7 +83,7 @@ public class InvocationHelper {
                 String callerVariable = "";
                 if (callerExpr != null) {
                     String[] methodCallParts = callerExpr.toString().split("\\.");
-                    if (methodCallParts.length > 1) {
+                    if (methodCallParts.length >= 1) {
                         callerVariable = methodCallParts[methodCallParts.length - 1];
                     } else {
                         // Unqualified method call, might be `this` context
