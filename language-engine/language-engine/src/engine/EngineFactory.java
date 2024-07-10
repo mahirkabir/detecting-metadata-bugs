@@ -17,6 +17,7 @@ public class EngineFactory {
     private static IEngineEvaluate evaluator;
     private static IEngineFor engineFor;
     private static IEngineFunctions engineFunctions;
+    private static IEngineVersionControl engineVersionControl;
 
     public static String getProjectPath() {
         return projectPath;
@@ -174,5 +175,23 @@ public class EngineFactory {
      */
     public static void setProjectCommitId(String projectCommitId) {
         EngineFactory.projectCommitId = projectCommitId;
+    }
+
+    /**
+     * Set the engine for version control
+     * 
+     * @param engineVersionControl
+     */
+    public static void setEngineVersionControl(IEngineVersionControl engineVersionControl) {
+        EngineFactory.engineVersionControl = engineVersionControl;
+    }
+
+    /**
+     * Get the engine for version control
+     * 
+     * @return
+     */
+    public static IEngineVersionControl getEngineVersionControl() {
+        return EngineFactory.engineVersionControl;
     }
 }

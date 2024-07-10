@@ -80,6 +80,7 @@ public class EngineMain {
                     Path projectPath = Paths.get(datasetFolder, currentProject);
                     EngineFactory.setProjectPath(projectPath.toString());
                     EngineFactory.setProjectCommitId(versionInfo.getCommitId());
+                    EngineFactory.setEngineVersionControl(new EngineVersionControl(projectPath.toString()));
 
                     Helper.gitCheckout(projectPath.toString(), versionInfo.getCommitId());
 

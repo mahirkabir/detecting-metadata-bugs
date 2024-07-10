@@ -74,12 +74,15 @@ public class ClassHelper {
                 if (currFile.isDirectory()) {
                     this.loadJavaFiles(fullPath.toString());
                 } else {
-                    if (currFile.getName().endsWith(Constants.EXTENSION_JAVA))
-                        this.javaFiles.add(fullPath);
+                    if (currFile.getName().endsWith(Constants.EXTENSION_JAVA)) {
+                        if (EngineFactory.getEngineVersionControl().isTrackedFile(fullPath))
+                            this.javaFiles.add(fullPath);
+                    }
 
                     if (currFile.getName().endsWith(Constants.EXTENSION_JAVA)
                             || currFile.getName().endsWith(Constants.EXTENSION_XML)) {
-                        this.engineCache.addLoadedFilename(fullPath);
+                        if (EngineFactory.getEngineVersionControl().isTrackedFile(fullPath))
+                            this.engineCache.addLoadedFilename(fullPath);
                     }
                 }
             }

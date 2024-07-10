@@ -53,11 +53,13 @@ public class XMLHelper {
                     this.loadXMLFiles(fullPath.toString());
                 } else {
                     if (currFile.getName().endsWith(Constants.EXTENSION_XML))
-                        this.xmlFiles.add(fullPath);
+                        if (EngineFactory.getEngineVersionControl().isTrackedFile(fullPath))
+                            this.xmlFiles.add(fullPath);
 
                     if (currFile.getName().endsWith(Constants.EXTENSION_JAVA)
                             || currFile.getName().endsWith(Constants.EXTENSION_XML)) {
-                        this.engineCache.addLoadedFilename(fullPath);
+                        if (EngineFactory.getEngineVersionControl().isTrackedFile(fullPath))
+                            this.engineCache.addLoadedFilename(fullPath);
                     }
                 }
             }
