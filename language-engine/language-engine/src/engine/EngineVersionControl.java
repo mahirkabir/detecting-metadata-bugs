@@ -43,8 +43,16 @@ public class EngineVersionControl implements IEngineVersionControl {
                     return false;
                 }
                 normalizedPath = normalizedPath.getParent();
-            } 
+            }
             // TODO: In future, we need to improve this logic of checking for each path
+            
+            // ***alternate approach (but not better)***
+            // for (Map.Entry<Path, Boolean> ignoredPath : this.dictIgnored.entrySet()) {
+            // if (ignoredPath.getValue()) {
+            // if (currentFilePath.startsWith(ignoredPath.getKey()))
+            // return false;
+            // }
+            // }
 
         } catch (Exception ex) {
             Logger.log("Error processing: " + filepath + " => " + ex.toString());
