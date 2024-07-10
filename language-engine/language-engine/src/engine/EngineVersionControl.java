@@ -3,6 +3,7 @@ package engine;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -45,7 +46,7 @@ public class EngineVersionControl implements IEngineVersionControl {
                 normalizedPath = normalizedPath.getParent();
             }
             // TODO: In future, we need to improve this logic of checking for each path
-            
+
             // ***alternate approach (but not better)***
             // for (Map.Entry<Path, Boolean> ignoredPath : this.dictIgnored.entrySet()) {
             // if (ignoredPath.getValue()) {
@@ -71,12 +72,16 @@ public class EngineVersionControl implements IEngineVersionControl {
                     .readEnvironment()
                     .findGitDir()
                     .build();
-
             Git git = new Git(repository);
             git.close();
             Status status = git.status().call();
             Set<String> ignoredSet = new HashSet<String>();
             ignoredSet.addAll(status.getIgnoredNotInIndex());
+
+            // Add the common spring project patterns for ignored (or generated)
+            // files/folders
+            ignoredSet.addAll(Arrays.asList("target/", "build/", ".classpath", ".project",
+                    ".settings/"));
 
             for (String filepath : ignoredSet) {
                 Path path = repository.getDirectory().toPath().getParent().resolve(filepath).normalize();
@@ -85,8 +90,8 @@ public class EngineVersionControl implements IEngineVersionControl {
             Logger.log(String.format("Number of non-ignored files: %d", ignoredSet.size()));
 
         } catch (Exception ex) {
-            ex.printStackTrace();
             Logger.log("Error processing git for: " + this.projectPath + " (" + ex.getMessage() + ")");
+            ex.printStackTrace();
         }
     }
 }
