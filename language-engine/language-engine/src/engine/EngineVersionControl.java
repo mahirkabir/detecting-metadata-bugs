@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,36 +19,47 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import utils.Logger;
 
 public class EngineVersionControl implements IEngineVersionControl {
-    private Map<String, Boolean> isUntracked;
+    private Map<String, Boolean> ignored;
     private String projectPath;
 
     public EngineVersionControl(String projectPath) {
-        this.isUntracked = null;
+        this.ignored = null;
         this.projectPath = projectPath;
     }
 
     /**
-     * Checks if the file is tracked to avoid reporting generated files
+     * Check if the file is ignored (or generated) to avoid reporting extra files
+     * 
      */
     @Override
-    public Boolean isTrackedFile(String filepath) {
+    public Boolean isNonIgnoredFile(String filepath) {
         try {
             // This is just to make sure that the path goes through java's Path class
-            String normalizedFullPath = Paths.get(filepath).normalize().toString();
-            if (this.isUntracked == null)
-                this.loadUntracked();
-            return !isUntracked.containsKey(normalizedFullPath) || !isUntracked.get(normalizedFullPath);
+            Path normalizedPath = Paths.get(filepath).normalize();
+            if (this.ignored == null)
+                this.loadIgnored();
+
+            // Check the file itself and all its parent directories
+            while (normalizedPath != null) {
+                String pathToCheck = normalizedPath.toString();
+                if (this.ignored.containsKey(pathToCheck) && this.ignored.get(pathToCheck)) {
+                    return false;
+                }
+                normalizedPath = normalizedPath.getParent();
+            } 
+            // TODO: In future, we need to improve this logic of checking for each path
+
         } catch (Exception ex) {
             Logger.log("Error processing: " + filepath + " => " + ex.toString());
         }
-        return false;
+        return true;
     }
 
     /**
-     * Load the untracked files
+     * Load the ignored files and folders
      */
-    private void loadUntracked() {
-        this.isUntracked = new HashMap<String, Boolean>();
+    private void loadIgnored() {
+        this.ignored = new HashMap<String, Boolean>();
         try {
             FileRepositoryBuilder builder = new FileRepositoryBuilder();
             Repository repository = builder.setGitDir(new File(this.projectPath, ".git"))
@@ -55,27 +67,21 @@ public class EngineVersionControl implements IEngineVersionControl {
                     .findGitDir()
                     .build();
 
-            try (Git git = new Git(repository)) {
-                Status status = git.status().call();
-                Set<String> untracked = status.getUntracked();
-                for (String filepath : untracked) {
-                    Path path = repository.getDirectory().toPath().getParent().resolve(filepath).normalize();
-                    if (filepath.endsWith(".java") || filepath.endsWith(".xml"))
-                        this.isUntracked.put(path.toString(), true);
-                }
-                Logger.log(String.format("Number of untracked files: %d", untracked.size()));
+            Git git = new Git(repository);
+            git.close();
+            Status status = git.status().call();
+            Set<String> ignoredSet = new HashSet<String>();
+            ignoredSet.addAll(status.getIgnoredNotInIndex());
+
+            for (String filepath : ignoredSet) {
+                Path path = repository.getDirectory().toPath().getParent().resolve(filepath).normalize();
+                this.ignored.put(path.toString(), true);
             }
+            Logger.log(String.format("Number of non-ignored files: %d", ignoredSet.size()));
 
-        } catch (IOException ioEx) {
-            ioEx.printStackTrace();
-            Logger.log("Error processing git for: " + this.projectPath + " (" + ioEx.getMessage() + ")");
-        } catch (NoWorkTreeException nwtEx) {
-            nwtEx.printStackTrace();
-            Logger.log("Error processing git for: " + this.projectPath + " (" + nwtEx.getMessage() + ")");
-        } catch (GitAPIException gapiEx) {
-            gapiEx.printStackTrace();
-            Logger.log("Error processing git for: " + this.projectPath + " (" + gapiEx.getMessage() + ")");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Logger.log("Error processing git for: " + this.projectPath + " (" + ex.getMessage() + ")");
         }
-
     }
 }

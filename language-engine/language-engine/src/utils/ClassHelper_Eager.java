@@ -98,13 +98,13 @@ public class ClassHelper_Eager {
                     this.loadJavaFiles(fullPath.toString());
                 } else {
                     if (currFile.getName().endsWith(Constants.EXTENSION_JAVA)) {
-                        if (EngineFactory.getEngineVersionControl().isTrackedFile(fullPath))
+                        if (EngineFactory.getEngineVersionControl().isNonIgnoredFile(fullPath))
                             this.javaFiles.add(fullPath);
                     }
 
                     if (currFile.getName().endsWith(Constants.EXTENSION_JAVA)
                             || currFile.getName().endsWith(Constants.EXTENSION_XML)) {
-                        if (EngineFactory.getEngineVersionControl().isTrackedFile(fullPath))
+                        if (EngineFactory.getEngineVersionControl().isNonIgnoredFile(fullPath))
                             this.engineCache.addLoadedFilename(fullPath);
                     }
                 }
