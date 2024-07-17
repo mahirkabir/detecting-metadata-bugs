@@ -1,4 +1,4 @@
-Rule bean-exist {
+Rule bean-exists {
 	for (class c in getClasses()) {		
 		if (callExists(c, "ApplicationContext", "getBean")) {
 			for (String s in getArg(c, "ApplicationContext", "getBean", 0)) {

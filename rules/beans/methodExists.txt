@@ -1,4 +1,4 @@
-Rule method-exist {
+Rule method-exists {
 	for (file xml in getXMLs()) {
 		for (<bean> bean in getElms(xml, "<bean>")) {
 			for (class c in getClasses()) {

@@ -1,4 +1,4 @@
-Rule runwith-no-suitclasses {
+Rule runwith-no-suiteclasses {
 	for (class c in getClasses()) {
 		if (hasAnnotation(c, "@RunWith")) {
 			if (hasAnnoAttr(c, "@RunWith", "Suite.class")) {
