@@ -1,0 +1,831 @@
+cheetah	<bean, <property, constructor-arg
+bsb	<property
+Java-Spring-LAB	<bean
+Play2V2	<bean, <property
+anderCidaGastosSpring	<bean
+jpa-tutorials	<property
+WicketCdiExample	<bean
+extdirectspring	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit, @RunWith(
+ohtu-bibtex	<bean, <property, org.junit, @RunWith(
+325Group	<bean, <property
+gallery-georg	ApplicationContext
+bam	<bean, org.junit, @RunWith(
+campus201305	org.junit
+hibernate-search-example	ApplicationContext, .getBean(, <bean, <property, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+kie-wb-distributions	<bean, <property
+basis-webapp-sample	<bean, <property
+spring-ws	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+jetty-springmvc-jsp-template	@ImportResource, ApplicationContext, <bean
+jiazuww	ApplicationContext, .getBean(, <bean, <property, -method=, org.junit, @RunWith(
+spring-petclinic	ApplicationContext, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+GHANA-National	@ImportResource, ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit, @RunWith(
+simple-graph	
+evernavigator	<bean, <property, -method=
+fog	<bean, <property
+fcrepo-cloudsync	<bean, <property, constructor-arg, -method=
+wl-oauth	<bean, <property, constructor-arg
+ironman	ApplicationContext, <bean, <property, org.junit, @RunWith(
+java-embedded-jirb	ApplicationContext, .getBean(, org.junit
+easyFuse	<bean, <property, -method=
+FinalJWR	<bean, <property, -method=
+olog-service	<property, org.junit, @RunWith(
+github-cla-integration	@ImportResource, ApplicationContext, <bean, org.junit
+QRCodeLogin	
+addis-core	ApplicationContext, org.junit, @RunWith(
+appfuse	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+execution-time-filter	org.junit
+datacart	ApplicationContext, <bean, <property, -method=
+daw02	org.junit
+jobsnearyou	@ImportResource, <bean, <property
+ikube	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+DevDay2012	<bean
+Microblog	<bean, <property, -method=, org.junit, @RunWith(
+de-webapp	<bean, <property, constructor-arg, org.junit
+empaques	<bean, <property, constructor-arg
+fcrepo4	<bean, <property, constructor-arg, org.junit, @RunWith(
+epm-trn	<bean, <property, constructor-arg
+gwt	<bean, <property, constructor-arg
+angular-js-spring-mybatis	<bean, <property
+foodecalc	ApplicationContext, <bean, <property, -method=, org.junit, @RunWith(
+springmvc-demo	<bean, <property, -method=
+java_web_sample	<bean
+shop-repo	<bean, <property
+memvache	<property, org.junit
+dummy-rest-api	<bean, org.junit
+DevStarter	ApplicationContext, .getBean(, <bean, <property, -method=, ClassPathXmlApplicationContext
+buildit4	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+acsp	ApplicationContext, <bean, org.junit, @RunWith(
+kuali_rice	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(, @RunWith(Suite.class), @Parameters
+codex	<bean
+geomajas-project-client-gwt	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+addressbook-sample-mongodb	ApplicationContext, .getBean(, <bean, <property, constructor-arg, org.junit, @RunWith(
+dbs-reports	ApplicationContext, .getBean(, <bean, <property, constructor-arg, org.junit, @RunWith(
+libgdx-maven-archetype	
+groepI	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit, @RunWith(
+OSWF	<property
+astroreading	<bean, constructor-arg
+jbehave-osgi	ApplicationContext, <property, org.junit, @RunWith(
+bw-calendar-engine	<property
+dfr	@ImportResource, ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+grafeo	<property, org.junit
+erppyme	<bean, <property, -method=
+lite-framework	org.junit
+FitJournal	
+kolomet	ApplicationContext, .getBean(, <bean, <property, constructor-arg, org.junit, @RunWith(
+Automation-Portal	
+bookLibrarymvc	<bean, <property
+genericdatacollector	ApplicationContext, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+spring-vaadin	<bean, <property, org.junit, @RunWith(
+cloaked-hipster	<bean, <property, constructor-arg, org.junit
+movie-manager	org.junit
+e4ds-template	@ImportResource, <bean
+Log	<bean, <property, -method=
+hostel_project	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit
+webbit-gwt	
+Ideas	<bean, <property, constructor-arg
+camel-cookbook-examples	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+silverpeas-crash	
+fubica	<bean, <property
+faces	.getBean(, <bean, <property, org.junit, @RunWith(
+addressbook-sample-jpa	<bean, <property, constructor-arg, org.junit, @RunWith(
+pubnotes-server	<property
+kitchenoffice	<bean, constructor-arg, org.junit, @RunWith(
+logowall	
+asksg	<bean, <property, -method=, org.junit
+gwtphonegap	<property
+unikkit	<bean, <property
+lrxl	
+babynames	<bean, <property, -method=
+fenix-webapp	
+sia	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+Croquette	<bean, org.junit
+virp	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+content-server	
+itsvenkis-java	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+demo-kit	<property
+gitHubtest	
+arsnova-war	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+angularapp	<bean, <property
+rest	<bean
+spring-base	ApplicationContext, <bean, <property, -method=
+androidkickstartr	ApplicationContext, org.junit
+SPK	<bean, <property, org.junit, @RunWith(
+maven-release	<bean
+helenos	ApplicationContext, <bean, <property, constructor-arg, -method=
+pocket-review	<bean, <property, -method=, org.junit
+AxonFramework	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit
+best-template	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+Java-Spring-Web-App	<bean, <property, constructor-arg, org.junit, @RunWith(
+books	<bean
+jadwal-mesin	<bean, <property
+adbcj	@Parameters
+logincontrolapp	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit
+collection-manager	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit, @RunWith(
+droid	ApplicationContext, .getBean(, <bean, <property, -method=
+foodfeed	<bean, <property, org.junit, @RunWith(
+jee_baseapp	<bean, <property, -method=
+bees-shop-clickstart	<bean
+crowd	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit, @RunWith(
+mobileiq	<bean, <property
+demo	ApplicationContext, org.junit, @RunWith(
+L2w	org.junit
+greenhouse-android	ApplicationContext
+ipstore	ApplicationContext, <bean, <property, constructor-arg, -method=
+core-spring-puzzlers	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit, @RunWith(
+JMSwebService	
+jprox	
+jarvis	<bean, <property
+tutorial	<bean
+jersey-spring-angularjs	<bean, org.junit
+checker	<bean, <property, -method=
+javaee-addon-sample	<bean, <property
+belajar-angularjs	<bean, <property, -method=
+CogSec	<bean, <property
+DataAnalyzePlatform	ApplicationContext, .getBean(, <bean, <property, -method=, org.junit
+Bank	<bean, <property
+spring-rest	ApplicationContext, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+wfm_bakewell	<bean, <property, org.junit
+tahrir	
+java-ee-fundamentals	<property
+FilaVirtual	<bean
+chinabank-application2	<bean, <property, -method=
+getting-started-springsecurity-31	ApplicationContext, <bean, <property, constructor-arg, org.junit
+jbpm-6-examples	<bean, <property
+file_uploader	<bean, <property
+computerDatabase	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext
+inspiration	<bean, <property
+biproject	<bean, <property, -method=
+spring-examples	<bean, <property
+jbpm-multimodulo	<bean
+emite	org.junit
+jtaf	
+web	<bean, <property
+restful-sample	org.junit
+BPMN_Modeler	<bean, <property
+WeVan	@ImportResource, <bean, org.junit, @RunWith(
+dipgen	<bean, <property, -method=, org.junit
+design-a-pizza	<bean, org.junit, @RunWith(
+geonetwork-eea	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit
+calltag	<bean, <property, constructor-arg, -method=
+wicket-todos	<bean, <property, org.junit
+gw2eventsapi_southsun	
+jtechlog-spring-security	<bean, <property
+kc	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+restfulService	
+primefaces-test	
+pac4j	<property
+AppFactory-Backend	<bean, <property, constructor-arg
+spring-mvc-template	
+livebet	<property
+jsfexporter	<bean
+tattleup	
+IdentityMappingService	<bean, org.junit
+digitalasylum	<bean, <property
+HelloDOSGiSpringSecurity	<bean
+AppDev-CIT	<bean
+cassandrablog	<bean, <property, constructor-arg, -method=
+bennu-renderers	<property, org.junit, @RunWith(
+cas-hudson	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(, @Parameters, @Parameterized.Parameters
+J2EE-Test-Project	<bean, <property, constructor-arg, -method=
+exo-bookstore	<property, org.junit
+forge-vraptor-plugin-example-app	<property
+ai-project-server	@ImportResource, ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext
+cas-addons	ApplicationContext, .getBean(, <bean, constructor-arg, ClassPathXmlApplicationContext, org.junit
+StarWarGames	<bean, <property, -method=, org.junit
+fom	<bean, <property, org.junit, @RunWith(
+blog_java	ApplicationContext, <bean, constructor-arg, org.junit, @RunWith(
+clientbanking	<bean
+retrieval-master-v2	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=
+game_database	<bean, <property
+guestbookutdwrkshp	
+webfwk	org.junit
+homesources	<bean
+I377-esk	<bean, <property, -method=
+CCA	ApplicationContext, org.junit, @RunWith(
+swag	ApplicationContext, <bean, org.junit, @RunWith(
+eventsonroute66	<bean, <property, -method=, org.junit, @RunWith(
+ERS	<bean, <property, org.junit
+heroku	
+training-djpk-2014-01	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit, @RunWith(
+spring-rest-security	<bean
+drinkingGame	ApplicationContext, <bean, <property, org.junit, @RunWith(
+gaa.vargas.auto.springmvc	<bean, <property, org.junit
+ATBWebApp	<bean, <property, -method=
+MongoDBSpringRest	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext
+cwxt	<bean, <property, -method=, org.junit
+E2-Demo	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+japi-checker-web	ApplicationContext, .getBean(, <bean, <property, -method=, ClassPathXmlApplicationContext
+poc-spring-data-mongodb	<bean, <property, constructor-arg
+CS-520-HW	<bean, <property, -method=
+jdbcmetrics-test	org.junit
+jdb	<property, org.junit
+congreso	<bean, <property, -method=
+callcenter	<bean, <property, -method=, org.junit
+rop	ApplicationContext, .getBean(, <bean, <property
+EJournalSystem	<bean, <property
+den	<bean, <property, org.junit, @RunWith(
+Aeroport_Module	<bean, <property, -method=
+FirstProject	
+fcrepo	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(, @RunWith(Suite.class)
+RatingStars	
+togglz-demo	<bean
+commons	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(, @Parameters
+gwt-maven-scala	<bean
+Palmetto	org.junit, @RunWith(, @Parameters
+jbpm-ee	<bean, <property, org.junit, @RunWith(
+infoscoop	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext
+SpringProjTemplate	@ImportResource, ApplicationContext, <bean, org.junit, @RunWith(
+elasterix	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=
+feedAggregate	<bean, <property, -method=
+AmMed	<bean, <property
+spring-mvc-hibernate	<bean, <property, -method=
+spring-mvc-rabbitmq	<bean
+metabroadcast-test02	<bean, <property, org.junit, @RunWith(
+gwt-d3	<property, org.junit
+timeonim	<property
+KognitywistykaAdmin	<bean, <property
+corecto	<bean, <property, -method=
+ecshare	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit
+cadproject	<bean, <property, org.junit, @RunWith(
+txvis	<property, org.junit, @RunWith(
+ContactJpa	<bean, <property, -method=
+springapp	<bean, <property
+POI	<bean, <property, -method=
+abstractions	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit
+soa-conference-system	ApplicationContext, <property
+moony	
+FlexibleOrders	ApplicationContext, <bean, <property, -method=, org.junit, @RunWith(, @RunWith(Suite.class)
+stripes-stuff	<property
+Dean-s-Office	ApplicationContext, .getBean(, <bean, <property, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+beer30	ApplicationContext, <bean
+webservice-study	<bean, org.junit
+rap-maven-examples	
+heroku-wicket-quickstart	org.junit
+wfs2kml	
+CWISE-Portal	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(, @RunWith(Suite.class)
+encuestame	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+JBPMHT	ApplicationContext, <property, org.junit
+belphegor	<bean, <property, constructor-arg
+cas-webapp-jboss7	ApplicationContext, <bean, <property, constructor-arg, -method=
+idm	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit
+richfaces-training	
+este	<bean, <property, constructor-arg, org.junit
+codeschool	<bean, <property, org.junit
+WebproxyPortlet	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=
+fra2015	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit
+jstore	ApplicationContext, <bean, <property, ClassPathXmlApplicationContext, org.junit, @RunWith(
+AmadeusProjectMantainer	
+TPE-PAW	<bean, <property, constructor-arg, org.junit
+jsf-burndown-chart	<property, org.junit
+iosr	<bean, <property, org.junit
+coolway	<bean, <property, -method=
+contract	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit
+doc-viewer	
+iiCaptainGoesHadoop	<bean, <property, constructor-arg, org.junit, @RunWith(, @RunWith(Suite.class)
+jblog	<bean, <property, -method=
+wombat	ApplicationContext, <bean
+bandManager	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit
+BooSpring	<bean, <property
+activiti-liferay	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit
+intimate-backend	<bean, <property, constructor-arg, -method=
+realtalkserver	org.junit
+lafayStatistics	
+eManager	<bean
+m-domotique	ApplicationContext, <property
+faithbook_v1	<bean
+jrecruiter	@ImportResource, ApplicationContext, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(, @RunWith(Suite.class)
+BlackboardVCPortlet	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+talkatives	<property, org.junit, @RunWith(
+1.5.x	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+aioweb	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+ajs	<bean
+tip-Struts-2--09-Annotations	
+cipol	ApplicationContext, .getBean(, <bean, <property, constructor-arg, org.junit, @RunWith(
+sangraama-login-server	
+web-debug-tag-example	
+BSNS	<bean, <property, org.junit, @RunWith(
+spring-security-kerberos	<bean, <property, org.junit
+Collector	<bean, <property, -method=
+wedding-invitations-qr	<bean, <property
+generator-form	ApplicationContext, <bean, <property, constructor-arg, org.junit, @RunWith(
+Sioasis	<property, org.junit
+ShcUtils	<bean, <property, -method=
+m2e-wtp-tests	<bean, <property, org.junit, @RunWith(
+control-parking	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit
+brouker	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=
+ComputerProject	<bean, <property, -method=
+Kognitywistyka	<bean, <property
+vraptor-jndi-hibernate	<property
+eventpool	.getBean(, <bean, <property, -method=, org.junit, @RunWith(
+realono	<property, org.junit
+dailylog	ApplicationContext, .getBean(, <bean, <property, -method=, ClassPathXmlApplicationContext
+smpp-rest	<bean, <property
+innovation-collaboration	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=
+ajax4stripes-example	
+warped-seam-test	<bean, <property, org.junit, @RunWith(
+mytime	<property
+spring3part9	<bean, <property
+escidoc-core-1.3	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(, @Parameters
+aula-virtual	<bean, <property, org.junit, @RunWith(
+edc	<bean
+jdbcmetrics	<property, org.junit
+ehotel	<bean, <property, -method=, org.junit, @RunWith(
+computer-database-2	<bean, <property, constructor-arg, -method=
+gatein-wci	<property, org.junit, @RunWith(
+activiti-demo	<bean, <property, -method=, org.junit, @RunWith(
+lushtext	<bean
+Brainstorm	<bean, <property
+jquery-springmvc-jpa	ApplicationContext, <bean, <property, -method=
+LiMen	<bean, <property, -method=
+diffa	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+gy-phonegap-build	ApplicationContext, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+devops	
+bdd-live-example	org.junit
+baseSpringMVC	<bean, <property
+HibernateJPATest	<bean, <property, org.junit, @RunWith(
+geniweb	ApplicationContext, <bean, <property, org.junit, @RunWith(
+15git	ApplicationContext, <bean, <property, constructor-arg, -method=
+EGipermarket	<bean, <property, constructor-arg, -method=
+halkneistiyor.org	<bean, <property, -method=, org.junit, @RunWith(
+FreeClassFinder_Server	<bean, <property
+continuous-deployment-blogpost	<property, org.junit
+InstantScore	<property
+funreco	<bean, <property, org.junit, @RunWith(
+email-cxf	<bean, <property, org.junit
+RSSFeeding	<bean
+ju	@ImportResource, ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit, @RunWith(, @RunWith(Suite.class)
+BouncyTracker	<bean, <property, -method=
+hokan_ng	ApplicationContext, .getBean(, <bean, <property, org.junit, @RunWith(
+chat-polling	<bean, <property, constructor-arg, -method=
+SpatialSearch	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+java-project-boilerplate	<bean, <property
+j-rest	org.junit, @RunWith(, @RunWith(Suite.class)
+451F	<bean, <property, org.junit, @RunWith(
+raven-java	<property, org.junit, @RunWith(
+framework	ApplicationContext, org.junit, @RunWith(
+Mini-Project	<property, org.junit
+MeetMe	<bean, <property
+entity-tracking	<property, org.junit
+webConsole	org.junit, @RunWith(
+CodeFish-Blog	@ImportResource, ApplicationContext, <bean
+PacketManagerServer	<bean, org.junit
+basicMVC	ApplicationContext, org.junit, @RunWith(
+geonotes-serveur	<bean, <property
+login-server	ApplicationContext, .getBean(, <bean, <property, constructor-arg, org.junit, @RunWith(, @Parameters
+anguloso	
+shiro-examples	org.junit
+eventstore	org.junit
+Team0wWebsite	
+fcrepo-3.5-patched	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(, @RunWith(Suite.class)
+Spring-Intergration	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+jboss-negotiation	
+Blog	<bean, <property, constructor-arg, -method=
+portlet-tools	<bean, <property, constructor-arg, -method=
+trip-service	<bean, <property, -method=
+helllo-servlet	<property
+ndx-jersey2	<bean
+ip-manager	<bean, <property, -method=
+FrontendLearn	<bean, <property
+virtualkeyboard	org.junit
+BRBbio	ApplicationContext, <bean, <property, constructor-arg, org.junit
+HousingAffordability	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit, @RunWith(
+bizhub	<bean, <property
+biyam_repository	<bean, <property, constructor-arg, -method=
+aerogear-unifiedpush-server	<bean, <property, org.junit, @RunWith(
+AffectationParcours31	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+esu-mongo	<bean, <property, constructor-arg, org.junit, @RunWith(
+ACMEReservedMeetingRooms	<bean, <property, org.junit
+Federated-Cloud-Resources-Deployment-Engine	org.junit
+cibertec-alumnos	<bean, <property, -method=
+PROJET	<bean
+HT-WepaHT	<bean, <property, org.junit
+Chambua	ApplicationContext, <bean, <property, org.junit, @RunWith(
+GWTProject	<bean
+moho	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit
+siw	
+vaadin-spring-webinar	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit
+geoserver-old	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit
+isma-project-poker	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit
+LIBRARY	<bean, <property
+blacktiger	@ImportResource, ApplicationContext, org.junit, @RunWith(
+visma-task	
+jaxrs	
+outBidMe	<bean, <property, org.junit, @RunWith(, @RunWith(Suite.class)
+gwt-glom	org.junit
+juicyfruit	
+caller	<bean, <property, constructor-arg, -method=
+haslearntit	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+BookStore3	<bean, <property, org.junit, @RunWith(
+spring-twitter-demo	<bean, <property, constructor-arg
+scaffolding	<bean, <property
+xultimate-toolkit	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(, @RunWith(Suite.class), @Parameters
+jax-rs-example	<property
+review-web	org.junit
+clients	<bean, <property, -method=
+cookapp-cloud	ApplicationContext, <bean, <property, -method=, org.junit, @RunWith(
+Eshoppingcd	
+farmaweb	<bean, <property, constructor-arg
+quartz-glass-web	<bean, <property
+federation	ApplicationContext, <property, org.junit
+focski	<bean, <property, -method=
+ErudioProjetoTCCPos	<property
+commons-configuration	<bean, <property, constructor-arg, -method=, org.junit
+uPortal	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+vaadin-archetype-widget	
+crowd-game	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit, @RunWith(
+capi-jetty	<bean
+FarmaciaFuturo	<property
+efarm	<bean
+demo-web	constructor-arg, -method=
+jtechblog	<bean, <property
+simple-webapp	
+AdmissionDepartment	ApplicationContext, .getBean(, <bean, <property, -method=, ClassPathXmlApplicationContext
+jackson_sandbox	ApplicationContext, .getBean(, <bean, <property
+ShikangaCMS	<property, -method=
+StudentManager	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit, @RunWith(
+commentbox	ApplicationContext, .getBean(, <bean, <property
+SearchSysLucene	ApplicationContext, .getBean(, <bean, <property, -method=
+VeeAppDirect	
+escuela	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit, @RunWith(
+Server	ApplicationContext, <property, org.junit
+CustomerApp	<bean, <property
+DrexelEXP	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext
+St-Christopher	ApplicationContext, .getBean(, <bean, <property, org.junit
+BDRS	ApplicationContext, .getBean(, <bean, <property, -method=, org.junit, @RunWith(
+ja12sec03jav	<bean, <property, constructor-arg, org.junit, @RunWith(
+arquillian-extension-spring	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit, @RunWith(
+javawebapp	<bean, <property, constructor-arg, -method=
+my-stuff	<bean, <property
+catalagovpsa	<bean, <property, constructor-arg
+jojoart	<bean, <property, constructor-arg, org.junit, @RunWith(
+JViewer	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit
+addis2	<bean, <property
+CodeData	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext
+cloud-socialspringdemo	<bean, <property, constructor-arg, -method=
+Jonrah	<bean, <property, constructor-arg, org.junit, @RunWith(
+escrumtool	<property
+jsonSecurity2	<bean, <property, constructor-arg
+fenix-ist	<property
+iframework	ApplicationContext, .getBean(, <bean, <property, -method=, org.junit
+tarefas	
+JeeJee	<bean, <property, -method=
+clientwinterburn	<bean, <property, -method=
+billing	<bean, <property
+gs-rest-service-and-hibernate	<bean, <property, org.junit, @RunWith(
+forum	<bean, <property
+cm4j-all	org.junit
+aab-main	<bean, <property, -method=
+JSCORM	<bean, <property, constructor-arg, -method=
+exemplo-jpa-hibernate	<property
+atmosphere-demo	<bean
+Solitaire	
+ceres	<property
+cas-server-integration-ldaptive	<bean, constructor-arg, org.junit, @RunWith(
+BIND-DNS	<bean, <property
+xapi-servlet	
+esup-uportal	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+test-ejb-arquiteture	<property
+karu-roog	<bean, <property, -method=
+BebaWeb	<property
+cm	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+PlayingCards	
+mardao	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=
+jdf	<bean, <property
+Facebook-Testbed	<bean, <property, constructor-arg
+mentor-project-2013	<bean, <property
+jbpm-data-modeler	<bean, <property, org.junit
+NewBlog	<bean, <property, org.junit
+mvc-component-tester	<bean
+jpower-app	
+collect	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+50words	org.junit, @RunWith(
+beauty	<bean, <property
+bagh	ApplicationContext, <property
+jeabos	<bean, <property, constructor-arg, -method=
+CIS2	<property, org.junit
+brekolhtml5	
+inspektr	
+OnmsApplicationStackView	org.junit
+devoxxFr2012	<bean, <property, org.junit, @RunWith(
+Interns-jee-webapp	<bean, <property
+Huishouwu	<bean, <property, constructor-arg, org.junit
+Chasemaster	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext
+javablog	<bean, <property, constructor-arg, org.junit
+dreamshop	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+ICAM_POC	
+basic-spring-roo	<bean, <property, -method=
+GolfCourse	<bean, <property, constructor-arg, -method=
+FlexibleOptionGroup	org.junit
+Expert_system	<bean, <property
+illusion	<bean, <property, -method=, org.junit
+ee.team11.github	<bean, <property, -method=
+bookstore	<bean, <property, constructor-arg
+genetic-program	<bean, constructor-arg, org.junit, @RunWith(, @RunWith(Suite.class)
+EMDS	ApplicationContext, .getBean(, <bean, <property, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+Java2-BugTracker-9-15-2013	org.junit, @RunWith(, @RunWith(Suite.class)
+Jkinopoisk	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext
+falcon	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+eMedleg	<bean, <property
+DistributedExamWeb	<bean, <property
+clientoauth-web	
+addressbook	<bean, <property, -method=
+Ciber	ApplicationContext, .getBean(, <bean, <property, -method=, org.junit, @RunWith(
+Project	<bean, <property
+Abacus3D	<bean, <property
+turmix-ws	<property
+testApplication	@ImportResource, ApplicationContext, <bean, <property, org.junit, @RunWith(
+ingheroku	<bean, <property, constructor-arg, -method=
+smorales-app-headbanging-ee6	<bean, <property, org.junit, @RunWith(
+ICTCursus-Spring	ApplicationContext, <bean, <property, constructor-arg, -method=, org.junit
+SpringMVCTalk	<bean, <property
+eurocopa2012	ApplicationContext, .getBean(, <bean, <property
+cafe	ApplicationContext, .getBean(, <bean, <property, -method=, ClassPathXmlApplicationContext, org.junit
+jmxdatamart	<property, org.junit
+student_manager	ApplicationContext, .getBean(, <bean, <property, -method=, ClassPathXmlApplicationContext, org.junit
+Phantasm	
+WebMusicCatalogProject	<bean, <property
+hadoop_webservice	<bean, org.junit
+WSSpring	<bean, <property, constructor-arg
+AngularJS-SpringMVC-example	<bean
+iudex	<property, -method=, org.junit
+rest-app	<bean, <property, -method=
+edw-hive-jdbc-lookup	<bean, <property
+sip031	<bean
+kite	.getBean(, <bean, org.junit
+exchange	<bean, <property, constructor-arg, org.junit, @RunWith(
+restfulie-java	org.junit, @RunWith(
+security-spr	@ImportResource, ApplicationContext, <bean
+json-datastore	<property
+opencatalog	<bean, <property, constructor-arg
+GSC	<bean, <property
+CMF-Web-Bridge	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit
+dspace-rest	<bean
+SimpleJavaWS	<bean, <property, org.junit, @RunWith(
+spring-mvc-rest-exhandler	<bean, <property
+patrimonio	<bean, <property
+actreports	<bean, <property, constructor-arg
+FileExplorer	ApplicationContext, <bean, <property, -method=
+infokadr.com	<bean, <property, constructor-arg, org.junit, @RunWith(
+TCS_PoC	<bean, org.junit
+First	org.junit
+angulerJS-swagger-springmvc-demo	<bean
+vk-crawler	ApplicationContext, .getBean(, <bean, -method=, ClassPathXmlApplicationContext
+jetty-springmvc-thymeleaf-template	@ImportResource, ApplicationContext, <bean
+buildit12	ApplicationContext, <bean, <property, constructor-arg, -method=, org.junit
+ToDo	<bean, <property
+webprototype	<bean
+browsermob-proxy	ApplicationContext, org.junit
+quark-java	<bean, <property
+escidoc-core	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(, @Parameterized.Parameters
+cv-web	<bean, <property
+recipe-roots	
+exercise-admin	ApplicationContext, .getBean(, <bean, <property, -method=, org.junit, @RunWith(
+schoollocator	<bean, <property, constructor-arg, org.junit
+JavaMUD	<bean, <property, constructor-arg, -method=
+SimpleREST	<property, org.junit
+SprintTest	<bean, <property
+identime	<bean
+gserver-client	<bean, <property, constructor-arg, -method=
+ComputerDatabaseTeamProof	<bean, <property, constructor-arg, -method=
+base	ApplicationContext, <property
+hahale.tv	<bean, <property
+reconf-server	org.junit
+gaetest	<property, org.junit
+javaee7-jms-websocket-bug	<bean, <property
+minecraft-stats-server	<bean, <property, -method=, org.junit, @RunWith(
+green-webflow	@ImportResource, ApplicationContext, <bean, <property, constructor-arg
+NIDAProject	ApplicationContext, .getBean(, <bean, <property
+EVE-Java-API	@ImportResource, <bean, constructor-arg
+erudio-client-web	<bean
+charizard	ApplicationContext, <bean, org.junit, @RunWith(
+iipc-web-commons	
+vinxplore	<bean, <property
+angular-sample	<bean
+AutoData	ApplicationContext, .getBean(, <bean, <property, -method=, org.junit, @RunWith(
+fastjson	ApplicationContext, .getBean(, <bean, <property, constructor-arg, org.junit, @RunWith(
+PicketLinkTest	<property
+mppconverter-java	<bean, <property
+Customer	
+OnzeVencedor	<bean, <property
+CarService	<bean, <property
+js-web-application-framework	<bean, <property
+hawk	<bean, <property
+infog	ApplicationContext, <bean, <property, -method=, org.junit, @RunWith(
+bootstrap-gwt	
+dzuser	<bean, <property, constructor-arg
+eFood	org.junit
+hr-request-for-leave	org.junit
+mshat-producto	<bean, <property, org.junit, @RunWith(
+domotica	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext
+boazglean-paqad	<property
+cra	org.junit
+EduServer	<bean, <property, constructor-arg, -method=
+stock-trading	<bean, <property, org.junit, @RunWith(
+infoC	ApplicationContext, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+Lemo-Data-Management-Server	<property, org.junit
+BroadleafCommerce	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit
+angular-rest-springsecurity	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+soundService	<bean, <property, constructor-arg
+blog-java1	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+hammertime	<property
+GAE-EP-Tut	<property
+AutoPecas	<bean, <property
+datalist-portlet-utils	
+gazpachosurvey	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+geoserver_trunk	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit
+ContactProject	<bean, <property, org.junit, @RunWith(
+Computer-Database	<bean, <property
+crm	<bean, <property, constructor-arg, org.junit, @RunWith(
+voice-control-tunnel	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit
+prerender-java	<property
+FP	ApplicationContext, <bean, <property, ClassPathXmlApplicationContext
+experimental	
+libchat	<bean, <property, -method=
+heroku-spike-tomcat	<bean
+Hello_Spring	<bean, <property
+MyTest	<bean
+JavaMVC	<bean, <property
+aw2m-vulture	<bean, <property, constructor-arg
+MediaManager	.getBean(, <bean, <property, org.junit, @RunWith(
+cabms	ApplicationContext, org.junit, @RunWith(
+FlashCards_App	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(, @Parameters
+openrtb2x	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit
+balancup	
+openstack-java-sdk	org.junit
+glo4003-architecture	<bean, <property, org.junit, @RunWith(, @RunWith(Suite.class)
+Java-Work	ApplicationContext, .getBean(, <bean, <property, org.junit, @RunWith(
+slipp-user	<bean, <property, -method=, org.junit, @RunWith(
+colanote	ApplicationContext, <bean, <property, org.junit, @RunWith(
+security	ApplicationContext, .getBean(, <bean, <property, org.junit, @RunWith(
+clientmgr	<bean, <property
+CaoLaPush	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+tutorials	@ImportResource, <bean, <property
+agenda	<property, -method=
+projectSSH	<bean, <property, -method=
+savenames	ApplicationContext, .getBean(, org.junit, @RunWith(
+exo-examples	<bean
+Dino	ApplicationContext, org.junit, @RunWith(
+fitty	<bean, <property, constructor-arg, -method=, org.junit
+com.soar.ax	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+CobaltoCMS	<bean
+PaxTube	org.junit
+activemq-plugin	<bean, <property, -method=, org.junit
+wl-solr-search	<bean, <property, constructor-arg, -method=, org.junit
+hq	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+Priam	org.junit
+checkers	ApplicationContext, .getBean(, <bean, <property, org.junit, @RunWith(
+szkolenieJava	<bean, <property, constructor-arg
+ePortfolio	<bean, <property, -method=, org.junit
+BankingSystem2	<bean, <property, org.junit, @RunWith(
+BusinessManager	<bean, <property, -method=, org.junit, @RunWith(
+b4-inren	
+Control	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+ovirt-vdsmfake	
+grow	<bean, <property, -method=, org.junit
+cefacem_app	<bean, <property, constructor-arg, -method=
+Tailgate	
+helloservlet	
+WordCount	org.junit
+camel-example-restlet-jdbc	<bean, constructor-arg
+book-store	<bean, <property, -method=, org.junit
+FamZone	ApplicationContext, <bean, <property, ClassPathXmlApplicationContext, org.junit, @RunWith(
+eionet.datadict	@ImportResource, ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+GexServer	
+Dendrite	<bean, <property, org.junit
+fcl	<bean, <property, -method=, org.junit, @RunWith(
+JewlleryProj	<bean, <property, constructor-arg
+klarschiff-backend	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=
+springproject	<bean, <property
+agroknow	ApplicationContext
+birthdays	<bean, <property
+SpringWebService	<bean, <property
+twilio-sample	<bean
+ExpenseManager	<bean, <property, constructor-arg
+esco-ChangeEtablissement	@ImportResource, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+zhaoche	ApplicationContext, <property
+GiftTest	<bean, <property
+1.4.x	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+ch018	ApplicationContext, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+PayrollManagement	<bean, <property
+banco	<bean, <property, constructor-arg, -method=, org.junit
+ch018-2team-	ApplicationContext, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+CaloriesCulc	<bean, <property
+thingbroker-dev	<bean, org.junit, @RunWith(
+beecode	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit
+HackDay2012	<bean, <property, constructor-arg, -method=
+reports-test	<bean, <property, -method=
+kampfnacht-ch	
+groepH	<bean, <property, org.junit, @RunWith(
+heroku-sfdc-cloudconnect-demo	
+gre-prototype	<bean, <property
+capstuart	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext
+gs-register-facebook-app	
+head	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+gradiance	<bean, <property, constructor-arg
+deploygate-plugin	
+JavaHealthCheck	org.junit
+kansalaisaloite	ApplicationContext, .getBean(, <property, org.junit, @RunWith(
+RestServer	<bean, <property
+free-blog	<bean, <property, -method=, org.junit
+Repo-1	org.junit
+OpenConext-cruncher	@ImportResource, ApplicationContext, <bean, <property, org.junit, @RunWith(
+generica	<bean, <property, org.junit, @RunWith(
+gasfinder	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit, @RunWith(
+dmcweb	ApplicationContext, .getBean(, <bean, <property, -method=
+electionsms	@ImportResource, ApplicationContext, <bean
+MultiBitMerchant	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit
+jetty-spring-spnego	@ImportResource, ApplicationContext, <bean, <property, constructor-arg, -method=
+skikusys	<property
+github	ApplicationContext, .getBean(, <bean, <property, -method=, ClassPathXmlApplicationContext
+dc	<bean, <property
+Activiti	@ImportResource, ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(, @Parameters
+dice-game-to	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit, @RunWith(
+fcrepo-1	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(, @RunWith(Suite.class)
+java-example	ApplicationContext, <bean, <property, -method=
+s2config	<property, org.junit, @RunWith(
+BricksAndMortarDynamicWebAndMaven	ApplicationContext, .getBean(, <bean, <property, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+geocat	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit, @RunWith(
+jabio	<bean, <property
+android-sync-sample	ApplicationContext, <property
+Ka-Websocket	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit
+wilthorwatchdog	<property
+gasp-mongo	org.junit
+aac.client	org.junit, @RunWith(
+featurepub	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext
+Hello-Muscle	ApplicationContext, <bean, org.junit, @RunWith(
+javakurs	
+jpa-demo	<bean, <property
+jade-fff	ApplicationContext, <bean, <property, org.junit, @RunWith(
+interiordesigner	<bean, <property
+enterprise-routing-system	<bean, <property
+ronda	org.junit
+cubby	ApplicationContext, <bean, <property, org.junit, @RunWith(
+Restful-Image-Resizer	<property, org.junit, @RunWith(, @RunWith(Suite.class)
+nhimeyecms	ApplicationContext, .getBean(, <bean, <property, constructor-arg, org.junit
+core-jsf-chapter08-system-events	
+HeatMeasurement	
+mobile-template	
+biz	
+kadr_mvc	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit
+cucumber-rest	org.junit, @RunWith(
+delving	<bean, <property, constructor-arg, org.junit, @RunWith(, @RunWith(Suite.class)
+cis-console-ui	
+testtomcat	<property
+spring-social-samples	@ImportResource, <bean, <property, constructor-arg, -method=
+spring.cloudfoundry.mysql	<bean, <property, constructor-arg, -method=
+geonetwork	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, ClassPathXmlApplicationContext, org.junit
+appengine-guestbook-java	<property, org.junit
+equinoxtuner	<bean, <property
+EmployeeDirectory	<bean, constructor-arg, org.junit, @RunWith(
+ginco	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+WicketSpringIntegration	<bean
+mongoservice	<bean
+base-mvc-security	<bean, <property
+demo-cloud-cocktail-manager	<bean, <property, org.junit
+hana-rest-service	
+GWT-Maps-V3-Api	<property
+edg-examples	<bean
+dessertHouse	<bean, <property, -method=, org.junit
+bhg-photos	ApplicationContext, <bean, <property, constructor-arg
+eDAS	ApplicationContext, org.junit, @RunWith(
+hunan	ApplicationContext, .getBean(, <bean, <property, constructor-arg, ClassPathXmlApplicationContext, org.junit
+changer	<bean, <property, constructor-arg, -method=
+com.revolsys.open	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(, @RunWith(Suite.class)
+j2eeapplication	<bean, <property, constructor-arg, -method=
+BacklogTool	<bean, <property, constructor-arg, -method=
+chessapp	<bean, <property, -method=
+battle-scripts	@ImportResource, ApplicationContext, <bean
+brew	<bean
+ft	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=
+devicehive-java	org.junit
+CarParkWebServiceProject	ApplicationContext, <bean, <property, org.junit, @RunWith(
+jespa-spring2	
+springDemo	<bean, <property
+champion	<bean, <property
+Community-Profile-Database	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+livelog	<bean
+colportaje	ApplicationContext, <bean, <property, constructor-arg, org.junit, @RunWith(
+ComicRate	<bean, <property
+ett-integration	org.junit
+ehour	ApplicationContext, <bean, <property, constructor-arg, org.junit, @RunWith(
+PurchaseManagement	ApplicationContext, <bean, <property, org.junit, @RunWith(
+smartcampus.profileservice	<bean, <property, constructor-arg, -method=, org.junit, @RunWith(
+anajo	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=
+Longminder	<property, org.junit
+enunciate-backend	<bean, <property
+diaulos	<bean, <property, -method=, org.junit, @RunWith(, @RunWith(Suite.class)
+butterfly	ApplicationContext, .getBean(, <bean, <property, ClassPathXmlApplicationContext, org.junit, @RunWith(
+Taxi	<bean
+johnsully83_groovy	ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=
+gwt-portlet-bridge	<property, org.junit
+Carl	<bean, <property, constructor-arg, org.junit, @RunWith(
+esieAddress	ApplicationContext, <bean, <property, org.junit, @RunWith(
+tmm_phonebook	<bean, <property
+inventory	
+gwt-slider-bar	
+publicChatServer	<bean, <property, constructor-arg
+spring-security-oauth	@ImportResource, ApplicationContext, .getBean(, <bean, <property, constructor-arg, -method=, org.junit, @RunWith(, @RunWith(Suite.class), @Parameters
+token-service	org.junit
+learning-spring	ApplicationContext
+mvn-multi-module-web-with-jacoco-it	<property, org.junit
+devoxxFr-admin	<bean, <property
