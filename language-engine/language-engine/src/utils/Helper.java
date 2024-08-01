@@ -2,6 +2,7 @@ package utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -312,6 +313,8 @@ public class Helper {
 
         if (path.startsWith(Constants.CONTEXT_PATH_CLASSPATH))
             path = path.replace(Constants.CONTEXT_PATH_CLASSPATH, "");
+        else if (path.startsWith(Constants.CONTEXT_PATH_CLASSPATH_START))
+            path = path.replace(Constants.CONTEXT_PATH_CLASSPATH_START, "");
         else if (path.startsWith(Constants.CONTEXT_PATH_FILE))
             path = path.replace(Constants.CONTEXT_PATH_FILE, "");
         else if (path.startsWith("./"))
@@ -319,7 +322,9 @@ public class Helper {
 
         for (Map.Entry<String, Boolean> entry : mapLoadedFilenames.entrySet()) {
             String filename = entry.getKey();
-            if (filename.endsWith(path))
+            String normalizedFilename = Paths.get(filename).normalize().toString();
+            String normalizedPath = Paths.get(path).normalize().toString();
+            if (normalizedFilename.endsWith(normalizedPath))
                 return true;
             try {
                 String safeFilename = filename.replace("\\", "\\\\");

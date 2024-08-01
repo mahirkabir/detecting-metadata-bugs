@@ -101,6 +101,7 @@ public class Constants {
     public static final String ANNOTATION_CLASS = "class-annotation";
     public static final String ANNOTATION_FIELD = "field-annotation";
     public static final String CONTEXT_PATH_CLASSPATH = "classpath:";
+    public static final String CONTEXT_PATH_CLASSPATH_START = "classpath*:";
     public static final String CONTEXT_PATH_FILE = "file:";
     public static final String EXTENSION_JAVA = ".java";
     public static final String EXTENSION_XML = ".xml";
