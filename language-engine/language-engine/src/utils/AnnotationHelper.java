@@ -10,6 +10,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.comments.Comment;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
 import com.github.javaparser.ast.expr.ClassExpr;
@@ -59,7 +60,13 @@ public class AnnotationHelper {
             cu = sourceRoot.parse("", filename);
             this.engineCache.setLoadedAST(javaFilePath, cu);
         }
-
+        
+        /**
+         * We might need to remove comments for all the compilation unit related code
+         * We did it here to prevent //s getting reported as annotation attribute
+         * Note: Can we generated the compilation unit centrally?
+         */
+        cu.getAllComments().forEach(Comment::remove);
         List<ClassOrInterfaceDeclaration> classDecls = cu
                 .findAll(ClassOrInterfaceDeclaration.class)
                 .stream()
