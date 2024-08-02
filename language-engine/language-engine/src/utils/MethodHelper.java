@@ -142,7 +142,9 @@ public class MethodHelper {
             } else if (annotation instanceof SingleMemberAnnotationExpr) {
                 // Single parameter w/o values for SingleMemberAnnotationExpr
                 // Need to collect the single parameter
-                SingleMemberAnnotationExpr annoExpr = (SingleMemberAnnotationExpr) annotation;
+                SingleMemberAnnotationExpr annExpr = (SingleMemberAnnotationExpr) annotation;
+                String annAttrValue = annExpr.getMemberValue().asStringLiteralExpr().getValue();
+                annItem.addAnnotationAttr(new AnnotationAttrItem("", annAttrValue));
             }
 
             annotationItems.add(annItem);

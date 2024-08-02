@@ -449,6 +449,31 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
+    private DataResult<List<StringItem>> getAnnoAttr(ClassItem c, MethodItem m, String annotation, String attr) {
+        String functionCall = "getAnnoAttr()" + "||" + m.getFqn() + "||" + annotation + "||" + attr;
+        DataResult<List<StringItem>> result = this.cache.fetchFunctionCall(functionCall);
+
+        if (result == null) {
+            result = new DataResult<List<StringItem>>(
+                    Constants.TYPE_STRING_LIST, new ArrayList<StringItem>());
+
+            List<StringItem> annAttrVals = new ArrayList<StringItem>();
+            for (AnnotationItem annotationItem : m.getAnnotations()) {
+                if (annotationItem.getAnnotationName().equals(annotation)) {
+                    for (AnnotationAttrItem annotationAttrItem : annotationItem.getAnnotationAttrs()) {
+                        if (annotationAttrItem.getAnnotationAttrName().equals(attr)) {
+                            annAttrVals.add(new StringItem(annotationAttrItem.getAnnotationAttrValue()));
+                        }
+                    }
+                }
+            }
+            result.setResult(annAttrVals);
+            cache.addFunctionCall(functionCall, result);
+        }
+
+        return result;
+    }
+
     private DataResult<List<StringItem>> getAnnoAttrNames(ClassItem c, String anno) {
         anno = anno.replace("@", "");
         String basicFunction = "getAnnoAttrNames()" + "||" + c.getFqn();
@@ -651,7 +676,7 @@ public class EngineFunctions implements IEngineFunctions {
      * @return
      */
     private DataResult<ClassItem> locateClassFQN(String classFQN) {
-        //classFQN = classFQN.replace(".class", "");
+        // classFQN = classFQN.replace(".class", "");
         if (classFQN.endsWith(".class"))
             classFQN = classFQN.substring(0, classFQN.length() - 6);
 
@@ -876,11 +901,19 @@ public class EngineFunctions implements IEngineFunctions {
                 case Constants.FUNCTION_GET_ANNO_ATTR: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     ClassItem classItem = (ClassItem) params.get(0).getResult();
-                    StringItem anno = (StringItem) params.get(1).getResult();
-                    StringItem prop = (StringItem) params.get(2).getResult();
 
-                    anno.setValue(anno.getValue().substring(1)); // To remove the @
-                    result = this.getAnnoAttr(classItem, anno.getValue(), prop.getValue());
+                    if (params.size() == 4) {
+                        MethodItem methodItem = (MethodItem) params.get(1).getResult();
+                        StringItem anno = (StringItem) params.get(2).getResult();
+                        StringItem prop = (StringItem) params.get(3).getResult();
+                        anno.setValue(anno.getValue().substring(1)); // To remove the @
+                        result = this.getAnnoAttr(classItem, methodItem, anno.getValue(), prop.getValue());
+                    } else {
+                        StringItem anno = (StringItem) params.get(1).getResult();
+                        StringItem prop = (StringItem) params.get(2).getResult();
+                        anno.setValue(anno.getValue().substring(1)); // To remove the @
+                        result = this.getAnnoAttr(classItem, anno.getValue(), prop.getValue());
+                    }
                 }
                     break;
 

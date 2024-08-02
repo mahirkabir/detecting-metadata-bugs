@@ -60,7 +60,7 @@ public class AnnotationHelper {
             cu = sourceRoot.parse("", filename);
             this.engineCache.setLoadedAST(javaFilePath, cu);
         }
-        
+
         /**
          * We might need to remove comments for all the compilation unit related code
          * We did it here to prevent //s getting reported as annotation attribute
@@ -133,6 +133,13 @@ public class AnnotationHelper {
                                         attrs.add(attr);
                                     }
                                 });
+                            } else if (paramItem instanceof StringLiteralExpr) {
+                                AnnotationAttrItem attr = new AnnotationAttrItem();
+                                String value = paramItem.toString();
+                                value = value.replace("\"", ""); // TODO: Verify
+                                attr.setAnnotationAttrValue(value);
+                                attr.setAnnotationAttrName("");
+                                attrs.add(attr);
                             }
                         });
                     }
