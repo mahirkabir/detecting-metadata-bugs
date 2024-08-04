@@ -80,6 +80,7 @@ public class Constants {
     public static final String FUNCTION_SUBSTRING = "substring";
     public static final String FUNCTION_UPPERCASE = "upperCase";
     public static final String FUNCTION_ENDS_WITH = "endsWith";
+    public static final String FUNCTION_STARTS_WITH = "startsWith";
     public static final String FUNCTION_MSG = "msg";
     public static final String FUNCTION_IS_EMPTY = "isEmpty";
     public static final String FUNCTION_JOIN = "join";
@@ -111,4 +112,5 @@ public class Constants {
     public static final String CATEGORY_JUNITS = "junits";
     public static final String JSON_KEY_RULESETS = "rulesets";
     public static final String FUNCTION_IS_INSTANCE_VARIABLE = "isInstanceVariable";
+    public static final String IMPORTS_CLASS = "importsClass";
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
@@ -163,7 +164,6 @@ public class ClassHelper {
             return classInstances;
 
         for (ClassOrInterfaceDeclaration decl : classes) {
-
             System.out.println("========");
 
             ClassItem classItem = new ClassItem(javaFilePath);
@@ -179,8 +179,9 @@ public class ClassHelper {
                     if (item.toString().contains(Constants.PACKAGE)) {
                         if (item.getChildNodes().size() > 0) {
                             packageName = item.getChildNodes().get(0).toString();
-                            break;
                         }
+                    } else if (item instanceof ImportDeclaration) {
+                        classItem.addImport(((ImportDeclaration) item).getNameAsString());
                     }
                 }
             }

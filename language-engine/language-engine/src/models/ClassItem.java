@@ -17,6 +17,8 @@ public class ClassItem extends JItem {
     private List<VariableItem> variables;
     private List<ObjectCreationItem> objectCreations;
 
+    private List<String> imports;
+
     public ClassItem(String javaFilePath) {
         super();
         super.setType(Constants.TYPE_CLASS);
@@ -128,5 +130,19 @@ public class ClassItem extends JItem {
         if (this.objectCreations == null)
             this.objectCreations = new ArrayList<ObjectCreationItem>();
         this.objectCreations.add(objectCreationItem);
+    }
+
+    public List<String> getImports() {
+        return imports;
+    }
+
+    public void setImports(List<String> imports) {
+        this.imports = imports;
+    }
+
+    public void addImport(String importedClass) {
+        if (this.imports == null)
+            this.imports = new ArrayList<String>();
+        this.imports.add(importedClass);
     }
 }

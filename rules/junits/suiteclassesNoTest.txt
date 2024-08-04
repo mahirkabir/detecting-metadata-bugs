@@ -1,13 +1,24 @@
 Rule suiteclasses-No-Test {
-	for (class c in getClasses()) {
+    for (class c in getClasses()) {
 		if (hasAnnotation(c, "@SuiteClasses") OR hasAnnotation(c, "@Suite.SuiteClasses")) {
 			for (String className in join(getAnnoAttrNames(c, "@SuiteClasses"), getAnnoAttrNames(c, "@Suite.SuiteClasses"))) {
 				if (isUnique(className)) {
 					class testClass = locateClass(className);
-					if (NOT hasAnnotation(testClass, "@SuiteClasses") AND NOT hasAnnotation(testClass, "@Suite.SuiteClasses")) {
-						assert(exists(method m in getMethods(testClass))(hasAnnotation(testClass, m, "@Test"))) {
-							msg("In class: %s, SuiteClass: %s has no @Test method", getFQN(c), className);
-						}
+                    if (NOT hasAnnotation(testClass, "@SuiteClasses") AND NOT hasAnnotation(testClass, "@Suite.SuiteClasses")) {
+                        bool isJunit4 = importsClass(testClass, "org.junit.*");
+                        if (isJunit4) {
+                            assert(exists(method m in getMethods(testClass))(hasAnnotation(testClass, m, "@Test"))) {
+                                msg("In class: %s, SuiteClass: %s has no @Test method", getFQN(c), className);
+                            }
+                        }
+                        else {
+                            bool isJunit3 = importsClass(testClass, "junit.framework.*");
+                            if (isJunit3) {
+                                assert(exists(method m in getMethods(testClass)) (startsWith(getName(m), "test"))) {
+                                    msg("In class: %s, SuiteClass: %s has no @Test method", getFQN(c), className);
+                                }
+                            }
+                        }
 					}
 				}
 			}

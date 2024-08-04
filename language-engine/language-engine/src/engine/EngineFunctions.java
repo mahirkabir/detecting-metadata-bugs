@@ -67,6 +67,33 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
+    private DataResult importsClass(ClassItem classItem, String classToCheck) {
+        String functionCall = "importsClass()" + "||" + classItem.getFqn() + "||" + classToCheck;
+        DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
+
+        boolean extendResult = false;
+        List<String> imports = classItem.getImports();
+        if (imports != null) {
+            for (String imported : imports) {
+                if (imported.equals(classToCheck)) {
+                    extendResult = true;
+                    break;
+                } else if (imported.endsWith(".*") || classToCheck.endsWith(".*")) {
+                    if (imported.startsWith(classToCheck.replace(".*", ""))
+                            || classToCheck.startsWith(imported.replace(".*", ""))) {
+                        extendResult = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        BooleanItem existsCheck = new BooleanItem(extendResult);
+        result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, existsCheck);
+        this.cache.addFunctionCall(functionCall, result);
+        return result;
+    }
+
     private DataResult<List<AnnotatedItem>> getAnnotated(String annotation, String entityType) {
         String functionCall = "getAnnotated()" + "||" + annotation + "||" + entityType;
         DataResult<List<AnnotatedItem>> result = this.cache.fetchFunctionCall(functionCall);
@@ -622,6 +649,11 @@ public class EngineFunctions implements IEngineFunctions {
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(endsWith));
     }
 
+    private DataResult<BooleanItem> startsWith(String str, String prefix) {
+        boolean startsWith = str.startsWith(prefix);
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(startsWith));
+    }
+
     private DataResult<IntegerItem> indexOf(String str, String search) {
         return new DataResult<IntegerItem>(Constants.TYPE_INTEGER, new IntegerItem(
                 str.indexOf(search)));
@@ -1034,6 +1066,15 @@ public class EngineFunctions implements IEngineFunctions {
                 }
                     break;
 
+                case Constants.FUNCTION_STARTS_WITH: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    StringItem str = (StringItem) params.get(0).getResult();
+                    StringItem suffix = (StringItem) params.get(1).getResult();
+
+                    result = this.startsWith(str.getValue(), suffix.getValue());
+                }
+                    break;
+
                 case Constants.FUNCTION_IS_EMPTY: {
                     // TODO: Need to introduce list variable
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
@@ -1176,6 +1217,15 @@ public class EngineFunctions implements IEngineFunctions {
                     StringItem propertyName = (StringItem) params.get(1).getResult();
                     result = this.isInstanceVariable(c, propertyName.getValue());
                 }
+                    break;
+
+                case Constants.IMPORTS_CLASS: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    ClassItem childClass = (ClassItem) params.get(0).getResult();
+                    StringItem parentClassFQN = (StringItem) params.get(1).getResult();
+                    result = this.importsClass(childClass, parentClassFQN.getValue());
+                }
+
                     break;
             }
         } catch (Exception ex) {
