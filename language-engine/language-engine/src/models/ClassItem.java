@@ -156,7 +156,7 @@ public class ClassItem extends JItem {
     }
 
     public void addExtendedClass(String extendedClassFQN) {
-        if (this.extendedClasses != null)
+        if (this.extendedClasses == null)
             this.extendedClasses = new ArrayList<String>();
         this.extendedClasses.add(extendedClassFQN);
     }
