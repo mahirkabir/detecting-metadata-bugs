@@ -106,7 +106,7 @@ public class ClassHelper {
             // InvocationHelper(javaFile).GetInvocations();
             // List<AnnotationItem> annotations = new
             // AnnotationHelper(javaFile).GetAnnotations();
-
+            
             try {
                 List<ClassItem> classInstances = this.GetClassInstances(javaFile);
 
@@ -184,6 +184,12 @@ public class ClassHelper {
                         classItem.addImport(((ImportDeclaration) item).getNameAsString());
                     }
                 }
+            }
+
+            if (decl.getExtendedTypes() != null || decl.getExtendedTypes().size() != 0) {
+                decl.getExtendedTypes().forEach(extended -> {
+                    classItem.addExtendedClass(extended.getNameAsString());
+                });
             }
 
             String classname = decl.getNameAsString();

@@ -71,25 +71,46 @@ public class EngineFunctions implements IEngineFunctions {
         String functionCall = "importsClass()" + "||" + classItem.getFqn() + "||" + classToCheck;
         DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
 
-        boolean extendResult = false;
+        boolean importResult = false;
         List<String> imports = classItem.getImports();
         if (imports != null) {
             for (String imported : imports) {
                 if (imported.equals(classToCheck)) {
-                    extendResult = true;
+                    importResult = true;
                     break;
                 } else if (imported.endsWith(".*") || classToCheck.endsWith(".*")) {
                     if (imported.startsWith(classToCheck.replace(".*", ""))
                             || classToCheck.startsWith(imported.replace(".*", ""))) {
-                        extendResult = true;
+                        importResult = true;
                         break;
                     }
                 }
             }
         }
 
-        BooleanItem existsCheck = new BooleanItem(extendResult);
-        result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, existsCheck);
+        BooleanItem importCheck = new BooleanItem(importResult);
+        result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, importCheck);
+        this.cache.addFunctionCall(functionCall, result);
+        return result;
+    }
+
+    private DataResult extendsClass(ClassItem classItem, String classToCheck) {
+        String functionCall = "importsClass()" + "||" + classItem.getFqn() + "||" + classToCheck;
+        DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
+
+        boolean extendResult = false;
+        List<String> parentClasses = classItem.getExtendedClasses();
+        if (parentClasses != null) {
+            for (String extendItem : parentClasses) {
+                if (extendItem.equals(classToCheck)) {
+                    extendResult = true;
+                    break;
+                }
+            }
+        }
+
+        BooleanItem extendCheck = new BooleanItem(extendResult);
+        result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, extendCheck);
         this.cache.addFunctionCall(functionCall, result);
         return result;
     }
@@ -1221,11 +1242,18 @@ public class EngineFunctions implements IEngineFunctions {
 
                 case Constants.IMPORTS_CLASS: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    ClassItem classItem = (ClassItem) params.get(0).getResult();
+                    StringItem importedClass = (StringItem) params.get(1).getResult();
+                    result = this.importsClass(classItem, importedClass.getValue());
+                }
+                    break;
+
+                case Constants.EXTENDS_CLASS: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     ClassItem childClass = (ClassItem) params.get(0).getResult();
                     StringItem parentClassFQN = (StringItem) params.get(1).getResult();
-                    result = this.importsClass(childClass, parentClassFQN.getValue());
+                    result = this.extendsClass(childClass, parentClassFQN.getValue());
                 }
-
                     break;
             }
         } catch (Exception ex) {

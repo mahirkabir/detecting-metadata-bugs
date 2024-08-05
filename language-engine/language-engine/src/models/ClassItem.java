@@ -18,6 +18,7 @@ public class ClassItem extends JItem {
     private List<ObjectCreationItem> objectCreations;
 
     private List<String> imports;
+    private List<String> extendedClasses;
 
     public ClassItem(String javaFilePath) {
         super();
@@ -144,5 +145,19 @@ public class ClassItem extends JItem {
         if (this.imports == null)
             this.imports = new ArrayList<String>();
         this.imports.add(importedClass);
+    }
+
+    public List<String> getExtendedClasses() {
+        return extendedClasses;
+    }
+
+    public void setExtendedClasses(List<String> extendedClasses) {
+        this.extendedClasses = extendedClasses;
+    }
+
+    public void addExtendedClass(String extendedClassFQN) {
+        if (this.extendedClasses != null)
+            this.extendedClasses = new ArrayList<String>();
+        this.extendedClasses.add(extendedClassFQN);
     }
 }
