@@ -5,19 +5,23 @@ Rule suiteclasses-No-Test {
 				if (isUnique(className)) {
 					class testClass = locateClass(className);
                     if (NOT hasAnnotation(testClass, "@SuiteClasses") AND NOT hasAnnotation(testClass, "@Suite.SuiteClasses")) {
-                        bool isJunit4 = importsClass(testClass, "org.junit.*");
-                        if (isJunit4) {
-                            assert(exists(method m in getMethods(testClass))(hasAnnotation(testClass, m, "@Test"))) {
-                                msg("In class: %s, SuiteClass: %s has no @Test method", getFQN(c), className);
-                            }
-                        }
-                        else {
-                            bool isJunit3 = importsClass(testClass, "junit.framework.*");
-                            if (isJunit3) {
-                                assert(exists(method m in getMethods(testClass)) (startsWith(getName(m), "test"))) {
-                                    msg("In class: %s, SuiteClass: %s has no @Test method", getFQN(c), className);
-                                }
-                            }
+                        // bool isJunit3 = importsClass(testClass, "junit.framework.*");
+                        // bool isJunit4 = importsClass(testClass, "org.junit.*");
+                        assert(
+                            exists(class family in getFamily(testClass)) (
+                                exists(method m in getMethods(family))(
+                                    hasAnnotation(family, m, "@Test")
+                                ) OR exists(method m in getMethods(family)) (
+                                    startsWith(getName(m), "test")
+                                ) OR exists(method m in getMethods(family)) (
+                                    // endsWith(getReturnType(m), "TestSuite")
+                                    // AND 
+                                    getName(m) == "suite"
+                                )            
+                            )
+                        ) {
+                            msg("In class: %s, SuiteClass: %s has no @Test method, or test* method, or suite method"
+                                , getFQN(c), className);
                         }
 					}
 				}
