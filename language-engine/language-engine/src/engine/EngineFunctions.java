@@ -865,6 +865,22 @@ public class EngineFunctions implements IEngineFunctions {
         return result;
     }
 
+    /**
+     * Get all the ancestor classes including the current class
+     */
+    private DataResult getFamily(ClassItem currentClass) {
+        List<ClassItem> familyClasses = new ArrayList<ClassItem>();
+        while (currentClass != null) {
+            familyClasses.add(currentClass);
+            List<String> parents = currentClass.getExtendedClasses();
+            if (parents != null && parents.size() > 0) {
+                currentClass = this.locateClass(parents.get(0)).getResult();
+            } else
+                break;
+        }
+        return new DataResult<List<ClassItem>>(Constants.TYPE_CLASS_LIST, familyClasses);
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -1253,6 +1269,13 @@ public class EngineFunctions implements IEngineFunctions {
                     ClassItem childClass = (ClassItem) params.get(0).getResult();
                     StringItem parentClassFQN = (StringItem) params.get(1).getResult();
                     result = this.extendsClass(childClass, parentClassFQN.getValue());
+                }
+                    break;
+
+                case Constants.GET_FAMILY: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    ClassItem currentClass = (ClassItem) params.get(0).getResult();
+                    result = this.getFamily(currentClass);
                 }
                     break;
             }

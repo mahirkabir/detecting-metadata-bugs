@@ -114,4 +114,5 @@ public class Constants {
     public static final String FUNCTION_IS_INSTANCE_VARIABLE = "isInstanceVariable";
     public static final String IMPORTS_CLASS = "importsClass";
     public static final String EXTENDS_CLASS = "extendsClass";
+    public static final String GET_FAMILY = "getFamily";
 }
