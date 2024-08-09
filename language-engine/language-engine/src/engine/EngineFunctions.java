@@ -456,45 +456,24 @@ public class EngineFunctions implements IEngineFunctions {
     }
 
     private DataResult<List<StringItem>> getAnnoAttr(ClassItem c, String annotation, String attr) {
-        String functionCall = "getAnnoAttr()" + "||" + c.getFqn() + "||" + annotation + "||" + attr;
-        DataResult<List<StringItem>> result = this.cache.fetchFunctionCall(functionCall);
+        List<StringItem> annoAttrs = new ArrayList<StringItem>();
+        List<AnnotationItem> classAnnotationItems = this.getAnnotations(c).getResult();
+        if (classAnnotationItems == null)
+            classAnnotationItems = new ArrayList<AnnotationItem>();
 
-        if (result == null) {
-            result = new DataResult<List<StringItem>>(
-                    Constants.TYPE_STRING_LIST, new ArrayList<StringItem>());
-            DataResult<List<AnnotationItem>> annRes = this.getAnnotations(c);
-            List<AnnotationItem> annItems = annRes.getResult();
-            if (annItems != null) {
-                for (AnnotationItem annItem : annItems) {
-                    List<AnnotationAttrItem> annAttrs = annItem.getAnnotationAttrs();
-                    if (annAttrs != null) {
-                        for (AnnotationAttrItem annAttrItem : annAttrs) {
-                            String functionCurr = "getAnnoAttr()" + "||" + c.getFqn() + "||"
-                                    + annItem.getAnnotationName() + "||" + annAttrItem.getAnnotationAttrName();
-                            DataResult<List<StringItem>> currRes = this.cache.fetchFunctionCall(functionCurr);
-                            if (currRes == null)
-                                currRes = new DataResult<List<StringItem>>(
-                                        Constants.TYPE_STRING_LIST, new ArrayList<StringItem>());
-
-                            String annVal = annAttrItem.getAnnotationAttrValue();
-                            if (annVal == null)
-                                annVal = ""; // e.g. - @Annotation(CLASSNAME.class)
-                            if (annVal.startsWith("\"") && annVal.endsWith("\""))
-                                annVal = annVal.substring(1, annVal.length() - 1);
-                            currRes.getResult().add(new StringItem(annVal));
-                            cache.addFunctionCall(functionCurr, currRes);
-                            if (annItem.getAnnotationName().equals(annotation)
-                                    && annAttrItem.getAnnotationAttrName().equals(attr))
-                                result = currRes;
+        classAnnotationItems.forEach(classAnnotationItem -> {
+            if (classAnnotationItem.getAnnotationName().equals(annotation)) {
+                if (classAnnotationItem.getAnnotationAttrs() != null) {
+                    classAnnotationItem.getAnnotationAttrs().forEach(annAttrItem -> {
+                        if (annAttrItem.getAnnotationAttrName().equals(attr)) {
+                            annoAttrs.add(new StringItem(annAttrItem.getAnnotationAttrValue()));
                         }
-                    }
+                    });
                 }
             }
+        });
 
-            cache.addFunctionCall(functionCall, result);
-        }
-
-        return result;
+        return new DataResult<List<StringItem>>(Constants.TYPE_STRING_LIST, annoAttrs);
     }
 
     private DataResult<List<StringItem>> getAnnoAttr(ClassItem c, MethodItem m, String annotation, String attr) {
