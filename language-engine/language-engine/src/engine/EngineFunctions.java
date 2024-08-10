@@ -693,7 +693,7 @@ public class EngineFunctions implements IEngineFunctions {
      * @param classSN
      * @return
      */
-    private DataResult<ClassItem> locateClass(String classSN) {
+    private DataResult<ClassItem> locateClassSN(String classSN) {
         classSN = classSN.replace(".class", "");
         ClassItem ret = new ClassItem("");
         if (this.classHelper.getClassSNDict().containsKey(classSN))
@@ -853,7 +853,7 @@ public class EngineFunctions implements IEngineFunctions {
             familyClasses.add(currentClass);
             List<String> parents = currentClass.getExtendedClasses();
             if (parents != null && parents.size() > 0) {
-                currentClass = this.locateClass(parents.get(0)).getResult();
+                currentClass = this.locateClassSN(parents.get(0)).getResult();
             } else
                 break;
         }
@@ -1174,10 +1174,10 @@ public class EngineFunctions implements IEngineFunctions {
                 }
                     break;
 
-                case Constants.FUNCTION_LOCATE_CLASS: {
+                case Constants.FUNCTION_LOCATE_CLASS_SN: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     StringItem className = (StringItem) params.get(0).getResult();
-                    result = this.locateClass(className.getValue());
+                    result = this.locateClassSN(className.getValue());
                 }
                     break;
 

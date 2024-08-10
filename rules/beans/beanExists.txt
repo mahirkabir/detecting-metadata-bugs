@@ -2,8 +2,8 @@ Rule bean-exists {
 	for (class c in getClasses()) {		
 		if (callExists(c, "ApplicationContext", "getBean")) {
 			for (String s in getArg(c, "ApplicationContext", "getBean", 0)) {
-                String beanClassName = substring(s, 0, indexOf(s, ".class"));
 				if (endsWith(s, ".class")){
+                    String beanClassName = substring(s, 0, indexOf(s, ".class"));
 					assert(
                         exists(class c1 in join(
                             getAnnotated("@Component", "class"), 
@@ -25,7 +25,7 @@ Rule bean-exists {
                             exists(method m in getMethods(configClass)) (
                                 beanClassName == getReturnType(m) 
                                 AND 
-                                hasAnnotation(configClass, m, "@Bean")
+                                hasAnnotation(m, "@Bean")
                             )
                         )
                     ) {
@@ -41,10 +41,10 @@ Rule bean-exists {
                         )
                         OR
                         exists(class configClass in getAnnotated("@Configuration", "class")) (
-                            exists(method m in getMethods(locateClass(getName(configClass)))) (
-                                hasAnnotation(locateClass(getName(configClass)), m, "@Bean")
+                            exists(method m in getMethods(locateClassSN(getName(configClass)))) (
+                                hasAnnotation(m, "@Bean")
                                 AND
-                                exists(String annoValue in getAnnoAttr(locateClass(getName(configClass)), m, "@Bean", "name"))(
+                                exists(String annoValue in getAnnoAttr(locateClassSN(getName(configClass)), m, "@Bean", "name"))(
                                     s == annoValue
                                 )
                             )
@@ -57,11 +57,11 @@ Rule bean-exists {
                             getAnnotated("@Controller", "class"), 
                             getAnnotated("@RestController","class"))
                         )(
-                            exists(String annoValue in getAnnoAttr(locateClass(getName(c1)), "@Component", "")) (s == annoValue) 
-                            OR exists(String annoValue in getAnnoAttr(locateClass(getName(c1)), "@Service", "")) (s == annoValue) 
-                            OR exists(String annoValue in getAnnoAttr(locateClass(getName(c1)), "@Repository", "")) (s == annoValue) 
-                            OR exists(String annoValue in getAnnoAttr(locateClass(getName(c1)), "@Controller", "")) (s == annoValue) 
-                            OR exists(String annoValue in getAnnoAttr(locateClass(getName(c1)), "@RestController", "")) (s == annoValue)
+                            exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@Component", "")) (s == annoValue) 
+                            OR exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@Service", "")) (s == annoValue) 
+                            OR exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@Repository", "")) (s == annoValue) 
+                            OR exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@Controller", "")) (s == annoValue) 
+                            OR exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@RestController", "")) (s == annoValue)
                         )
                     ) {
 						msg ("The bean: %s mentioned in ApplicationContext.getBean() of class: %s is undefined", s, getFQN(c));
