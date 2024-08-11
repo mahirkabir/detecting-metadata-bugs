@@ -667,7 +667,7 @@ public class EngineFunctions implements IEngineFunctions {
      * @param classSN
      * @return
      */
-    private DataResult<BooleanItem> isUnique(String classSN) {
+    private DataResult<BooleanItem> isUniqueSN(String classSN) {
         classSN = classSN.replace(".class", "");
         Map<String, List<ClassItem>> dictSNClass = this.classHelper.getClassSNDict();
         boolean isUnique = dictSNClass.containsKey(classSN)
@@ -1136,10 +1136,10 @@ public class EngineFunctions implements IEngineFunctions {
                 }
                     break;
 
-                case Constants.FUNCTION_IS_UNIQUE: {
+                case Constants.FUNCTION_IS_UNIQUE_SN: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     StringItem className = (StringItem) params.get(0).getResult();
-                    result = this.isUnique(className.getValue());
+                    result = this.isUniqueSN(className.getValue());
                 }
                     break;
 

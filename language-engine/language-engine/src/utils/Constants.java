@@ -89,7 +89,7 @@ public class Constants {
     public static final String FUNCTION_GET_RETURN_TYPE = "getReturnType";
     public static final String FUNCTION_IS_ITERABLE = "isIterable";
     public static final String FUNCTION_HAS_ANNO_ATTR = "hasAnnoAttr";
-    public static final String FUNCTION_IS_UNIQUE = "isUnique";
+    public static final String FUNCTION_IS_UNIQUE_SN = "isUniqueSN";
     public static final String FUNCTION_LOCATE_CLASS_SN = "locateClassSN";
     public static final String FUNCTION_LOCATE_CLASS_FQN = "locateClassFQN";
     public static final String FUNCTION_CLASS_EXISTS = "classExists";
