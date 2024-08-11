@@ -1,15 +1,15 @@
 Rule runwith-no-test {
 	for (class c in getClasses()) {
-		if (hasAnnotation(c, "@RunWith")) {
-			if (hasAnnoAttr(c, "@RunWith", "Parameterized.class")) {
-				assert(
-                    exists(class family in getFamily(c))(exists(method m in getMethods(family)) (
-                        hasAnnotation(family, m, "@Test")
-                    ))
-                ) {
-                    msg("Class: %s has @RunWith(Parameterized.class) but no method with @Test exists", getFQN(c));
-                }
-			}
-		}
+		if (hasAnnoAttr(c, "@RunWith", "Parameterized.class")) {
+            assert(
+                exists(class family in getFamily(c))(
+                    exists(method m in getMethods(family)) (
+                        hasAnnotation(m, "@Test")
+                    )
+                )
+            ) {
+                msg("Class: %s has @RunWith(Parameterized.class) but no method with @Test exists", getFQN(c));
+            }
+        }
 	}
 }
