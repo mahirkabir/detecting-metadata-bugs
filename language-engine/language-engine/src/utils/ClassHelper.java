@@ -177,7 +177,7 @@ public class ClassHelper {
 
                 for (Node item : children) {
                     if (item.toString().contains(Constants.PACKAGE)) {
-                        if (item.getChildNodes().size() > 0) {
+                        if (item.getChildNodes().size() > 0 && packageName == null) {
                             packageName = item.getChildNodes().get(0).toString();
                         }
                     } else if (item instanceof ImportDeclaration) {
