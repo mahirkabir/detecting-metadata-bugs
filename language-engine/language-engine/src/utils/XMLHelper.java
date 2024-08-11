@@ -131,6 +131,7 @@ public class XMLHelper {
                 String nodeTag = child.getNodeName().toLowerCase();
                 if (nodeTag.equals(Constants.NODE_TYPE_BEAN)) {
                     xmlItem.addChildNode(nodeTag, this.traverse(child, xmlItem, nodeTag));
+                    // TODO: Need to support handling nodes other than <bean>
                 }
             }
         }

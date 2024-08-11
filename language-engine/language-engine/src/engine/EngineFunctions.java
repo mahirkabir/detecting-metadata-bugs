@@ -95,7 +95,7 @@ public class EngineFunctions implements IEngineFunctions {
     }
 
     private DataResult extendsClass(ClassItem classItem, String classToCheck) {
-        String functionCall = "importsClass()" + "||" + classItem.getFqn() + "||" + classToCheck;
+        String functionCall = "extendsClass()" + "||" + classItem.getFqn() + "||" + classToCheck;
         DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
 
         boolean extendResult = false;
