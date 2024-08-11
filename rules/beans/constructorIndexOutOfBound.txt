@@ -1,17 +1,24 @@
 Rule constructor-index-out-of-bound {
-	for (class c in getClasses()) {
-		for (file xml in getXMLs()) {
-			for (<bean> bean in getElms(xml, "<bean>")) {
-				if (getAttr(bean, "class") == getFQN(c)) {
-					for (<constructor-arg> constructor_arg in getElms(bean, "<constructor-arg>")) {
-						if (hasAttr(constructor_arg, "index")) {
-							assert(exists(method constructor in getConstructors(c))(indexInBound(constructor, getAttr(constructor_arg, "index")))) {
-								msg("Constructor index: %s of bean for class: %s in xml: %s is out of bound", getAttr(constructor_arg, "index"), getFQN(c), getName(xml)); 	 
-							}
-						}
-					}
-				}
-			}
-		}
+	for (file xml in getXMLs()) {
+        if (elementExists(xml, "<bean>")) {
+            for (<bean> bean in getElms(xml, "<bean>")) {
+                String beanClassFQN = getAttr(bean, "class");
+                if (classExists(beanClassFQN)) {
+                    class c = locateClassFQN(beanClassFQN);
+                    for (<constructor-arg> constructor_arg in getElms(bean, "<constructor-arg>")) {
+                        if (hasAttr(constructor_arg, "index")) {
+                            String arg_idx = getAttr(constructor_arg, "index");
+                            assert(
+                                exists(method constructor in getConstructors(c))(
+                                    indexInBound(constructor, arg_idx)
+                                )
+                            ) {
+                                msg("Constructor index: %s of bean for class: %s in xml: %s is out of bound", arg_idx, getFQN(c), getName(xml)); 	 
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

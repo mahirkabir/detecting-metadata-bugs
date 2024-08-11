@@ -1,17 +1,24 @@
 Rule constructor-arg-name-field-map {
-	for (class c in getClasses()) {
-		for (file xml in getXMLs()) {
-			for (<bean> bean in getElms(xml, "<bean>")) {
-				if (getAttr(bean, "class") == getFQN(c)) {
-					for (<constructor-arg> constructor_arg in getElms(bean, "<constructor-arg>")) {
-						if (NOT isEmpty(getAttr(constructor_arg, "name"))) {
-							assert(exists(method con in getConstructors(c))(hasParam(con, getAttr(constructor_arg, "name")))) {
-								msg ("The name of <constructor-arg>: %s in bean: %s does not correspond to any constuctor-parameter's name in class: %s", getAttr(constructor_arg, "name"), getName(bean), getFQN(c));
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	for (file xml in getXMLs()) {
+        if (elementExists(xml, "<bean>")) {
+            for (<bean> bean in getElms(xml, "<bean>")) {
+                String beanClassFQN = getAttr(bean, "class");
+                if (classExists(beanClassFQN)) {
+                    class c = locateClassFQN(beanClassFQN);
+                    for (<constructor-arg> constructor_arg in getElms(bean, "<constructor-arg>")) {
+                        String arg_name = getAttr(constructor_arg, "name");
+                        if (NOT isEmpty(arg_name)) {
+                            assert(
+                                exists(method con in getConstructors(c))(
+                                    hasParam(con, arg_name)
+                                )
+                            ) {
+                                msg ("The name of <constructor-arg>: %s in bean: %s does not correspond to any constuctor-parameter's name in class: %s", arg_name, getName(bean), getFQN(c));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
