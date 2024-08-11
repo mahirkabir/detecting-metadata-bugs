@@ -731,31 +731,10 @@ public class EngineFunctions implements IEngineFunctions {
      * @return
      */
     private DataResult<BooleanItem> classExists(String classFQN) {
-        String basicFunction = "classExists()";
-        String functionCall = basicFunction + "||" + classFQN;
-
-        if (classFQN.contains("org.apache") || classFQN.contains("org.springframework")) {
-            return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(true));
-        }
-
-        DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
-
-        if (result == null) {
-            DataResult<List<ClassItem>> classesDT = this.getClasses();
-            List<ClassItem> classes = classesDT.getResult();
-            Boolean found = false;
-            for (ClassItem classItem : classes) {
-                functionCall = basicFunction + "||" + classItem.getFqn();
-                DataResult<BooleanItem> currResult = new DataResult<BooleanItem>(
-                        Constants.TYPE_BOOLEAN, new BooleanItem(true));
-                this.cache.addFunctionCall(functionCall, currResult);
-                if (classItem.getFqn().equals(classFQN))
-                    found = true;
-            }
-            result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(found));
-        }
-
-        return result;
+        if (this.classHelper.getClassDict().size() == 0)
+            this.getClasses();
+        boolean found = this.classHelper.getClassDict().containsKey(classFQN);
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(found));
     }
 
     /**

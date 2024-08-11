@@ -1,15 +1,15 @@
 Rule method-exists {
 	for (file xml in getXMLs()) {
 		for (<bean> bean in getElms(xml, "<bean>")) {
-			for (class c in getClasses()) {
-				if (getAttr(bean, "class") == getFQN(c)) {
-					for (String s in getAttrs(bean, "*method")) {
-						assert(exists(method m in getMethods(c))(getName(m) == s)) {
-							msg("The referenced method: %s in bean: %s is not defined in class: %s", s, getName(bean), getFQN(c));
-						}
-					}
-				}
-			}
-	  }
+			String beanClassFQN = getAttr(bean, "class");
+            if (classExists(beanClassFQN)) {
+                class c = locateClassFQN(beanClassFQN);
+                for (String s in getAttrs(bean, "*method")) {
+                    assert(exists(method m in getMethods(c))(getName(m) == s)) {
+                        msg("The referenced method: %s in bean: %s is not defined in class: %s", s, getName(bean), getFQN(c));
+                    }
+                }
+            }
+	    }
 	}
 }
