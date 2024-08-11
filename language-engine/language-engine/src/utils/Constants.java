@@ -111,7 +111,7 @@ public class Constants {
     public static final String CATEGORY_ANNOTATIONS = "annotations";
     public static final String CATEGORY_JUNITS = "junits";
     public static final String JSON_KEY_RULESETS = "rulesets";
-    public static final String FUNCTION_IS_INSTANCE_VARIABLE = "isInstanceVariable";
+    public static final String FUNCTION_HAS_FIELD = "hasField";
     public static final String IMPORTS_CLASS = "importsClass";
     public static final String EXTENDS_CLASS = "extendsClass";
     public static final String GET_FAMILY = "getFamily";
