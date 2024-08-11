@@ -793,14 +793,14 @@ public class EngineFunctions implements IEngineFunctions {
     }
 
     /**
-     * Check if property - propertyName is an instance variable of class c
+     * Check if property - propertyName is direct field of class c
      * 
      * @param c
      * @param propertyName
      * @return
      */
-    private DataResult isInstanceVariable(ClassItem c, String propertyName) {
-        String basicFunction = "isInstanceVariable()" + "||" + c.getFqn();
+    private DataResult hasField(ClassItem c, String propertyName) {
+        String basicFunction = "hasField()" + "||" + c.getFqn();
         String functionCall = basicFunction + "||" + propertyName;
         DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
 
@@ -1206,11 +1206,11 @@ public class EngineFunctions implements IEngineFunctions {
                 }
                     break;
 
-                case Constants.FUNCTION_IS_INSTANCE_VARIABLE: {
+                case Constants.FUNCTION_HAS_FIELD: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     ClassItem c = (ClassItem) params.get(0).getResult();
                     StringItem propertyName = (StringItem) params.get(1).getResult();
-                    result = this.isInstanceVariable(c, propertyName.getValue());
+                    result = this.hasField(c, propertyName.getValue());
                 }
                     break;
 
