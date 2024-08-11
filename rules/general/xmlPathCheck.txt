@@ -1,11 +1,9 @@
 Rule xml-path-Check {
 	for (class c in getClasses()) {
-		if (objectCreated(c, "ClassPathXmlApplicationContext")) {
-				for (String s in getArg(c, "ClassPathXmlApplicationContext", 0)) {
-					assert(pathExists(s)) {
-						msg("The path: %s referenced by ClassPathXmlApplicationContext() in class: %s does not exist", s, getFQN(c));
-					}
-				}
-		}
+		for (String s in getArg(c, "ClassPathXmlApplicationContext", 0)) {
+            assert(pathExists(s)) {
+                msg("The path: %s referenced by ClassPathXmlApplicationContext() in class: %s does not exist", s, getFQN(c));
+            }
+        }
 	}
 }
