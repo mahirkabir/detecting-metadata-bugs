@@ -255,34 +255,24 @@ public class EngineFunctions implements IEngineFunctions {
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(hasAnnotation));
     }
 
-    private DataResult<BooleanItem> hasAnnotation(ClassItem c, MethodItem m, String annotation) {
+    private DataResult<BooleanItem> hasAnnotation(MethodItem m, String annotation) {
         annotation = annotation.replace("@", "");
-        String basicFunction = "hasAnnotation()" + "||" + c.getFqn();
-        String functionCall = basicFunction + "||" + m.getName() + "||" + annotation;
+        String basicFunction = "hasAnnotation(m)" + "||" + m.getClassFQN() + "||" + m.getName();
+        String functionCall = basicFunction + "||" + annotation;
         DataResult<BooleanItem> result = this.cache.fetchFunctionCall(functionCall);
-
+        boolean found = false;
         if (result == null) {
-            result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(false));
-            List<MethodItem> methods = this.getMethods(c).getResult();
-            if (methods != null) {
-                for (MethodItem method : methods) {
-                    List<AnnotationItem> aItems = method.getAnnotations();
-                    if (aItems != null) {
-                        functionCall = basicFunction + "||" + method.getName();
-                        for (AnnotationItem aItem : aItems) {
-                            String functionCallAttr = functionCall + "||" + aItem.getAnnotationName();
-                            DataResult<BooleanItem> currRes = new DataResult<BooleanItem>(
-                                    Constants.TYPE_BOOLEAN, new BooleanItem(true));
-                            cache.addFunctionCall(functionCallAttr, currRes);
-
-                            if (method.getName().equals(m.getName())
-                                    && aItem.getAnnotationName().equals(annotation)) {
-                                result = currRes;
-                            }
-                        }
+            List<AnnotationItem> annotations = m.getAnnotations();
+            if (annotations != null) {
+                for (AnnotationItem annoItem : annotations) {
+                    if (annoItem.getAnnotationName().equals(annotation)) {
+                        found = true;
+                        break;
                     }
                 }
             }
+            result = new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(found));
+            this.cache.addFunctionCall(functionCall, result);
         }
 
         return result;
@@ -1103,14 +1093,14 @@ public class EngineFunctions implements IEngineFunctions {
 
                 case Constants.FUNCTION_HAS_ANNOTATION: {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
-                    ClassItem classItem = (ClassItem) params.get(0).getResult();
-                    if (params.size() == 3) {
-                        MethodItem methodItem = (MethodItem) params.get(1).getResult();
-                        StringItem annotation = (StringItem) params.get(2).getResult();
-                        result = this.hasAnnotation(classItem, methodItem, annotation.getValue());
-                    } else {
+                    if (params.get(0).getResult() instanceof ClassItem) {
+                        ClassItem classItem = (ClassItem) params.get(0).getResult();
                         StringItem annotation = (StringItem) params.get(1).getResult();
                         result = this.hasAnnotation(classItem, annotation.getValue());
+                    } else {
+                        MethodItem methodItem = (MethodItem) params.get(0).getResult();
+                        StringItem annotation = (StringItem) params.get(1).getResult();
+                        result = this.hasAnnotation(methodItem, annotation.getValue());
                     }
                 }
                     break;

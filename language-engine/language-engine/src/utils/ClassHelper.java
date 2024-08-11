@@ -106,7 +106,7 @@ public class ClassHelper {
             // InvocationHelper(javaFile).GetInvocations();
             // List<AnnotationItem> annotations = new
             // AnnotationHelper(javaFile).GetAnnotations();
-            
+
             try {
                 List<ClassItem> classInstances = this.GetClassInstances(javaFile);
 
@@ -283,16 +283,34 @@ public class ClassHelper {
         if (methods != null) {
             for (MethodItem method : methods) {
                 String classSN = method.getClassName();
-                if (dictRelevantClasses.containsKey(classSN)) {
-                    String classFQN = dictRelevantClasses.get(classSN);
-                    if (this.dictClass.containsKey(classFQN)) {
-                        this.dictClass.get(classFQN).addMethod(method);
-                    }
+                String classFQN = this.prepareFQN(cFqn, classSN);
+                if (this.dictClass.containsKey(classFQN)) {
+                    this.dictClass.get(classFQN).addMethod(method);
+                    method.setClassFQN(classFQN);
                 }
             }
         }
 
         return classItem.getMethods();
+    }
+
+    /**
+     * Prepare method-class FQN given
+     * FQN of the class for which getMethods was called,
+     * and the method-class SN
+     * 
+     * @param callerClassFQN
+     * @param methodClassSN
+     * @return
+     */
+    private String prepareFQN(String callerClassFQN, String methodClassSN) {
+        String[] parts = callerClassFQN.split("\\.");
+        String fqn = "";
+        for (int i = 0; i < parts.length - 1; ++i) {
+            fqn += parts[i] + ".";
+        }
+        fqn += methodClassSN;
+        return fqn;
     }
 
     /**

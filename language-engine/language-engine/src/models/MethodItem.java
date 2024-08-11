@@ -5,6 +5,7 @@ import java.util.List;
 
 public class MethodItem extends JItem {
     private String className;
+    private String classFQN;
     private String accessModifier;
     private String declType;
     private List<AnnotationItem> annotations;
@@ -50,6 +51,17 @@ public class MethodItem extends JItem {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    /**
+     * Get the method-class FQN
+     */
+    public String getClassFQN() {
+        return classFQN;
+    }
+
+    public void setClassFQN(String classFQN) {
+        this.classFQN = classFQN;
     }
 
     public List<ParamItem> getParameters() {
