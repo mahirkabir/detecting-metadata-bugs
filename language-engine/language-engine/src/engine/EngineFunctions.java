@@ -724,6 +724,8 @@ public class EngineFunctions implements IEngineFunctions {
         if (this.classHelper.getClassDict().size() == 0)
             this.getClasses();
         boolean found = this.classHelper.getClassDict().containsKey(classFQN);
+        if (!found)
+            found = this.classHelper.isLibrary(classFQN);
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(found));
     }
 

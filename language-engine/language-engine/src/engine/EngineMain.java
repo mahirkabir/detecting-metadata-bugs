@@ -3,6 +3,7 @@ package engine;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalTime;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -48,6 +50,7 @@ public class EngineMain {
         String datasetFolder = args[1];
         Config config = loadConfig(args[2]);
         EngineFactory.setLogPath(args[4]);
+        EngineFactory.setLibraryRegexPatterns(fetchLibraryRegex(args[5]));
 
         Map<String, List<VersionCategory>> mapVersions = getProjectVersions(versionCategories);
 
@@ -82,7 +85,7 @@ public class EngineMain {
                     EngineFactory.setProjectCommitId(versionInfo.getCommitId());
                     EngineFactory.setEngineVersionControl(new EngineVersionControl(projectPath.toString()));
 
-                    Helper.gitCheckout(projectPath.toString(), versionInfo.getCommitId());
+                    // Helper.gitCheckout(projectPath.toString(), versionInfo.getCommitId());
 
                     bindEngines();
                     engineDecl = EngineFactory.getEngineDecl();
@@ -132,7 +135,23 @@ public class EngineMain {
 
             versionIdx++;
         }
+    }
 
+    /**
+     * Read library regex patterns file and return the patterns
+     * 
+     * @param string
+     * @return
+     */
+    private static List<String> fetchLibraryRegex(String regexFilePath) {
+        try {
+            return Files.lines(Paths.get(regexFilePath))
+                    .map(String::trim)
+                    .collect(Collectors.toList());
+        } catch (IOException ex) {
+            Logger.log("Error reading regex file: " + regexFilePath + " => " + ex.getMessage());
+            return new ArrayList<String>();
+        }
     }
 
     /**

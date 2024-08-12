@@ -1,5 +1,7 @@
 package engine;
 
+import java.util.List;
+
 /*
  * Factory class containing all the engine and helper classes
  */
@@ -19,8 +21,12 @@ public class EngineFactory {
     private static IEngineFunctions engineFunctions;
     private static IEngineVersionControl engineVersionControl;
 
+    private static List<String> libraryRegexPatterns;
+
     /**
      * Get the project's path for which we are running our analysis
+     * 
+     * @return
      */
     public static String getProjectPath() {
         return projectPath;
@@ -196,5 +202,18 @@ public class EngineFactory {
      */
     public static IEngineVersionControl getEngineVersionControl() {
         return EngineFactory.engineVersionControl;
+    }
+
+    /**
+     * Get list of regex patterns for identifying library classes
+     * 
+     * @return
+     */
+    public static List<String> getLibraryRegexPatterns() {
+        return libraryRegexPatterns;
+    }
+
+    public static void setLibraryRegexPatterns(List<String> libraryRegexPatterns) {
+        EngineFactory.libraryRegexPatterns = libraryRegexPatterns;
     }
 }

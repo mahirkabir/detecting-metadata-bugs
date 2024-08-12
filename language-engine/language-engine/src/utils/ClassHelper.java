@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.CompilationUnit;
@@ -595,5 +597,32 @@ public class ClassHelper {
         });
 
         return this.annotatedItems;
+    }
+
+    /**
+     * Check if a class FQN is for a library class
+     * 
+     * @param classFQN
+     * @return
+     */
+    public boolean isLibrary(String classFQN) {
+        boolean isLib = false;
+        List<String> libraryRegexList = EngineFactory.getLibraryRegexPatterns();
+        if (libraryRegexList == null)
+            return isLib;
+        for (String regex : libraryRegexList) {
+            try {
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(classFQN);
+                if (matcher.matches()) {
+                    isLib = true;
+                    Logger.log(String.format("Matched %s with pattern %s", classFQN, regex));
+                    break;
+                }
+            } catch (Exception ex) {
+                Logger.log(String.format("Error matching %s with %s", classFQN, regex));
+            }
+        }
+        return isLib;
     }
 }
