@@ -19,6 +19,9 @@ public class EngineFactory {
     private static IEngineFunctions engineFunctions;
     private static IEngineVersionControl engineVersionControl;
 
+    /**
+     * Get the project's path for which we are running our analysis
+     */
     public static String getProjectPath() {
         return projectPath;
     }
