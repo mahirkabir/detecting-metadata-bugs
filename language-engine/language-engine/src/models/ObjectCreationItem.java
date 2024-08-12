@@ -5,6 +5,7 @@ import java.util.List;
 
 public class ObjectCreationItem extends JItem {
     private String className;
+    private String classFQN;
     private String declType;
     private List<ArgumentItem> arguments;
 
@@ -41,5 +42,16 @@ public class ObjectCreationItem extends JItem {
 
     public void setArguments(List<ArgumentItem> arguments) {
         this.arguments = arguments;
+    }
+
+    /**
+     * Get the class FQN
+     */
+    public String getClassFQN() {
+        return classFQN;
+    }
+
+    public void setClassFQN(String classFQN) {
+        this.classFQN = classFQN;
     }
 }

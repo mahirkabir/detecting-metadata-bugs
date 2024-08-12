@@ -2,6 +2,7 @@ package models;
 
 public class FieldItem extends JItem {
 	private String className;
+    private String classFQN;
 	private String declType;
 	private String accessModifier;
 
@@ -38,4 +39,15 @@ public class FieldItem extends JItem {
 	public void setClassName(String className) {
 		this.className = className;
 	}
+
+    /**
+     * Get the field-class FQN
+     */
+    public String getClassFQN() {
+        return classFQN;
+    }
+
+    public void setClassFQN(String classFQN) {
+        this.classFQN = classFQN;
+    }
 }

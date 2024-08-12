@@ -8,6 +8,7 @@ public class InvocationItem {
 	private String invocationStmnt;
 	private List<String> arguments;
 	private String className;
+    private String classFQN;
 
 	public String getInvocationLine() {
 		return invocationStmnt;
@@ -53,4 +54,15 @@ public class InvocationItem {
 	public void setClassName(String className) {
 		this.className = className;
 	}
+
+    /**
+     * Get the class FQN
+     */
+    public String getClassFQN() {
+        return classFQN;
+    }
+
+    public void setClassFQN(String classFQN) {
+        this.classFQN = classFQN;
+    }
 }

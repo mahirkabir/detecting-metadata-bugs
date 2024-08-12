@@ -7,6 +7,7 @@ public class AnnotationItem {
     private String parentEntity;
     private String annotationName;
     private String annotationType;
+    private String classFQN;
 
     /**
      * Check if annotation is on method or class
@@ -61,5 +62,16 @@ public class AnnotationItem {
         if (this.annotationAttrs == null)
             this.annotationAttrs = new ArrayList<>();
         this.annotationAttrs.add(annotationAttrItem);
+    }
+
+    /**
+     * Get the annotation-class FQN
+     */
+    public String getClassFQN() {
+        return classFQN;
+    }
+
+    public void setClassFQN(String classFQN) {
+        this.classFQN = classFQN;
     }
 }

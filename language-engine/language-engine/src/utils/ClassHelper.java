@@ -240,11 +240,10 @@ public class ClassHelper {
         if (fields != null) {
             for (FieldItem field : fields) {
                 String classSN = field.getClassName();
-                if (dictRelevantClasses.containsKey(classSN)) {
-                    String classFQN = dictRelevantClasses.get(classSN);
-                    if (this.dictClass.containsKey(classFQN)) {
-                        this.dictClass.get(classFQN).addField(field);
-                    }
+                String classFQN = this.prepareFQN(cFqn, classSN);
+                if (this.dictClass.containsKey(classFQN)) {
+                    this.dictClass.get(classFQN).addField(field);
+                    field.setClassFQN(classFQN);
                 }
             }
         }
@@ -297,25 +296,6 @@ public class ClassHelper {
     }
 
     /**
-     * Prepare method-class FQN given
-     * FQN of the class for which getMethods was called,
-     * and the method-class SN
-     * 
-     * @param callerClassFQN
-     * @param methodClassSN
-     * @return
-     */
-    private String prepareFQN(String callerClassFQN, String methodClassSN) {
-        String[] parts = callerClassFQN.split("\\.");
-        String fqn = "";
-        for (int i = 0; i < parts.length - 1; ++i) {
-            fqn += parts[i] + ".";
-        }
-        fqn += methodClassSN;
-        return fqn;
-    }
-
-    /**
      * Get all constructors for class with cFqn as fully qualified name
      * 
      * @param cFqn
@@ -342,11 +322,10 @@ public class ClassHelper {
         if (constructors != null) {
             for (MethodItem constructor : constructors) {
                 String classSN = constructor.getClassName();
-                if (dictRelevantClasses.containsKey(classSN)) {
-                    String classFQN = dictRelevantClasses.get(classSN);
-                    if (this.dictClass.containsKey(classFQN)) {
-                        this.dictClass.get(classFQN).addConstructor(constructor);
-                    }
+                String classFQN = this.prepareFQN(cFqn, classSN);
+                if (this.dictClass.containsKey(classFQN)) {
+                    this.dictClass.get(classFQN).addConstructor(constructor);
+                    constructor.setClassFQN(classFQN);
                 }
             }
         }
@@ -381,11 +360,10 @@ public class ClassHelper {
         if (objectCreations != null) {
             for (ObjectCreationItem objectCreation : objectCreations) {
                 String classSN = objectCreation.getClassName();
-                if (dictRelevantClasses.containsKey(classSN)) {
-                    String classFQN = dictRelevantClasses.get(classSN);
-                    if (this.dictClass.containsKey(classFQN)) {
-                        this.dictClass.get(classFQN).addObjectCreation(objectCreation);
-                    }
+                String classFQN = this.prepareFQN(cFqn, classSN);
+                if (this.dictClass.containsKey(classFQN)) {
+                    this.dictClass.get(classFQN).addObjectCreation(objectCreation);
+                    objectCreation.setClassFQN(classFQN);
                 }
             }
         }
@@ -426,11 +404,10 @@ public class ClassHelper {
         if (invocations != null) {
             for (InvocationItem invocation : invocations) {
                 String classSN = invocation.getClassName();
-                if (dictRelevantClasses.containsKey(classSN)) {
-                    String classFQN = dictRelevantClasses.get(classSN);
-                    if (this.dictClass.containsKey(classFQN)) {
-                        this.dictClass.get(classFQN).addInvocation(invocation);
-                    }
+                String classFQN = this.prepareFQN(cFqn, classSN);
+                if (this.dictClass.containsKey(classFQN)) {
+                    this.dictClass.get(classFQN).addInvocation(invocation);
+                    invocation.setClassFQN(classFQN);
                 }
             }
         }
@@ -471,11 +448,10 @@ public class ClassHelper {
         if (variables != null) {
             for (VariableItem variable : variables) {
                 String classSN = variable.getClassName();
-                if (dictRelevantClasses.containsKey(classSN)) {
-                    String classFQN = dictRelevantClasses.get(classSN);
-                    if (this.dictClass.containsKey(classFQN)) {
-                        this.dictClass.get(classFQN).addVariable(variable);
-                    }
+                String classFQN = this.prepareFQN(cFqn, classSN);
+                if (this.dictClass.containsKey(classFQN)) {
+                    this.dictClass.get(classFQN).addVariable(variable);
+                    variable.setClassFQN(classFQN);
                 }
             }
         }
@@ -517,11 +493,10 @@ public class ClassHelper {
         if (annotations != null) {
             for (AnnotationItem annotation : annotations) {
                 String classSN = annotation.getParentEntity();
-                if (dictRelevantClasses.containsKey(classSN)) {
-                    String classFQN = dictRelevantClasses.get(classSN);
-                    if (this.dictClass.containsKey(classFQN)) {
-                        this.dictClass.get(classFQN).addAnnotation(annotation);
-                    }
+                String classFQN = this.prepareFQN(cFqn, classSN);
+                if (this.dictClass.containsKey(classFQN)) {
+                    this.dictClass.get(classFQN).addAnnotation(annotation);
+                    annotation.setClassFQN(classFQN);
                 }
             }
         }
@@ -624,5 +599,24 @@ public class ClassHelper {
             }
         }
         return isLib;
+    }
+
+    /**
+     * Prepare method-class FQN given
+     * FQN of the class for which getMethods was called,
+     * and the method-class SN
+     * 
+     * @param callerClassFQN
+     * @param methodClassSN
+     * @return
+     */
+    private String prepareFQN(String callerClassFQN, String methodClassSN) {
+        String[] parts = callerClassFQN.split("\\.");
+        String fqn = "";
+        for (int i = 0; i < parts.length - 1; ++i) {
+            fqn += parts[i] + ".";
+        }
+        fqn += methodClassSN;
+        return fqn;
     }
 }
