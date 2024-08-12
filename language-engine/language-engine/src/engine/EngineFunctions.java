@@ -724,8 +724,19 @@ public class EngineFunctions implements IEngineFunctions {
         if (this.classHelper.getClassDict().size() == 0)
             this.getClasses();
         boolean found = this.classHelper.getClassDict().containsKey(classFQN);
-        if (!found)
-            found = this.classHelper.isLibrary(classFQN);
+        return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(found));
+    }
+
+    /**
+     * Check if a class is a libray class
+     * 
+     * @param classFQN
+     * @return
+     */
+    private DataResult<BooleanItem> isLibraryClass(String classFQN) {
+        if (this.classHelper.getClassDict().size() == 0)
+            this.getClasses();
+        boolean found = this.classHelper.isLibrary(classFQN);
         return new DataResult<BooleanItem>(Constants.TYPE_BOOLEAN, new BooleanItem(found));
     }
 
@@ -1163,6 +1174,13 @@ public class EngineFunctions implements IEngineFunctions {
                     List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
                     StringItem classFQN = (StringItem) params.get(0).getResult();
                     result = this.classExists(classFQN.getValue());
+                }
+                    break;
+
+                case Constants.FUNCTION_IS_LIBRARY_CLASS: {
+                    List<DataResult> params = this.getParams((ASTFunctionTail) funcNode.jjtGetChild(1));
+                    StringItem classFQN = (StringItem) params.get(0).getResult();
+                    result = this.isLibraryClass(classFQN.getValue());
                 }
                     break;
 

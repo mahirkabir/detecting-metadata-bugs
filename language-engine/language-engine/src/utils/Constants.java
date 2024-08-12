@@ -93,6 +93,7 @@ public class Constants {
     public static final String FUNCTION_LOCATE_CLASS_SN = "locateClassSN";
     public static final String FUNCTION_LOCATE_CLASS_FQN = "locateClassFQN";
     public static final String FUNCTION_CLASS_EXISTS = "classExists";
+    public static final String FUNCTION_IS_LIBRARY_CLASS = "isLibraryClass";
     public static final String FUNCTION_HAS_DUPLICATE_BEANS = "hasDuplicateBeans";
     public static final String FUNCTION_INDEX_IN_BOUND = "indexInBound";
     public static final String FUNCTION_HAS_PARAM = "hasParam";
