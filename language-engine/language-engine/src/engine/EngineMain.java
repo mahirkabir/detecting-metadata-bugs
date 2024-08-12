@@ -85,7 +85,7 @@ public class EngineMain {
                     EngineFactory.setProjectCommitId(versionInfo.getCommitId());
                     EngineFactory.setEngineVersionControl(new EngineVersionControl(projectPath.toString()));
 
-                    // Helper.gitCheckout(projectPath.toString(), versionInfo.getCommitId());
+                    Helper.gitCheckout(projectPath.toString(), versionInfo.getCommitId());
 
                     bindEngines();
                     engineDecl = EngineFactory.getEngineDecl();
