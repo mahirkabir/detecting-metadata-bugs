@@ -54,15 +54,6 @@
 ^org\.mockito\..+$
 ^org\.ektorp\..+$
 ^org\.mybatis\.spring\..+$
-^org\.motechproject\.server\.event\..+$
-^org\.motechproject\.server\.ruleengine\..+$
-^org\.motechproject\.context\..+$
-^org\.motechproject\.event\..+$
-^org\.motechproject\.ivr\.asterisk\..+$
-^org\.motechproject\.gateway\..+$
-^org\.motechproject\.dao\..+$
-^org\.motechproject\.model\..+$
-^org\.motechproject\.scheduler\..+$
-^org\.motechproject\.metrics\..+$
+^org\.motechproject\..+$
 ^org\.osgi\..+$
 ^org\.w3c\..+$
