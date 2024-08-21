@@ -301,12 +301,41 @@ public class Helper {
     }
 
     /**
-     * Check if file path exists
+     * Check if file path exists.
+     * Only looks for the file's short name
      * 
      * @param path
      * @return
      */
     public static boolean pathExists(String path) {
+        Map<String, Boolean> mapLoadedFilenames = EngineFactory.getEngineCache().getLoadedFilenames();
+        boolean found = false;
+        if (mapLoadedFilenames.containsKey(path)
+                || path.endsWith(String.format("*.%s", Constants.EXTENSION_XML)))
+            found = true;
+        else {
+            String normalizedPath = path.replace("\\", "/");
+            String fileShortname = normalizedPath.substring(normalizedPath.lastIndexOf('/') + 1);
+            for (Map.Entry<String, Boolean> entry : mapLoadedFilenames.entrySet()) {
+                String loadedFilename = entry.getKey();
+                if (loadedFilename.endsWith(fileShortname)) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        return found;
+    }
+
+    /**
+     * Check if file path exists.
+     * This version supported suffix match but
+     * will not work if path has wildcard in it (e.g.: *).
+     * 
+     * @param path
+     * @return
+     */
+    private static boolean pathExists_old(String path) {
         Map<String, Boolean> mapLoadedFilenames = EngineFactory.getEngineCache().getLoadedFilenames();
         if (mapLoadedFilenames.containsKey(path))
             return true;
