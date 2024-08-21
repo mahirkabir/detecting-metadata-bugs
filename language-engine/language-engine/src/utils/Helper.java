@@ -311,7 +311,7 @@ public class Helper {
         Map<String, Boolean> mapLoadedFilenames = EngineFactory.getEngineCache().getLoadedFilenames();
         boolean found = false;
         if (mapLoadedFilenames.containsKey(path)
-                || path.endsWith(String.format("*.%s", Constants.EXTENSION_XML)))
+                || path.endsWith(String.format("*%s", Constants.EXTENSION_XML)))
             found = true;
         else {
             String normalizedPath = path.replace("\\", "/");
