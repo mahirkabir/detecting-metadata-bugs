@@ -10,7 +10,7 @@
 ^org\.springside\..+$
 ^org\.thymeleaf\..+$
 ^com\.github\..+$
-^org\.mchange\..+$
+^.+\.mchange\..+$
 ^com\.atomikos\..+$
 ^com\.mangofactory\..+$
 ^eu\.trentorise\..+$
