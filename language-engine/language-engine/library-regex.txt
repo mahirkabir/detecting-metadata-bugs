@@ -57,3 +57,5 @@
 ^org\.motechproject\..+$
 ^org\.osgi\..+$
 ^org\.w3c\..+$
+^com\.octo\.captcha\..+$
+^net\.sf\..+$
