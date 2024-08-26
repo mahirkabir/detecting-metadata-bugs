@@ -564,6 +564,10 @@ public class ClassHelper {
                 } else if (parentNode instanceof ConstructorDeclaration) {
                     jItem.setName(((ConstructorDeclaration) parentNode).getNameAsString());
                     jItem.setType(Constants.TYPE_CONSTRUCTOR);
+                } else {
+                    jItem.setName("");
+                    jItem.setType("");
+                    // TODO: Need to handle these cases properly
                 }
                 annotatedItem.setEntity(jItem);
 
