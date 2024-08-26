@@ -44,7 +44,7 @@
 ^org\.firebirdsql\..+$
 ^org\.slf4j\..+$
 ^org\.geotools\..+$
-^org\.apache\.commons\.dbcp\..+$
+^org\.apache\..+$
 ^org\.captcha\..+$
 ^com\.katesoft\..+$
 ^net\.customware\..+$
@@ -53,9 +53,10 @@
 ^org\.neo4j\..+$
 ^org\.mockito\..+$
 ^org\.ektorp\..+$
-^org\.mybatis\.spring\..+$
+^.+\.spring\..+$
 ^org\.motechproject\..+$
 ^org\.osgi\..+$
 ^org\.w3c\..+$
 ^com\.octo\.captcha\..+$
 ^net\.sf\..+$
+^com\..+\.MemCached\..+$
