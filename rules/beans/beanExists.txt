@@ -62,6 +62,7 @@ Rule bean-exists {
                             OR exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@Repository", "")) (s == annoValue) 
                             OR exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@Controller", "")) (s == annoValue) 
                             OR exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@RestController", "")) (s == annoValue)
+                            OR upperCase(s) == upperCase(getName(c1))
                         )
                     ) {
 						msg ("The bean: %s mentioned in ApplicationContext.getBean() of class: %s is undefined", s, getFQN(c));
