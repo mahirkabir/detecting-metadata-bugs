@@ -8,7 +8,7 @@
 ^de\.agito\..*camunda.*$
 ^org\.hibernate\..+$
 ^org\.springside\..+$
-^org\.thymeleaf\..+$
+^.+\.thymeleaf\..+$
 ^com\.github\..+$
 ^.+\.mchange\..+$
 ^com\.atomikos\..+$
@@ -60,3 +60,5 @@
 ^com\.octo\.captcha\..+$
 ^net\.sf\..+$
 ^com\..+\.MemCached\..+$
+^.+\.logback\..+$
+^.+\.logicalcobwebs\..+$
