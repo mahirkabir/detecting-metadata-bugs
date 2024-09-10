@@ -21,6 +21,7 @@ generica	79da0c	98d373
 I377-esk	7bab43	e82987
 jarvis	650eb2	fd0968
 jarvis	30deb5	fd0968
+jarvis	650eb2	fd0968
 jarvis	30deb5	fd0968
 johnsully83_groovy	990b07	02d04c
 johnsully83_groovy	990b07	02d04c
@@ -43,11 +44,7 @@ Kognitywistyka	fb1115	472a32
 LIBRARY	56fe5f	1d6add
 LIBRARY	56fe5f	1d6add
 rop	eeadd7	f84e01
-rop	f0db28	f84e01
-rop	eeb218	f84e01
-rop	f0db28	eeadd7
-rop	eeb218	eeadd7
-rop	db55e3	eeadd7
-rop	14e684	eeadd7
+rop	db55e3	f84e01
+rop	14e684	f84e01
 ShcUtils	afc5bc	b8cd15
 spring-vaadin	437042	9f6685
