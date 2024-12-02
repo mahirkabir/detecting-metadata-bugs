@@ -9,7 +9,6 @@
                 "constructorArgumentField",
                 "constructorArgumentFieldType",
                 "constructorIndexOutOfBound",
-                "dupBeansExist",
                 "methodExists",
                 "setterMethod"
             ]
