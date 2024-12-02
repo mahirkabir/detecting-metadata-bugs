@@ -62,3 +62,6 @@
 ^com\..+\.MemCached\..+$
 ^.+\.logback\..+$
 ^.+\.logicalcobwebs\..+$
+^com\.googlecode\..+$
+^com\.fasterxml\..+$
+^com\.jolbox\..+$
