@@ -4,7 +4,7 @@ Rule runwith-no-test {
             assert(
                 exists(class family in getFamily(c))(
                     exists(method m in getMethods(family)) (
-                        hasAnnotation(m, "@Test")
+                        hasAnnotation(m, "@Test") OR hasAnnotation(m, "@org.junit.Test")
                     )
                 )
             ) {
