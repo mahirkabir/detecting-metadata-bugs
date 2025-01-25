@@ -17,7 +17,7 @@ Rule suiteclasses-No-Test {
                             exists(class family in getFamily(testClass)) (
                                 exists(method m in getMethods(family))(
                                     hasAnnotation(m, "@Test")
-                                    OR hasAnnotation(m, "@org.junit.Test)
+                                    OR hasAnnotation(m, "@org.junit.Test")
                                     OR startsWith(getName(m), "test")
                                     OR getName(m) == "suite"
                                 )            
