@@ -47,6 +47,8 @@ public class Constants {
     public static final String ITERABLE_TYPE_HASH_SET = "HashSet";
     public static final String ITERABLE_TYPE_LINKED_HASH_SET = "LinkedHashSet";
     public static final String ITERABLE_TYPE_TREE_SET = "TreeSet";
+    public static final String ITERABLE_TYPE_OBJECT_2D = "Object[][]";
+    public static final String ITERABLE_TYPE_ITERABLE = "Iterable";
     public static final String EXPRESSION_NOT = "Not";
     public static final String EMPTY_STRING = "";
     public static final String NODE_TYPE_ROOT = "root";

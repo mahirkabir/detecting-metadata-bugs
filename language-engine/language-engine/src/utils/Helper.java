@@ -283,6 +283,8 @@ public class Helper {
             case Constants.ITERABLE_TYPE_SET:
             case Constants.ITERABLE_TYPE_TREE_SET:
             case Constants.ITERABLE_TYPE_VECTOR:
+            case Constants.ITERABLE_TYPE_OBJECT_2D:
+            case Constants.ITERABLE_TYPE_ITERABLE:
                 isIterable = true;
                 break;
         }
