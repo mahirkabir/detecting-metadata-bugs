@@ -119,10 +119,13 @@ public class Helper {
                 boolean result = evaluator.evalBooleanExpr(ifExpr);
                 if (result) {
                     System.out.println("Start: " + ifStmnt);
+                    IEngineDecl engineDecl = EngineFactory.getEngineDecl();
+                    engineDecl.createFrame();
                     int totalChildren = ifStmnt.jjtGetNumChildren();
                     for (int i = 1; i < totalChildren; ++i)
                         Helper.process(ifStmnt.jjtGetChild(i));
                     System.out.println("End: " + ifStmnt);
+                    engineDecl.removeFrame();
                 }
                 break;
 
