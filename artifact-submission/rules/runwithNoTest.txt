@@ -1,0 +1,15 @@
+Rule runwith-no-test {
+	for (class c in getClasses()) {
+		if (hasAnnoAttr(c, "@RunWith", "Parameterized.class")) {
+            assert(
+                exists(class family in getFamily(c))(
+                    exists(method m in getMethods(family)) (
+                        hasAnnotation(m, "@Test") OR hasAnnotation(m, "@org.junit.Test")
+                    )
+                )
+            ) {
+                msg("Class: %s has @RunWith(Parameterized.class) but no method with @Test exists", getFQN(c));
+            }
+        }
+	}
+}

@@ -65,7 +65,7 @@ Reports if class has `@SuiteClasses(CLASS1.class, CLASS2.class ...)` but any of 
 ---------------
 Reports if the return type of the method with `@Parameters` annotation is not iterable.
 
-## Notes
+<!-- ## Notes
 ---------------
 1. Verified: `constructorArgumentField`, `constructorArgumentFieldType`, `setterMethod`, `xmlPathCheck`, `importAnnotationIntoXML` (Throws exception only if the autowired method is invoked), `beanExists` (Need to modify the method call part in the rule), `importXMLIntoAnnotation`, `methodExists`
 1. Unverified: `fieldProperty`
@@ -75,4 +75,4 @@ Reports if the return type of the method with `@Parameters` annotation is not it
 1. **NEW**: If only constructors with param(s) are there in the java file, but no `<construct-arg>` is there in the bean, an exception is thrown. Do we need to write rule for that? (We can do it. But chances are low for this to happen. Will do it later.)
 1. **NEW**: `<constuct-arg>` can have formats other than `<constuct-arg name=".."/>`. Can we write rules to handle them as well? (Check if `index` is used but number of index is less than the `index` value - 1)
 
-1. **Note**: We need to implement something to check the argument parameters instead of class fields when it comes to checking `<construct-arg>`
+1. **Note**: We need to implement something to check the argument parameters instead of class fields when it comes to checking `<construct-arg>` -->

@@ -1,0 +1,74 @@
+Rule bean-exists {
+	for (class c in getClasses()) {		
+		if (callExists(c, "ApplicationContext", "getBean")) {
+			for (String s in getArg(c, "ApplicationContext", "getBean", 0)) {
+				if (endsWith(s, ".class")){
+                    String beanClassName = substring(s, 0, indexOf(s, ".class"));
+					assert(
+                        exists(class c1 in join(
+                            getAnnotated("@Component", "class"), 
+                            getAnnotated("@Service", "class"), 
+                            getAnnotated("@Repository", "class"), 
+                            getAnnotated("@Controller", "class"), 
+                            getAnnotated("@RestController","class"))
+                        )(
+                            beanClassName == getName(c1)
+                        ) 
+                        OR 
+                        exists(file xml in getXMLs())(
+                            exists(<bean> bean in getElms(xml, "<bean>"))(
+                                beanClassName == getSN(getAttr(bean, "class"))
+                            )
+                        )
+                        OR
+                        exists(class configClass in getAnnotated("@Configuration", "class")) (
+                            exists(method m in getMethods(configClass)) (
+                                beanClassName == getReturnType(m) 
+                                AND 
+                                hasAnnotation(m, "@Bean")
+                            )
+                        )
+                    ) {
+						msg ("The bean class: %s mentioned in ApplicationContext.getBean() of class: %s is undefined", s, getFQN(c));
+					}
+				}
+				if (NOT endsWith(s, ".class")) {
+					assert(
+                        exists(file xml in getXMLs())(
+                            exists (<bean> bean in getElms(xml, "<bean>"))(
+                                s == getAttr(bean, "id")
+                            )
+                        )
+                        OR
+                        exists(class configClass in getAnnotated("@Configuration", "class")) (
+                            exists(method m in getMethods(locateClassSN(getName(configClass)))) (
+                                hasAnnotation(m, "@Bean")
+                                AND
+                                exists(String annoValue in getAnnoAttr(locateClassSN(getName(configClass)), m, "@Bean", "name"))(
+                                    s == annoValue
+                                )
+                            )
+                        )
+                        OR
+                        exists(class c1 in join(
+                            getAnnotated("@Component", "class"), 
+                            getAnnotated("@Service", "class"), 
+                            getAnnotated("@Repository", "class"), 
+                            getAnnotated("@Controller", "class"), 
+                            getAnnotated("@RestController","class"))
+                        )(
+                            exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@Component", "")) (s == annoValue) 
+                            OR exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@Service", "")) (s == annoValue) 
+                            OR exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@Repository", "")) (s == annoValue) 
+                            OR exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@Controller", "")) (s == annoValue) 
+                            OR exists(String annoValue in getAnnoAttr(locateClassSN(getName(c1)), "@RestController", "")) (s == annoValue)
+                            OR upperCase(s) == upperCase(getName(c1))
+                        )
+                    ) {
+						msg ("The bean: %s mentioned in ApplicationContext.getBean() of class: %s is undefined", s, getFQN(c));
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,15 @@
+Rule testParams-not-iterable {
+	for (class c in getClasses()) {
+		if (hasAnnoAttr(c, "@RunWith", "Parameterized.class")) {
+            for (class family in getFamily(c)) {
+                for (method m in getMethods(family)) {
+                    if (hasAnnotation(m, "@Parameters") OR hasAnnotation(m, "@Parameterized.Parameters")) {
+                        assert(isIterable(getReturnType(m))) {
+                            msg("Class: %s, Method: %s has @Parameters but return type is not iterable", getFQN(family), getName(m));
+                        }
+                    }
+                }
+            }
+        }
+	}
+}

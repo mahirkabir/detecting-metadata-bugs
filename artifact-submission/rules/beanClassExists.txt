@@ -1,0 +1,14 @@
+Rule bean-class-exists {
+	for (file xml in getXMLs()) {
+		if (elementExists(xml, "<bean>")) {
+			for (<bean> bean in getElms(xml, "<bean>")) {
+				String beanClassFQN = getAttr(bean, "class");
+                if (NOT isEmpty(beanClassFQN)) {
+                    assert(classExists(beanClassFQN) OR isLibraryClass(beanClassFQN)) {
+                        msg("Bean class: %s mentioned in bean: %s, does not exist", beanClassFQN, getName(bean));
+                    }
+                }
+			}
+		}
+	}
+}

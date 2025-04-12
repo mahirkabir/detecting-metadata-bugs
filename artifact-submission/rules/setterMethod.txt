@@ -1,0 +1,26 @@
+Rule property-setter-map {
+	for (file xml in getXMLs()) {
+		if (elementExists(xml, "<bean>")) {
+            for (<bean> bean in getElms(xml, "<bean>")) {
+                String beanClassFQN = getAttr(bean, "class");
+                if (classExists(beanClassFQN)) {
+                    class c = locateClassFQN(beanClassFQN);
+                    for (<property> property in getElms(bean, "<property>")) {
+                        String propertyName = getAttr(property, "name");
+                        if (hasField(c, propertyName)) {
+                            assert(
+                                exists (method m in getMethods(c)) (
+                                    substring(getName(m), 0, 3) == "set" 
+                                    AND 
+                                    upperCase(substring(getName(m), 3)) == upperCase(propertyName)
+                                )
+                            ) {
+                                msg("There is no corresponding setter method in class: %s for the property: %s in bean: %s", getFQN(c), getAttr(property, "name"), getName(bean));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+	}
+}
