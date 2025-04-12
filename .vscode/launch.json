@@ -11,10 +11,13 @@
             "mainClass": "engine.EngineMain",
             "projectName": "language-engine",
             "args": [
-                "dataset-categorizer\\version_categories.txt",
-                "D:\\Mahir\\detecting-metadata-bugs\\dataset\\projects",
-                "language-engine\\language-engine\\startup-config.json",
-                "D:\\Mahir\\detecting-metadata-bugs\\result\\detected-bugs"
+                "language-engine/language-engine/artifact-submission/dataset",
+                "spring-vaadin",
+                "714c91",
+                "language-engine/language-engine/artifact-submission/output",
+                "language-engine/language-engine/artifact-submission/rules",
+                "language-engine/language-engine/artifact-submission/logs.txt",
+                "language-engine/language-engine/artifact-submission/library-regex.txt"
             ]
         }
     ]
