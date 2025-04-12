@@ -12,8 +12,8 @@
             "projectName": "language-engine",
             "args": [
                 "language-engine/language-engine/artifact-submission/dataset",
-                "spring-vaadin",
-                "714c91",
+                "ShcUtils",
+                "afc5bc",
                 "language-engine/language-engine/artifact-submission/output",
                 "language-engine/language-engine/artifact-submission/rules",
                 "language-engine/language-engine/artifact-submission/logs.txt",
