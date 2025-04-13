@@ -17,24 +17,39 @@ This tool was developed as part of our FSE 2025 paper and is available under an 
 
 ## 🚀 How to Run
 
-You need to run `language-engine/src/EngineMain.java` with the following **7 arguments**:
+- Go to `language-engine/language-engine`
+- Compile with maven with Java 11 (or higher) using `mvn clean package`
+- Run the tool using the packaged JAR file with the following **7 arguments**:
 
 ```
-<java_command> <dataset-folder> <project-name> <commit-id> <output-path> <rules-folder> <log-path> <library-classes-file>
+<dataset-folder> <project-name> <commit-id> <output-path> <rules-folder> <log-path> <library-classes-file>
 ```
 
 ### ✅ Example
 
 ```
-java -cp . EngineMain \
-  /data/projects/ \
-  my-cool-library \
-  a1b2c3d4e5 \
-  /output/bug-reports/ \
-  /rules/ \
-  /logs/run1.log \
-  /config/library-classes.txt
+java -cp target/language-engine-0.0.1-SNAPSHOT.jar engine.EngineMain \
+  artifact-submission/dataset \
+  ShcUtils \
+  afc5bc \
+  artifact-submission/output \
+  artifact-submission/rules \
+  artifact-submission/logs.txt \
+  artifact-submission/library-regex.txt
 ```
+
+### 🧾 Folder Setup & Output Details
+
+We created a folder named [`artifact-submission`](language-engine/language-engine/artifact-submission/) in the same directory as the `pom.xml` of [`language-engine/language-engine`](language-engine/language-engine/). Inside it:
+
+- `dataset/ShcUtils/` contains a sample Java project to analyze  
+- `rules/` contains 15 rule files written in RSL  
+- `library-regex.txt` lists fully-qualified names (FQNs) of library classes to suppress false positives  
+
+When you run the example command above, it will:
+
+- Generate the bug report at `artifact-submission/output/ShcUtils.txt`  
+- Write logs to `artifact-submission/logs.txt`
 
 ### 📂 Argument Details
 
@@ -46,7 +61,7 @@ java -cp . EngineMain \
 | `output-path` | Folder where the bug report will be saved |
 | `rules-folder` | Path to folder containing the RSL rule files |
 | `log-path` | File path for runtime logs |
-| `library-classes-file` | File path for file listing known library classes to suppress false positives |
+| `library-classes-file` | File containing fully-qualified names of known library classes to suppress false positives |
 
 ---
 
@@ -77,12 +92,12 @@ detecting-metadata-bugs/
 ├── rules/	# Sample RSL rules
 └── experiment-results.xlsx	# Experimental results
 ```
-<!--
+
 ---
 
 ## 📝 License
 
-This tool is released under the MIT License. -->
+This tool is released under the MIT License.
 
 ---
 
@@ -100,7 +115,7 @@ For questions or collaboration ideas, feel free to reach out to the authors.
 
 ## 📄 Additional Documentation
 
-- [Installation Guide](docs/INSTALL.md)
+- [Running Guide](docs/RUNNING.md)
 - [Requirements](docs/REQUIREMENTS.md)
 - [Artifact Status & Badge Justification](docs/STATUS.md)
 - [Rules Descriptions](rules/README.md)

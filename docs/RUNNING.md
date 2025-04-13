@@ -1,0 +1,35 @@
+# How To Run - Detailed Guide
+
+## Prerequisites
+
+- Java 11 or higher (We used Java 15)
+- Git
+- Maven
+
+## Instructions
+
+1. **Clone the repository**:
+```bash
+git clone https://github.com/mahirkabir/detecting-metadata-bugs.git
+cd detecting-metadata-bugs
+```
+
+2. Compile the Java tool using Maven:
+```bash
+cd language-engine/language-engine
+mvn clean package
+```
+
+3. Run the tool with the packaged JAR:
+```bash
+java -cp target/language-engine-0.0.1-SNAPSHOT.jar engine.EngineMain \
+  <dataset-folder> \
+  <project-name> \
+  <commit-id> \
+  <output-path> \
+  <rules-folder> \
+  <log-path> \
+  <library-classes-file>
+```
+
+See the main [README](/README.md) for full argument descriptions and a working example.
