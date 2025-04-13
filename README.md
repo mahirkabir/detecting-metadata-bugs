@@ -2,7 +2,7 @@
 
 **MeCheck** (Metadata Checker) is a tool designed to detect metadata-related bugs in Java projects using a custom domain-specific language we created, called **RSL (Rule Specification Language)**. It is particularly useful for analyzing the use of annotations, configuration files, and other project metadata that might go out of sync or cause bugs.
 
-This tool was developed as part of our FSE 2025 paper and is available under an open-source license.
+This tool was developed as part of our [FSE 2025](https://arxiv.org/abs/2502.14463) paper and is available under an open-source license.
 
 ---
 
