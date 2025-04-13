@@ -1,4 +1,4 @@
-# 🛠️ MeCheck: A Rule-Based Metadata Bug Detector for Java Projects
+# 🛠️ [MeCheck: A Rule-Based Metadata Bug Detector for Java Projects](https://github.com/mahirkabir/detecting-metadata-bugs)
 
 **MeCheck** (Metadata Checker) is a tool designed to detect metadata-related bugs in Java projects using a custom domain-specific language we created, called **RSL (Rule Specification Language)**. It is particularly useful for analyzing the use of annotations, configuration files, and other project metadata that might go out of sync or cause bugs.
 
