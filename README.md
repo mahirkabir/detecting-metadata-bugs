@@ -30,14 +30,7 @@ This tool was developed as part of our [FSE 2025](https://arxiv.org/abs/2502.144
 ```bash
 mvn clean package
 
-java -cp target/language-engine-0.0.1-SNAPSHOT.jar engine.EngineMain \
-  artifact-submission/dataset \
-  ShcUtils \
-  afc5bc \
-  artifact-submission/output \
-  artifact-submission/rules \
-  artifact-submission/logs.txt \
-  artifact-submission/library-regex.txt
+java -cp target/language-engine-0.0.1-SNAPSHOT.jar engine.EngineMain artifact-submission/dataset ShcUtils afc5bc artifact-submission/output artifact-submission/rules artifact-submission/logs.txt artifact-submission/library-regex.txt
 ```
 
 ### 🧾 Folder Setup & Output Details
