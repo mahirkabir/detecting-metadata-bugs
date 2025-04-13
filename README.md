@@ -104,7 +104,7 @@ detecting-metadata-bugs/
 
 ## 📝 License
 
-This tool is released under the MIT License.
+This tool is released under the [MIT License](/LICSENSE).
 
 ---
 
@@ -122,9 +122,9 @@ For questions or collaboration ideas, feel free to reach out to the authors.
 
 ## 📄 Additional Documentation
 
-- [Installation Guide](docs/INSTALL.md)
-- [Requirements](docs/REQUIREMENTS.md)
-- [Artifact Status & Badge Justification](docs/STATUS.md)
+- [Installation Guide](/INSTALL.md)
+- [Requirements](/REQUIREMENTS.md)
+- [Artifact Status & Badge Justification](/STATUS.md)
 - [Rules Descriptions](rules/README.md)
 
 Note: The files INSTALL, REQUIREMENTS, and STATUS are in markdown for formatting.

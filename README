@@ -122,9 +122,9 @@ For questions or collaboration ideas, feel free to reach out to the authors.
 
 ## 📄 Additional Documentation
 
-- [Installation Guide](docs/INSTALL)
-- [Requirements](docs/REQUIREMENTS)
-- [Artifact Status & Badge Justification](docs/STATUS)
+- [Installation Guide](/INSTALL)
+- [Requirements](/REQUIREMENTS)
+- [Artifact Status & Badge Justification](/STATUS)
 - [Rules Descriptions](rules/README.md)
 
 Note: The files INSTALL, REQUIREMENTS, and STATUS are in markdown for formatting.
