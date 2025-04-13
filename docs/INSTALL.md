@@ -32,4 +32,4 @@ java -cp target/language-engine-0.0.1-SNAPSHOT.jar engine.EngineMain \
   <library-classes-file>
 ```
 
-See the main [README](/README) for full argument descriptions and a working example.
+See the main [README](/README.md) for full argument descriptions and a working example.
