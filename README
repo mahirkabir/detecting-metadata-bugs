@@ -27,7 +27,9 @@ This tool was developed as part of our [FSE 2025](https://arxiv.org/abs/2502.144
 
 ### ✅ Example
 
-```
+```bash
+mvn clean package
+
 java -cp target/language-engine-0.0.1-SNAPSHOT.jar engine.EngineMain \
   artifact-submission/dataset \
   ShcUtils \
@@ -48,7 +50,12 @@ We created a folder named [`artifact-submission`](language-engine/language-engin
 
 When you run the example command above, it will:
 
-- Generate the bug report at `artifact-submission/output/ShcUtils.txt`  
+- Generate a `ShcUtils.txt` file in the [`output/`](language-engine/language-engine/artifact-submission/output/) folder, with a bug report similar to ---
+
+```
+[artifact-submission\dataset\ShcUtils](afc5bc)	beanClassExists.txt	Bean class: test.GreetingServiceImpl mentioned in bean: artifact-submission\dataset\ShcUtils\src\main\resources\applicationContext.xml-bean-greetingService, does not exist
+```
+(This output corresponds to one of the metadata issues discussed in our FSE 2025 paper --- missing bean class.)
 - Write logs to `artifact-submission/logs.txt`
 
 ### 📂 Argument Details
@@ -115,7 +122,9 @@ For questions or collaboration ideas, feel free to reach out to the authors.
 
 ## 📄 Additional Documentation
 
-- [Running Guide](docs/RUNNING.md)
-- [Requirements](docs/REQUIREMENTS.md)
-- [Artifact Status & Badge Justification](docs/STATUS.md)
+- [Installation Guide](docs/INSTALL)
+- [Requirements](docs/REQUIREMENTS)
+- [Artifact Status & Badge Justification](docs/STATUS)
 - [Rules Descriptions](rules/README.md)
+
+Note: The files INSTALL, REQUIREMENTS, and STATUS are in markdown for formatting.
