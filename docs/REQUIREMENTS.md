@@ -2,15 +2,16 @@
 
 ## Software Environment
 
-- Java version: 11 or higher
-- OS: Linux, macOS, or Windows
+- Java version: 11 or higher (preferably 15)
+- Maven
+- OS: Windows
 - No additional dependencies (no external libraries or build tools required)
 
 ## Input Files
 
 - A folder of Java projects (Git repos)
 - A specific commit ID
-- Rule files written in RSL (.rsl)
+- Rule files written in RSL
 - A text file with known library class names to suppress false positives
 
 <!-- ## Hardware
